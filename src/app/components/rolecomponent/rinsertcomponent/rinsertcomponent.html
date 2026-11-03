@@ -1,0 +1,47 @@
+<div class="container">
+  <h2>Registrar rol</h2>
+
+  <form [formGroup]="form" (ngSubmit)="registrar()">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre del rol</mat-label>
+      <input matInput formControlName="nameRole" maxlength="100" />
+
+      @if (form.controls.nameRole.hasError('required')) {
+        <mat-error>El nombre es obligatorio.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea
+        matInput
+        formControlName="descriptionRole"
+        maxlength="150"
+        rows="3"
+      ></textarea>
+
+      @if (form.controls.descriptionRole.hasError('required')) {
+        <mat-error>La descripción es obligatoria.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+
+      <mat-select formControlName="statusRole">
+        <mat-option value="Activo">Activo</mat-option>
+        <mat-option value="Inactivo">Inactivo</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="acciones">
+      <button mat-flat-button type="submit" [disabled]="guardando">
+        Registrar
+      </button>
+
+      <a mat-stroked-button routerLink="/roles/listar">
+        Cancelar
+      </a>
+    </div>
+  </form>
+</div>

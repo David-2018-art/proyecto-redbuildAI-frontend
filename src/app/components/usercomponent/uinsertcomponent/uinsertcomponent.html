@@ -1,0 +1,82 @@
+<div class="container">
+  <h2>Registrar usuario</h2>
+
+  <form [formGroup]="form" (ngSubmit)="registrar()">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombres</mat-label>
+      <input matInput formControlName="nameUser" maxlength="80" />
+
+      @if (form.controls.nameUser.hasError('required')) {
+        <mat-error>El nombre es obligatorio.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Apellidos</mat-label>
+      <input matInput formControlName="lastNameUser" maxlength="80" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Correo electrónico</mat-label>
+      <input
+        matInput
+        type="email"
+        formControlName="emailUser"
+        maxlength="254"
+        autocomplete="email"
+      />
+
+      @if (form.controls.emailUser.hasError('required')) {
+        <mat-error>El correo es obligatorio.</mat-error>
+      } @else if (form.controls.emailUser.hasError('email')) {
+        <mat-error>Ingresa un correo válido.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Contraseña</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="passwordUser"
+        maxlength="100"
+        autocomplete="new-password"
+      />
+
+      @if (form.controls.passwordUser.hasError('required')) {
+        <mat-error>La contraseña es obligatoria.</mat-error>
+      } @else if (form.controls.passwordUser.hasError('minlength')) {
+        <mat-error>Debe tener al menos 6 caracteres.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Teléfono</mat-label>
+      <input
+        matInput
+        type="tel"
+        formControlName="phoneUser"
+        maxlength="20"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre de empresa</mat-label>
+      <input
+        matInput
+        formControlName="companyNameUser"
+        maxlength="100"
+      />
+    </mat-form-field>
+
+    <div class="acciones">
+      <button mat-flat-button type="submit" [disabled]="guardando">
+        Registrar
+      </button>
+
+      <a mat-stroked-button routerLink="/usuarios/listar">
+        Cancelar
+      </a>
+    </div>
+  </form>
+</div>
