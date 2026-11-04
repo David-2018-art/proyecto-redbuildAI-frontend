@@ -1,0 +1,66 @@
+
+<div class="container">
+  <h2>Actualizar publicación</h2>
+
+  <form [formGroup]="formPublication"
+        (ngSubmit)="actualizar()">
+
+    <mat-form-field appearance="outline">
+      <mat-label>ID de publicación</mat-label>
+      <input matInput formControlName="id" readonly>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Observaciones</mat-label>
+      <textarea matInput
+                formControlName="observations"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de operación</mat-label>
+      <mat-select formControlName="operationType">
+        @for (tipo of tiposOperacion; track tipo.value) {
+          <mat-option [value]="tipo.value">
+            {{ tipo.viewValue }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <input matInput formControlName="status">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>ID del producto</mat-label>
+      <input matInput type="number"
+             formControlName="productId">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>ID de ubicación</mat-label>
+      <input matInput type="number"
+             formControlName="locationId">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>ID del usuario</mat-label>
+      <input matInput type="number"
+             formControlName="publisherUserId">
+    </mat-form-field>
+
+    <button matButton="filled" type="submit">
+      Actualizar
+    </button>
+  </form>
+
+  @if (mensaje) {
+    <p>{{ mensaje }}</p>
+  }
+</div>

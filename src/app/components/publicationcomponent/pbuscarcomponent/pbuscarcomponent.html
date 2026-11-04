@@ -1,0 +1,26 @@
+
+<div class="container">
+
+  <h2>Buscar publicación</h2>
+
+  <mat-form-field appearance="outline">
+    <mat-label>ID de publicación</mat-label>
+
+    <input
+      matInput
+      type="number"
+      [(ngModel)]="idPublication"
+      placeholder="Ingrese el ID">
+  </mat-form-field>
+
+  <br>
+
+  <button matButton="filled" (click)="buscar()">
+    Buscar
+  </button>
+
+  @if (mensaje) {
+    <p>{{ mensaje }}</p>
+  }
+
+</div>
