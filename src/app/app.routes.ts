@@ -15,6 +15,13 @@ import { Pinsertcomponent } from './components/publicationcomponent/pinsertcompo
 import { Pbuscarcomponent } from './components/publicationcomponent/pbuscarcomponent/pbuscarcomponent';
 import { Pupdatecomponent } from './components/publicationcomponent/pupdatecomponent/pupdatecomponent';
 
+import { Locationcomponent } from './components/locationcomponent/locationcomponent';
+import { Llistcomponent } from './components/locationcomponent/llistcomponent/llistcomponent';
+import { Linsertcomponent } from './components/locationcomponent/linsertcomponent/linsertcomponent';
+import { Lbuscarcomponent } from './components/locationcomponent/lbuscarcomponent/lbuscarcomponent';
+import { Lupdatecomponent } from './components/locationcomponent/lupdatecomponent/lupdatecomponent';
+
+
 export const routes: Routes = [
   {
     path: '',
@@ -48,6 +55,17 @@ export const routes: Routes = [
       { path: 'registrar', component: Pinsertcomponent },
       { path: 'buscar', component: Pbuscarcomponent },
       { path: 'editar/:id', component: Pupdatecomponent },
+    ],
+  },
+  {
+    path: 'ubicaciones',
+    component: Locationcomponent,
+    children: [
+      { path: '', redirectTo: 'listar', pathMatch: 'full' },
+      { path: 'listar', component: Llistcomponent },
+      { path: 'registrar', component: Linsertcomponent },
+      { path: 'buscar', component: Lbuscarcomponent },
+      { path: 'editar/:id', component: Lupdatecomponent },
     ],
   },
   {

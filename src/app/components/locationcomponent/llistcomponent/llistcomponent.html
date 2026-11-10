@@ -1,1 +1,51 @@
-<p>llistcomponent works!</p>
+<div class="container">
+  <h2>Listado de ubicaciones</h2>
+
+  <table mat-table [dataSource]="ubicaciones">
+    <ng-container matColumnDef="idLocation">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let l">{{ l.idLocation }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="department">
+      <th mat-header-cell *matHeaderCellDef>Departamento</th>
+      <td mat-cell *matCellDef="let l">{{ l.department }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="province">
+      <th mat-header-cell *matHeaderCellDef>Provincia</th>
+      <td mat-cell *matCellDef="let l">{{ l.province }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="district">
+      <th mat-header-cell *matHeaderCellDef>Distrito</th>
+      <td mat-cell *matCellDef="let l">{{ l.district }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="referenceAddress">
+      <th mat-header-cell *matHeaderCellDef>Dirección de referencia</th>
+      <td mat-cell *matCellDef="let l">{{ l.referenceAddress }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="latitude">
+      <th mat-header-cell *matHeaderCellDef>Latitud</th>
+      <td mat-cell *matCellDef="let l">{{ l.latitude }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="longitude">
+      <th mat-header-cell *matHeaderCellDef>Longitud</th>
+      <td mat-cell *matCellDef="let l">{{ l.longitude }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let l">
+        <button matButton (click)="editar(l.idLocation)">Editar</button>
+
+        <button matButton (click)="eliminar(l.idLocation)">Eliminar</button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
