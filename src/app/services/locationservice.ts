@@ -4,22 +4,28 @@ import { Observable } from 'rxjs';
 import { LocationDTO } from '../models/locationDTO';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocationService {
-    private apiURL = 'http://localhost:8080/api/Locations';
-    constructor(private http: HttpClient) {}
-    getLocation(): Observable<LocationDTO[]> {
-        return this.http.get<LocationDTO[]>(this.apiURL);
-    }
+  private apiURL = 'http://localhost:8080/api/Locations';
+  constructor(private http: HttpClient) {}
+  getLocation(): Observable<LocationDTO[]> {
+    return this.http.get<LocationDTO[]>(this.apiURL);
+  }
 
-    insertLocation(location: LocationDTO): Observable<LocationDTO> {
-        return this.http.post<LocationDTO>(this.apiURL, location);
-    }
+  insertLocation(location: LocationDTO): Observable<LocationDTO> {
+    return this.http.post<LocationDTO>(this.apiURL, location);
+  }
 
-    deleteLocation(id: number): Observable<string> {
-        return this.http.delete(`${this.apiURL}/${id}`, {
-            responseType: 'text'
-        })
-    }
+  deleteLocation(id: number): Observable<string> {
+    return this.http.delete(`${this.apiURL}/${id}`, {
+      responseType: 'text',
+    });
+  }
+  getLocationById(id: number): Observable<LocationDTO> {
+    return this.http.get<LocationDTO>(`${this.apiURL}/${id}`);
+  }
+  updateLocation(location: LocationDTO): Observable<LocationDTO> {
+    return this.http.put<LocationDTO>(this.apiURL, location);
+  }
 }

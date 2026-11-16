@@ -1,1 +1,34 @@
-<p>lbuscarcomponent works!</p>
+<div class="container">
+    <h2>Buscar ubicación</h2>
+
+    <mat-form-field appearance="outline">
+    <mat-label>ID de ubicación</mat-label>
+    <input
+      matInput
+      type="number"
+      [(ngModel)]="idLocation"
+      placeholder="Ingrese el ID">
+  </mat-form-field>
+
+  <br>
+
+  <button matButton="filled" (click)="buscar()">
+    Buscar
+  </button>
+
+  @if(mensaje) {
+    <p>{{ mensaje }}</p>
+  }
+
+  @if (ubicacion) {
+    <h3>Datos de la ubicación</h3>
+
+    <p><strong>ID:</strong> {{ ubicacion.idLocation }}</p>
+    <p><strong>Departamento:</strong> {{ ubicacion.department }}</p>
+    <p><strong>Provincia:</strong> {{ ubicacion.province }}</p>
+    <p><strong>Distrito:</strong> {{ ubicacion.district }}</p>
+    <p><strong>Dirección de referencia:</strong> {{ ubicacion.referenceAddress }}</p>
+    <p><strong>Latitud:</strong> {{ ubicacion.latitude }}</p>
+    <p><strong>Longitud:</strong> {{ ubicacion.longitude }}</p>
+  }
+</div>
