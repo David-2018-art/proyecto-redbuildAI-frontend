@@ -25,6 +25,13 @@ export class LocationService {
   getLocationById(id: number): Observable<LocationDTO> {
     return this.http.get<LocationDTO>(`${this.apiURL}/${id}`);
   }
+
+  getLocationsByDepartment(department: string): Observable<LocationDTO[]> {
+    return this.http.get<LocationDTO[]>(
+      `${this.apiURL}/department/${encodeURIComponent(department)}`,
+    );
+  }
+
   updateLocation(location: LocationDTO): Observable<LocationDTO> {
     return this.http.put<LocationDTO>(this.apiURL, location);
   }
