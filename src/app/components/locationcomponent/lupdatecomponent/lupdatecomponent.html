@@ -35,11 +35,33 @@
       <mat-form-field appearance="outline">
         <mat-label>Latitud</mat-label>
         <input matInput type="number" formControlName="latitude" />
+
+        @if (formLocation.get('latitude')?.hasError('required')) {
+          <mat-error>La latitud es obligatoria</mat-error>
+        }
+
+        @if (
+          formLocation.get('latitude')?.hasError('min') ||
+          formLocation.get('latitude')?.hasError('max')
+        ) {
+          <mat-error>La latitud debe estar entre -90 y 90</mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Longitud</mat-label>
         <input matInput type="number" formControlName="longitude" />
+
+        @if (formLocation.get('longitude')?.hasError('required')) {
+          <mat-error>La longitud es obligatoria</mat-error>
+        }
+
+        @if (
+          formLocation.get('longitude')?.hasError('min') ||
+          formLocation.get('longitude')?.hasError('max')
+        ) {
+          <mat-error>La longitud debe estar entre -180 y 180</mat-error>
+        }
       </mat-form-field>
 
       <button matButton="filled" type="submit" [disabled]="formLocation.invalid">Actualizar</button>
