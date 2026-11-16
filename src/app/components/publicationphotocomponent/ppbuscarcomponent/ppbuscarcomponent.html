@@ -1,0 +1,58 @@
+<div class="container">
+  <h2>Buscar Fotos de Publicaciones</h2>
+
+  <div class="busqueda">
+    <mat-form-field appearance="outline">
+      <mat-label>ID de Foto</mat-label>
+      <input matInput type="number" [(ngModel)]="idPhoto" />
+    </mat-form-field>
+
+    <button matButton="filled" (click)="buscarPorId()">
+      Buscar por ID
+    </button>
+  </div>
+
+  <div class="busqueda">
+    <mat-form-field appearance="outline">
+      <mat-label>ID de Publicación</mat-label>
+      <input matInput type="number" [(ngModel)]="idPublication" />
+    </mat-form-field>
+
+    <button matButton="filled" (click)="buscarPorPublicacion()">
+      Buscar por Publicación
+    </button>
+  </div>
+
+  @if (mensaje) {
+    <p>{{ mensaje }}</p>
+  }
+
+  @if (foto) {
+    <div class="resultado">
+      <h3>Foto encontrada</h3>
+
+      <p><strong>ID Foto:</strong> {{ foto.idPhoto }}</p>
+      <p><strong>URL:</strong> {{ foto.urlPhoto }}</p>
+      <p><strong>Descripción:</strong> {{ foto.descriptionPhoto }}</p>
+      <p><strong>Fecha de subida:</strong> {{ foto.uploadDate }}</p>
+      <p><strong>ID Publicación:</strong> {{ foto.idPublication }}</p>
+    </div>
+  }
+
+  @if (fotos.length > 0) {
+    <div class="resultado">
+      <h3>Fotos de la publicación</h3>
+
+      @for (element of fotos; track element.idPhoto) {
+        <div class="foto">
+          <p><strong>ID Foto:</strong> {{ element.idPhoto }}</p>
+          <p><strong>URL:</strong> {{ element.urlPhoto }}</p>
+          <p><strong>Descripción:</strong> {{ element.descriptionPhoto }}</p>
+          <p><strong>Fecha de subida:</strong> {{ element.uploadDate }}</p>
+          <p><strong>ID Publicación:</strong> {{ element.idPublication }}</p>
+        </div>
+      }
+    </div>
+  }
+</div>
+

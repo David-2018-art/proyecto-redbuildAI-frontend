@@ -1,4 +1,3 @@
-
 import { Routes } from '@angular/router';
 
 import { Rolecomponent } from './components/rolecomponent/rolecomponent';
@@ -21,6 +20,11 @@ import { Linsertcomponent } from './components/locationcomponent/linsertcomponen
 import { Lbuscarcomponent } from './components/locationcomponent/lbuscarcomponent/lbuscarcomponent';
 import { Lupdatecomponent } from './components/locationcomponent/lupdatecomponent/lupdatecomponent';
 
+import { Publicationphotocomponent } from './components/publicationphotocomponent/publicationphotocomponent';
+import { Pplistcomponent } from './components/publicationphotocomponent/pplistcomponent/pplistcomponent';
+import { Ppinsertcomponent } from './components/publicationphotocomponent/ppinsertcomponent/ppinsertcomponent';
+import { Ppbuscarcomponent } from './components/publicationphotocomponent/ppbuscarcomponent/ppbuscarcomponent';
+import { Ppupdatecomponent } from './components/publicationphotocomponent/ppupdatecomponent/ppupdatecomponent';
 
 export const routes: Routes = [
   {
@@ -66,6 +70,17 @@ export const routes: Routes = [
       { path: 'registrar', component: Linsertcomponent },
       { path: 'buscar', component: Lbuscarcomponent },
       { path: 'editar/:id', component: Lupdatecomponent },
+    ],
+  },
+  {
+    path: 'fotos-publicaciones',
+    component: Publicationphotocomponent,
+    children: [
+      { path: '', redirectTo: 'listar', pathMatch: 'full' },
+      { path: 'listar', component: Pplistcomponent },
+      { path: 'registrar', component: Ppinsertcomponent },
+      { path: 'buscar', component: Ppbuscarcomponent },
+      { path: 'editar/:id', component: Ppupdatecomponent },
     ],
   },
   {

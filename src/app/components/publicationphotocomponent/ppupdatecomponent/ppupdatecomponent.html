@@ -1,0 +1,70 @@
+<div class="container">
+  <h2>Actualizar Foto de Publicación</h2>
+
+  @if (cargando) {
+    <p>Cargando datos de la foto...</p>
+  }
+
+  @if (!cargando && fotoCargada && formPhoto) {
+    <form [formGroup]="formPhoto" (ngSubmit)="actualizar()">
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID de Foto</mat-label>
+        <input matInput formControlName="idPhoto" readonly />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>URL de la foto</mat-label>
+        <input matInput formControlName="urlPhoto" />
+
+        @if (formPhoto.get('urlPhoto')?.hasError('required')) {
+          <mat-error>La URL de la foto es obligatoria</mat-error>
+        }
+
+        @if (formPhoto.get('urlPhoto')?.hasError('pattern')) {
+          <mat-error>Ingrese una URL válida</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción de la foto</mat-label>
+        <input matInput formControlName="descriptionPhoto" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de subida</mat-label>
+        <input matInput type="datetime-local" formControlName="uploadDate" />
+
+        @if (formPhoto.get('uploadDate')?.hasError('required')) {
+          <mat-error>La fecha de subida es obligatoria</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID de publicación</mat-label>
+        <input matInput type="number" step="1" formControlName="idPublication" />
+
+        @if (formPhoto.get('idPublication')?.hasError('required')) {
+          <mat-error>El ID de publicación es obligatorio</mat-error>
+        }
+
+        @if (
+          formPhoto.get('idPublication')?.hasError('min') ||
+          formPhoto.get('idPublication')?.hasError('pattern')
+        ) {
+          <mat-error>Ingrese un ID entero mayor que 0</mat-error>
+        }
+      </mat-form-field>
+
+      <button matButton="filled" type="submit" [disabled]="formPhoto.invalid">
+        Actualizar
+      </button>
+
+    </form>
+  }
+
+  @if (mensaje) {
+    <p>{{ mensaje }}</p>
+  }
+</div>
+

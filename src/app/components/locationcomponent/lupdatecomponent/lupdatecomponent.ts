@@ -33,8 +33,8 @@ export class Lupdatecomponent implements OnInit {
       province: ['', Validators.required],
       district: ['', Validators.required],
       referenceAddress: ['', Validators.required],
-      latitude: [null, Validators.required],
-      longitude: [null, Validators.required],
+      latitude: [null, [Validators.required, Validators.min(-90), Validators.max(90)]],
+      longitude: [null, [Validators.required, Validators.min(-180), Validators.max(180)]],
     });
 
     if (!Number.isInteger(this.idLocation) || this.idLocation <= 0) {
