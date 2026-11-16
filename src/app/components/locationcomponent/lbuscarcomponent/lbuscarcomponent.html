@@ -1,7 +1,9 @@
 <div class="container">
-    <h2>Buscar ubicación</h2>
+  <h2>Buscar ubicación</h2>
 
-    <mat-form-field appearance="outline">
+  <h3>Buscar por ID</h3>
+
+  <mat-form-field appearance="outline">
     <mat-label>ID de ubicación</mat-label>
     <input
       matInput
@@ -16,7 +18,7 @@
     Buscar
   </button>
 
-  @if(mensaje) {
+  @if (mensaje) {
     <p>{{ mensaje }}</p>
   }
 
@@ -30,5 +32,45 @@
     <p><strong>Dirección de referencia:</strong> {{ ubicacion.referenceAddress }}</p>
     <p><strong>Latitud:</strong> {{ ubicacion.latitude }}</p>
     <p><strong>Longitud:</strong> {{ ubicacion.longitude }}</p>
+  }
+
+  <hr>
+
+  <h3>Buscar por departamento</h3>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Departamento</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="department"
+      placeholder="Ejemplo: Lima">
+  </mat-form-field>
+
+  <br>
+
+  <button matButton="filled" (click)="buscarPorDepartamento()">
+    Buscar por departamento
+  </button>
+
+  @if (mensajeDepartamento) {
+    <p>{{ mensajeDepartamento }}</p>
+  }
+
+  @if (ubicaciones.length > 0) {
+    <h3>Ubicaciones encontradas</h3>
+
+    @for (ubicacionItem of ubicaciones; track ubicacionItem.idLocation) {
+      <div>
+        <p><strong>ID:</strong> {{ ubicacionItem.idLocation }}</p>
+        <p><strong>Departamento:</strong> {{ ubicacionItem.department }}</p>
+        <p><strong>Provincia:</strong> {{ ubicacionItem.province }}</p>
+        <p><strong>Distrito:</strong> {{ ubicacionItem.district }}</p>
+        <p><strong>Dirección de referencia:</strong> {{ ubicacionItem.referenceAddress }}</p>
+        <p><strong>Latitud:</strong> {{ ubicacionItem.latitude }}</p>
+        <p><strong>Longitud:</strong> {{ ubicacionItem.longitude }}</p>
+        <hr>
+      </div>
+    }
   }
 </div>
