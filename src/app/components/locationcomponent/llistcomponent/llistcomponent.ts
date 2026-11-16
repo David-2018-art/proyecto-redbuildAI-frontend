@@ -57,7 +57,7 @@ export class Llistcomponent implements OnInit {
       return;
     }
 
-    const confirmar = confirm('Está seguro de que desea eliminar esta ubicación? ' + id + '?');
+    const confirmar = confirm('¿Está seguro de que desea eliminar esta ubicación? ' + id + '?');
 
     if (confirmar) {
       this.lS.deleteLocation(id).subscribe({
