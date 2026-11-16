@@ -1,0 +1,52 @@
+<div class="container">
+  <h2>Actualizar ubicación</h2>
+
+  @if (cargando) {
+    <p>Cargando datos de la ubicación...</p>
+  }
+
+  @if (!cargando && ubicacionCargada && formLocation) {
+    <form [formGroup]="formLocation" (ngSubmit)="actualizar()">
+      <mat-form-field appearance="outline">
+        <mat-label>ID de ubicación</mat-label>
+        <input matInput formControlName="idLocation" readonly />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Departamento</mat-label>
+        <input matInput formControlName="department" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Provincia</mat-label>
+        <input matInput formControlName="province" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Distrito</mat-label>
+        <input matInput formControlName="district" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Dirección de referencia</mat-label>
+        <input matInput formControlName="referenceAddress" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Latitud</mat-label>
+        <input matInput type="number" formControlName="latitude" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Longitud</mat-label>
+        <input matInput type="number" formControlName="longitude" />
+      </mat-form-field>
+
+      <button matButton="filled" type="submit" [disabled]="formLocation.invalid">Actualizar</button>
+    </form>
+  }
+
+  @if (mensaje) {
+    <p>{{ mensaje }}</p>
+  }
+</div>
