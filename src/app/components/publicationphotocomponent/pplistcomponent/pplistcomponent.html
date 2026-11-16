@@ -1,0 +1,59 @@
+<div class="container">
+  <h2>Listado de Fotos de Publicaciones</h2>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="idPhoto">
+      <th mat-header-cell *matHeaderCellDef>ID Foto</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.idPhoto }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="urlPhoto">
+      <th mat-header-cell *matHeaderCellDef>URL de Foto</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.urlPhoto }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descriptionPhoto">
+      <th mat-header-cell *matHeaderCellDef>Descripción</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.descriptionPhoto }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="uploadDate">
+      <th mat-header-cell *matHeaderCellDef>Fecha de Subida</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.uploadDate }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="idPublication">
+      <th mat-header-cell *matHeaderCellDef>ID Publicación</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.idPublication }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let element">
+        <button matButton="filled" (click)="editar(element.idPhoto)">
+          Editar
+        </button>
+
+        <button matButton="outlined" (click)="eliminar(element.idPhoto)">
+          Eliminar
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+  </table>
+</div>
+
