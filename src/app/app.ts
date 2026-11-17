@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   RouterOutlet,
   RouterLink,
   RouterLinkActive,
 } from '@angular/router';
+import { Authservice } from './services/authservice';
 
 @Component({
   selector: 'app-root',
@@ -13,4 +14,9 @@ import {
 })
 export class App {
   protected readonly title = signal('rebuild-ai-frontend');
+  readonly auth = inject(Authservice);
+
+  cerrarSesion(): void {
+    this.auth.logout();
+  }
 }

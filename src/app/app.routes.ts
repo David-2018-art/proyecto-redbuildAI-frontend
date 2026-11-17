@@ -25,8 +25,37 @@ import { Pplistcomponent } from './components/publicationphotocomponent/pplistco
 import { Ppinsertcomponent } from './components/publicationphotocomponent/ppinsertcomponent/ppinsertcomponent';
 import { Ppbuscarcomponent } from './components/publicationphotocomponent/ppbuscarcomponent/ppbuscarcomponent';
 import { Ppupdatecomponent } from './components/publicationphotocomponent/ppupdatecomponent/ppupdatecomponent';
+import { authGuard } from './auth.guard';
+import { Logincomponent } from './components/logincomponent/logincomponent';
+import { Transaccioncomponent } from './components/transaccioncomponent/transaccioncomponent';
+import { Tlistcomponent } from './components/transaccioncomponent/tlistcomponent/tlistcomponent';
+import { Tinsertcomponent } from './components/transaccioncomponent/tinsertcomponent/tinsertcomponent';
+import { Resenacomponent } from './components/resenacomponent/resenacomponent';
+import { Relistcomponent } from './components/resenacomponent/relistcomponent/relistcomponent';
+import { Reinsertcomponent } from './components/resenacomponent/reinsertcomponent/reinsertcomponent';
 
 export const routes: Routes = [
+  { path: 'login', component: Logincomponent },
+  {
+    path: 'transacciones',
+    component: Transaccioncomponent,
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'listar', pathMatch: 'full' },
+      { path: 'listar', component: Tlistcomponent },
+      { path: 'registrar', component: Tinsertcomponent },
+    ],
+  },
+  {
+    path: 'resenas',
+    component: Resenacomponent,
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'listar', pathMatch: 'full' },
+      { path: 'listar', component: Relistcomponent },
+      { path: 'registrar', component: Reinsertcomponent },
+    ],
+  },
   {
     path: '',
     redirectTo: 'roles/listar',

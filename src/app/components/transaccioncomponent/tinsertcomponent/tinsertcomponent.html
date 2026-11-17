@@ -1,0 +1,34 @@
+<div class="container">
+  <h2>Registrar transacción</h2>
+  <form [formGroup]="form" (ngSubmit)="publicar()">
+    <mat-form-field appearance="outline">
+      <mat-label>Publicación</mat-label>
+      <mat-select formControlName="idPublication">
+        @for (publication of publications; track publication.id) {
+          <mat-option [value]="publication.id">{{ publication.title }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de operación</mat-label>
+      <mat-select formControlName="typeTransaction">
+        <mat-option value="Venta">Venta</mat-option>
+        <mat-option value="Donacion">Donación</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Cantidad</mat-label>
+      <input matInput type="number" step="0.001" formControlName="quantityTransaction" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Precio unitario acordado</mat-label>
+      <input matInput type="number" step="0.01" formControlName="agreedUnitPrice" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput rows="3" maxlength="500" formControlName="descriptionTransaction"></textarea>
+    </mat-form-field>
+    <button mat-flat-button type="submit" [disabled]="guardando">Registrar</button>
+    <a mat-stroked-button routerLink="/transacciones/listar">Cancelar</a>
+  </form>
+</div>

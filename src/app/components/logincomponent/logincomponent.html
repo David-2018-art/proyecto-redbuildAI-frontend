@@ -1,0 +1,17 @@
+<div class="container">
+  <h2>Iniciar sesión</h2>
+  <form [formGroup]="form" (ngSubmit)="ingresar()">
+    <mat-form-field appearance="outline">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput type="email" formControlName="emailUser" autocomplete="email" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Contraseña</mat-label>
+      <input matInput type="password" formControlName="passwordUser" autocomplete="current-password" />
+    </mat-form-field>
+    @if (error) { <p role="alert">{{ error }}</p> }
+    <button mat-flat-button type="submit" [disabled]="guardando">
+      {{ guardando ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+  </form>
+</div>

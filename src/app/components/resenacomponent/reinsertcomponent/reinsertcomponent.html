@@ -1,0 +1,37 @@
+<div class="container">
+  <h2>Registrar reseña</h2>
+  <form [formGroup]="form" (ngSubmit)="registrar()">
+    <mat-form-field appearance="outline">
+      <mat-label>Transacción</mat-label>
+      <mat-select formControlName="idTransaccion">
+        @for (transaccion of transacciones; track transaccion.idTransaccion) {
+          <mat-option [value]="transaccion.idTransaccion">
+            #{{ transaccion.idTransaccion }} - {{ transaccion.typeTransaction }} - {{ transaccion.statusTransaction }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>ID del usuario calificado</mat-label>
+      <input matInput type="number" formControlName="idRatedUser" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Título</mat-label>
+      <input matInput maxlength="100" formControlName="titleResena" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Calificación</mat-label>
+      <mat-select formControlName="scoreResena">
+        @for (score of [1, 2, 3, 4, 5]; track score) {
+          <mat-option [value]="score">{{ score }}/5</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Comentario</mat-label>
+      <textarea matInput rows="4" maxlength="500" formControlName="descriptionResena"></textarea>
+    </mat-form-field>
+    <button mat-flat-button type="submit" [disabled]="guardando">Registrar</button>
+    <a mat-stroked-button routerLink="/resenas/listar">Cancelar</a>
+  </form>
+</div>

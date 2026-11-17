@@ -46,6 +46,20 @@
     <a routerLink="/fotos-publicaciones/buscar" routerLinkActive="activo" ariaCurrentWhenActive="page">
       Buscar foto
     </a>
+
+    @if (auth.isAuthenticated) {
+      <a routerLink="/transacciones/listar" routerLinkActive="activo" ariaCurrentWhenActive="page">
+        Transacciones
+      </a>
+      <a routerLink="/resenas/listar" routerLinkActive="activo" ariaCurrentWhenActive="page">
+        Reseñas
+      </a>
+      <a routerLink="/login" (click)="cerrarSesion()">Cerrar sesión</a>
+    } @else {
+      <a routerLink="/login" routerLinkActive="activo" ariaCurrentWhenActive="page">
+        Iniciar sesión
+      </a>
+    }
   </nav>
 </header>
 <main>
