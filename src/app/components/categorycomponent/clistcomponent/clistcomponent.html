@@ -1,0 +1,79 @@
+<div class="container">
+  <h2>Lista de categorías</h2>
+
+  <div class="acciones-superiores">
+    <a mat-flat-button routerLink="/categorias/registrar">
+      Nueva categoría
+    </a>
+  </div>
+
+  @if (cargando) {
+    <p>Cargando categorías...</p>
+  } @else if (mensaje) {
+    <p role="alert">{{ mensaje }}</p>
+
+    <button mat-stroked-button type="button" (click)="obtenerCategorias()">
+      Reintentar
+    </button>
+  } @else if (dataSource.length > 0) {
+    <div class="tabla">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let category">
+            {{ category.idCategory }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let category">
+            {{ category.nameCategory }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef>Descripción</th>
+          <td mat-cell *matCellDef="let category">
+            {{ category.descriptionCategory }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let category">
+            {{ category.statusCategory }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let category">
+            <div class="acciones-fila">
+              <a
+                mat-stroked-button
+                [routerLink]="['/categorias/editar', category.idCategory]"
+              >
+                Editar
+              </a>
+
+              <button
+                mat-stroked-button
+                type="button"
+                [disabled]="eliminandoId !== null"
+                (click)="eliminar(category)"
+              >
+                {{ eliminandoId === category.idCategory ? 'Eliminando...' : 'Eliminar' }}
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  } @else {
+    <p>No hay categorías registradas.</p>
+  }
+</div>
