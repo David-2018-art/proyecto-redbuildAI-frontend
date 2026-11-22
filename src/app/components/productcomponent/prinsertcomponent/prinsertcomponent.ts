@@ -18,6 +18,11 @@ import { Productservice } from '../../../services/productservice';
 import { Categoryservice } from '../../../services/categoryservice';
 import { Userservice } from '../../../services/userservice';
 import { Authservice } from '../../../services/authservice';
+import {
+  MaterialAnalysis,
+  MaterialAnalysisService,
+} from '../../../services/material-analysis.service';
+
 
 @Component({
   selector: 'app-prinsertcomponent',
@@ -50,6 +55,10 @@ export class Prinsertcomponent implements OnInit {
   datosCargados = false;
   guardando = false;
   mensaje = '';
+  fotoSeleccionada: File | null = null;
+  analizando = false;
+  mensajeIA = '';
+  sugerencia: MaterialAnalysis | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -59,6 +68,7 @@ export class Prinsertcomponent implements OnInit {
     private auth: Authservice,
     private router: Router,
     private cdr: ChangeDetectorRef,
+    private materialIA: MaterialAnalysisService,
   ) {
     this.form = this.fb.nonNullable.group({
       nameProduct: [
@@ -183,8 +193,102 @@ export class Prinsertcomponent implements OnInit {
     });
   }
 
+  seleccionarFoto(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const archivo = input.files?.[0];
+
+  this.fotoSeleccionada = null;
+  this.sugerencia = null;
+  this.mensajeIA = '';
+
+  if (!archivo) {
+    return;
+  }
+
+  if (!['image/jpeg', 'image/png'].includes(archivo.type)) {
+    this.mensajeIA = 'Selecciona una imagen JPG o PNG.';
+    input.value = '';
+    return;
+  }
+
+  if (archivo.size > 4 * 1024 * 1024) {
+    this.mensajeIA = 'La imagen no debe superar los 4 MB.';
+    input.value = '';
+    return;
+  }
+
+  this.fotoSeleccionada = archivo;
+}
+
+analizarFoto(): void {
+  if (!this.fotoSeleccionada || this.analizando || this.guardando) {
+    return;
+  }
+
+  this.analizando = true;
+  this.sugerencia = null;
+  this.mensajeIA = 'Analizando la foto...';
+
+  this.materialIA.analizar(this.fotoSeleccionada).subscribe({
+    next: (resultado) => {
+      this.analizando = false;
+
+      if (!resultado.identificado) {
+        this.mensajeIA =
+          'No se pudo identificar un material de construcción. Prueba con una foto más clara.';
+      } else {
+        this.sugerencia = resultado;
+        this.mensajeIA =
+          'Revisa la sugerencia antes de aplicarla al formulario.';
+      }
+
+      this.cdr.markForCheck();
+    },
+    error: (error) => {
+      this.analizando = false;
+
+      if (error.status === 401) {
+        this.mensajeIA = 'Tu sesión venció. Inicia sesión nuevamente.';
+      } else if (error.status === 403) {
+        this.mensajeIA = 'Tu cuenta no tiene permiso para analizar fotos.';
+      } else if (error.status === 413) {
+        this.mensajeIA = 'La imagen supera el tamaño permitido.';
+      } else if (error.status === 429) {
+        this.mensajeIA =
+          'Se alcanzó la cuota disponible. Intenta más tarde.';
+      } else {
+        this.mensajeIA =
+          error.error?.message ??
+          'No se pudo analizar la imagen. Comprueba que el backend esté funcionando.';
+      }
+
+      this.cdr.markForCheck();
+    },
+  });
+}
+
+aplicarSugerencia(): void {
+  if (!this.sugerencia || this.guardando) {
+    return;
+  }
+
+  this.form.patchValue({
+    nameProduct: this.sugerencia.nameProduct,
+    descriptionProduct: this.sugerencia.descriptionProduct,
+    material: this.sugerencia.material,
+    colour: this.sugerencia.colour,
+  });
+
+  this.form.markAsDirty();
+  this.sugerencia = null;
+  this.mensajeIA =
+    'Sugerencia aplicada. Puedes corregir los campos antes de registrar.';
+}
+
   registrar(): void {
-    if (this.guardando || !this.datosCargados) return;
+    if (this.guardando || this.analizando || !this.datosCargados) {
+  return;
+}
 
     const session = this.auth.session();
 

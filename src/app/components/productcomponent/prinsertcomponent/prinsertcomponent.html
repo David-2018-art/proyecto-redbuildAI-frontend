@@ -11,6 +11,67 @@
 
   @if (datosCargados) {
     <form [formGroup]="form" (ngSubmit)="registrar()">
+<<<<<<< HEAD
+        <section class="asistente-ia" aria-labelledby="titulo-ia">
+  <h3 id="titulo-ia">Completa tu producto con una foto</h3>
+
+  <p>
+    Selecciona una foto del material. Al pulsar Analizar, la imagen
+    se enviará a Google para generar una sugerencia.
+  </p>
+
+  <label for="foto-material">Foto del material — JPG o PNG, hasta 4 MB</label>
+
+  <input
+    id="foto-material"
+    type="file"
+    accept="image/jpeg,image/png"
+    [disabled]="analizando || guardando"
+    (change)="seleccionarFoto($event)"
+  />
+
+  <button
+    mat-stroked-button
+    type="button"
+    [disabled]="!fotoSeleccionada || analizando || guardando"
+    (click)="analizarFoto()"
+  >
+    {{ analizando ? 'Analizando...' : 'Analizar material' }}
+  </button>
+
+  <p role="status" aria-live="polite">{{ mensajeIA }}</p>
+
+  @if (sugerencia; as resultado) {
+    <div class="resultado-ia">
+      <h4>Sugerencia para revisar</h4>
+
+      <p><strong>Nombre:</strong> {{ resultado.nameProduct }}</p>
+      <p><strong>Material probable:</strong> {{ resultado.material }}</p>
+      <p><strong>Color:</strong> {{ resultado.colour }}</p>
+      <p><strong>Descripción:</strong> {{ resultado.descriptionProduct }}</p>
+
+      <p>
+        El análisis visual puede equivocarse. No determina
+        la resistencia ni la seguridad del material.
+      </p>
+
+      <button
+        mat-flat-button
+        type="button"
+        [disabled]="guardando"
+        (click)="aplicarSugerencia()"
+      >
+        Aplicar sugerencia
+      </button>
+
+      <small>
+        Reemplaza nombre, descripción, material y color del formulario.
+      </small>
+    </div>
+  }
+</section>
+=======
+>>>>>>> origin/main
       <mat-form-field appearance="outline">
         <mat-label>Nombre del producto</mat-label>
         <input matInput formControlName="nameProduct" maxlength="100" />
@@ -131,8 +192,7 @@
         <button
           mat-flat-button
           type="submit"
-          [disabled]="guardando || categorias.length === 0"
-        >
+          [disabled]="guardando || analizando || categorias.length === 0"        >
           {{ guardando ? 'Guardando...' : 'Registrar' }}
         </button>
 

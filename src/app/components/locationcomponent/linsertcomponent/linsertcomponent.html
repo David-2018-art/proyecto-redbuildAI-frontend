@@ -22,9 +22,37 @@
       <input matInput formControlName="referenceAddress" />
     </mat-form-field>
 
+    <section class="seleccion-mapa" aria-labelledby="titulo-mapa">
+  <h3 id="titulo-mapa">Selecciona la ubicación</h3>
+
+  <p id="ayuda-mapa">
+    Haz clic en el mapa para marcar el lugar.
+    También puedes escribir las coordenadas en los campos inferiores.
+  </p>
+
+  <div
+    #mapa
+    class="mapa"
+    role="region"
+    aria-label="Mapa para seleccionar una ubicación"
+    aria-describedby="ayuda-mapa"
+  ></div>
+
+  <p class="nota-mapa">
+    Completa manualmente el departamento, provincia y distrito
+    correspondientes al punto seleccionado.
+  </p>
+</section>
+
     <mat-form-field appearance="outline">
       <mat-label>Latitud</mat-label>
-      <input matInput type="number" formControlName="latitude" />
+      <input
+  matInput
+  type="number"
+  step="any"
+  formControlName="latitude"
+  (change)="actualizarPuntoDesdeCampos()"
+/>
 
       @if (formLocation.get('latitude')?.hasError('required')) {
         <mat-error>La latitud es obligatoria</mat-error>
@@ -40,7 +68,13 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Longitud</mat-label>
-      <input matInput type="number" formControlName="longitude" />
+      <input
+  matInput
+  type="number"
+  step="any"
+  formControlName="longitude"
+  (change)="actualizarPuntoDesdeCampos()"
+/>
 
       @if (formLocation.get('longitude')?.hasError('required')) {
         <mat-error>La longitud es obligatoria</mat-error>
