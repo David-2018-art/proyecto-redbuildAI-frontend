@@ -1,0 +1,46 @@
+<div class="container">
+  <h2>Registrar categoría</h2>
+
+  <form [formGroup]="form" (ngSubmit)="registrar()">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nameCategory" maxlength="60" />
+      <mat-error>Ingresa un nombre válido de hasta 60 caracteres.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea
+        matInput
+        formControlName="descriptionCategory"
+        maxlength="150"
+        rows="3"
+      ></textarea>
+      <mat-error>
+        Ingresa una descripción válida de hasta 150 caracteres.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="statusCategory">
+        <mat-option value="Activo">Activo</mat-option>
+        <mat-option value="Inactivo">Inactivo</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    @if (mensaje) {
+      <p role="alert">{{ mensaje }}</p>
+    }
+
+    <div class="acciones">
+      <button mat-flat-button type="submit" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : 'Registrar' }}
+      </button>
+
+      <a mat-stroked-button routerLink="/categorias/listar">
+        Cancelar
+      </a>
+    </div>
+  </form>
+</div>

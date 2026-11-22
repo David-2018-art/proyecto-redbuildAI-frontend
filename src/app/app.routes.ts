@@ -34,6 +34,18 @@ import { Resenacomponent } from './components/resenacomponent/resenacomponent';
 import { Relistcomponent } from './components/resenacomponent/relistcomponent/relistcomponent';
 import { Reinsertcomponent } from './components/resenacomponent/reinsertcomponent/reinsertcomponent';
 
+
+import { Categorycomponent } from './components/categorycomponent/categorycomponent';
+import { Clistcomponent } from './components/categorycomponent/clistcomponent/clistcomponent';
+import { Cinsertcomponent } from './components/categorycomponent/cinsertcomponent/cinsertcomponent';
+import { Cupdatecomponent } from './components/categorycomponent/cupdatecomponent/cupdatecomponent';
+
+import { Productcomponent } from './components/productcomponent/productcomponent';
+import { Prlistcomponent } from './components/productcomponent/prlistcomponent/prlistcomponent';
+import { Prinsertcomponent } from './components/productcomponent/prinsertcomponent/prinsertcomponent';
+import { Prupdatecomponent } from './components/productcomponent/prupdatecomponent/prupdatecomponent';
+
+
 export const routes: Routes = [
   { path: 'login', component: Logincomponent },
   {
@@ -112,6 +124,29 @@ export const routes: Routes = [
       { path: 'editar/:id', component: Ppupdatecomponent },
     ],
   },
+
+  {
+  path: 'categorias',
+  component: Categorycomponent,
+  children: [
+    { path: '', redirectTo: 'listar', pathMatch: 'full' },
+    { path: 'listar', component: Clistcomponent },
+    { path: 'registrar', component: Cinsertcomponent },
+    { path: 'editar/:id', component: Cupdatecomponent },
+  ],
+},
+
+{
+  path: 'productos',
+  component: Productcomponent,
+  children: [
+    { path: '', redirectTo: 'listar', pathMatch: 'full' },
+    { path: 'listar', component: Prlistcomponent },
+    { path: 'registrar', component: Prinsertcomponent },
+    { path: 'editar/:id', component: Prupdatecomponent },
+  ],
+},
+
   {
     path: '**',
     redirectTo: 'roles/listar',

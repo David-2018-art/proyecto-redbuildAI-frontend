@@ -46,6 +46,37 @@
     <a routerLink="/fotos-publicaciones/buscar" routerLinkActive="activo" ariaCurrentWhenActive="page">
       Buscar foto
     </a>
+    <a
+  routerLink="/categorias/listar"
+  routerLinkActive="activo"
+  ariaCurrentWhenActive="page"
+>
+  Listar categorías
+</a>
+
+<a
+  routerLink="/categorias/registrar"
+  routerLinkActive="activo"
+  ariaCurrentWhenActive="page"
+>
+  Registrar categoría
+</a>
+
+<a
+  routerLink="/productos/listar"
+  routerLinkActive="activo"
+  ariaCurrentWhenActive="page"
+>
+  Listar productos
+</a>
+
+<a
+  routerLink="/productos/registrar"
+  routerLinkActive="activo"
+  ariaCurrentWhenActive="page"
+>
+  Registrar producto
+</a>
 
     @if (auth.isAuthenticated) {
       <a routerLink="/transacciones/listar" routerLinkActive="activo" ariaCurrentWhenActive="page">
