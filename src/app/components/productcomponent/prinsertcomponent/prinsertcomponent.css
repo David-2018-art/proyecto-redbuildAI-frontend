@@ -34,3 +34,43 @@ p {
 p[role="alert"] {
   color: #b3261e;
 }
+
+.asistente-ia {
+  grid-column: 1 / -1;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid #c9dfcf;
+  border-radius: 12px;
+  background: #f0f7f2;
+}
+
+.asistente-ia h3,
+.asistente-ia h4 {
+  margin-top: 0;
+  color: #205c35;
+}
+
+.asistente-ia p {
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.asistente-ia label,
+.asistente-ia input,
+.asistente-ia small {
+  display: block;
+  margin: 12px 0;
+}
+
+.asistente-ia input {
+  max-width: 100%;
+}
+
+.resultado-ia {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  background: white;
+}

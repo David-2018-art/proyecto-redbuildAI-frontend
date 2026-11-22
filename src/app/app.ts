@@ -1,22 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
-import {
-  RouterOutlet,
-  RouterLink,
-  RouterLinkActive,
-} from '@angular/router';
-import { Authservice } from './services/authservice';
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { Menucomponent } from './components/menucomponent/menucomponent';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, Menucomponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('rebuild-ai-frontend');
-  readonly auth = inject(Authservice);
-
-  cerrarSesion(): void {
-    this.auth.logout();
-  }
 }

@@ -1,0 +1,184 @@
+<header class="cabecera">
+  <mat-toolbar class="barra">
+    <a class="marca" routerLink="/productos/listar" aria-label="ReBuild AI">
+      <span class="logo">
+        <mat-icon aria-hidden="true">eco</mat-icon>
+      </span>
+
+      <span>
+        <strong>ReBuild AI</strong>
+        <small>Materiales con una nueva oportunidad</small>
+      </span>
+    </a>
+
+    <div class="cuenta">
+      @if (auth.isAuthenticated) {
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="cerrarSesion()"
+        >
+          <mat-icon>logout</mat-icon>
+          Cerrar sesión
+        </button>
+      } @else {
+        <a mat-flat-button routerLink="/login">
+          <mat-icon>login</mat-icon>
+          Iniciar sesión
+        </a>
+      }
+    </div>
+  </mat-toolbar>
+
+  <nav class="navegacion" aria-label="Menú principal">
+    <button mat-button [matMenuTriggerFor]="catalogo">
+      <mat-icon>inventory_2</mat-icon>
+      Catálogo
+      <mat-icon iconPositionEnd>expand_more</mat-icon>
+    </button>
+
+    <button mat-button [matMenuTriggerFor]="publicaciones">
+      <mat-icon>storefront</mat-icon>
+      Publicaciones
+      <mat-icon iconPositionEnd>expand_more</mat-icon>
+    </button>
+
+    <button mat-button [matMenuTriggerFor]="ubicaciones">
+      <mat-icon>place</mat-icon>
+      Ubicaciones
+      <mat-icon iconPositionEnd>expand_more</mat-icon>
+    </button>
+
+    @if (auth.isAuthenticated) {
+      <button mat-button [matMenuTriggerFor]="operaciones">
+        <mat-icon>swap_horiz</mat-icon>
+        Operaciones
+        <mat-icon iconPositionEnd>expand_more</mat-icon>
+      </button>
+    }
+
+    <button mat-button [matMenuTriggerFor]="administracion">
+      <mat-icon>settings</mat-icon>
+      Administración
+      <mat-icon iconPositionEnd>expand_more</mat-icon>
+    </button>
+  </nav>
+</header>
+
+<!-- Catálogo -->
+<mat-menu #catalogo="matMenu">
+  <button mat-menu-item [matMenuTriggerFor]="productos">
+    Productos
+  </button>
+  <button mat-menu-item [matMenuTriggerFor]="categorias">
+    Categorías
+  </button>
+</mat-menu>
+
+<mat-menu #productos="matMenu">
+  <a mat-menu-item routerLink="/productos/listar">
+    <mat-icon>list</mat-icon>
+    Ver productos
+  </a>
+  <a mat-menu-item routerLink="/productos/registrar">
+    <mat-icon>add</mat-icon>
+    Registrar producto
+  </a>
+</mat-menu>
+
+<mat-menu #categorias="matMenu">
+  <a mat-menu-item routerLink="/categorias/listar">
+    <mat-icon>category</mat-icon>
+    Ver categorías
+  </a>
+  <a mat-menu-item routerLink="/categorias/registrar">
+    <mat-icon>add</mat-icon>
+    Registrar categoría
+  </a>
+</mat-menu>
+
+<!-- Publicaciones -->
+<mat-menu #publicaciones="matMenu">
+  <a mat-menu-item routerLink="/publicaciones/listar">
+    <mat-icon>view_list</mat-icon>
+    Ver publicaciones
+  </a>
+  <a mat-menu-item routerLink="/publicaciones/registrar">
+    <mat-icon>add</mat-icon>
+    Registrar publicación
+  </a>
+  <button mat-menu-item [matMenuTriggerFor]="fotos">
+    <mat-icon>photo_library</mat-icon>
+    Fotos de publicaciones
+  </button>
+</mat-menu>
+
+<mat-menu #fotos="matMenu">
+  <a mat-menu-item routerLink="/fotos-publicaciones/listar">
+    Ver fotos
+  </a>
+  <a mat-menu-item routerLink="/fotos-publicaciones/registrar">
+    Registrar foto
+  </a>
+  <a mat-menu-item routerLink="/fotos-publicaciones/buscar">
+    Buscar foto
+  </a>
+</mat-menu>
+
+<!-- Ubicaciones -->
+<mat-menu #ubicaciones="matMenu">
+  <a mat-menu-item routerLink="/ubicaciones/listar">
+    <mat-icon>place</mat-icon>
+    Ver ubicaciones
+  </a>
+  <a mat-menu-item routerLink="/ubicaciones/registrar">
+    <mat-icon>add_location_alt</mat-icon>
+    Registrar ubicación
+  </a>
+  <a mat-menu-item routerLink="/ubicaciones/buscar">
+    <mat-icon>search</mat-icon>
+    Buscar ubicación
+  </a>
+</mat-menu>
+
+<!-- Operaciones -->
+<mat-menu #operaciones="matMenu">
+  <a mat-menu-item routerLink="/transacciones/listar">
+    <mat-icon>swap_horiz</mat-icon>
+    Transacciones
+  </a>
+  <a mat-menu-item routerLink="/resenas/listar">
+    <mat-icon>rate_review</mat-icon>
+    Reseñas
+  </a>
+</mat-menu>
+
+<!-- Administración -->
+<mat-menu #administracion="matMenu">
+  <button mat-menu-item [matMenuTriggerFor]="usuarios">
+    <mat-icon>people</mat-icon>
+    Usuarios
+  </button>
+  <button mat-menu-item [matMenuTriggerFor]="roles">
+    <mat-icon>admin_panel_settings</mat-icon>
+    Roles
+  </button>
+</mat-menu>
+
+<mat-menu #usuarios="matMenu">
+  <a mat-menu-item routerLink="/usuarios/listar">
+    Ver usuarios
+  </a>
+  <a mat-menu-item routerLink="/usuarios/registrar">
+    Registrar usuario
+  </a>
+</mat-menu>
+
+<mat-menu #roles="matMenu">
+  <a mat-menu-item routerLink="/roles/listar">
+    Ver roles
+  </a>
+  <a mat-menu-item routerLink="/roles/registrar">
+    Registrar rol
+  </a>
+</mat-menu>
