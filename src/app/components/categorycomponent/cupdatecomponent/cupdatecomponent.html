@@ -1,0 +1,60 @@
+<div class="container">
+  <h2>Editar categoría</h2>
+
+  @if (cargando) {
+    <p>Cargando categoría...</p>
+  }
+
+  @if (mensaje) {
+    <p role="alert">{{ mensaje }}</p>
+  }
+
+  @if (categoriaCargada) {
+    <p>ID de categoría: {{ idCategory }}</p>
+
+    <form [formGroup]="form" (ngSubmit)="actualizar()">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nameCategory" maxlength="60" />
+        <mat-error>
+          Ingresa un nombre válido de hasta 60 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea
+          matInput
+          formControlName="descriptionCategory"
+          maxlength="150"
+          rows="3"
+        ></textarea>
+        <mat-error>
+          Ingresa una descripción válida de hasta 150 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="statusCategory">
+          <mat-option value="Activo">Activo</mat-option>
+          <mat-option value="Inactivo">Inactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="acciones">
+        <button mat-flat-button type="submit" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+
+        <a mat-stroked-button routerLink="/categorias/listar">
+          Cancelar
+        </a>
+      </div>
+    </form>
+  } @else if (!cargando) {
+    <a mat-stroked-button routerLink="/categorias/listar">
+      Volver al listado
+    </a>
+  }
+</div>

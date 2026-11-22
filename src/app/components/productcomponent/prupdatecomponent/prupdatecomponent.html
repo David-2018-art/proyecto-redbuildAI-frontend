@@ -1,0 +1,146 @@
+<div class="container">
+  <h2>Editar producto</h2>
+
+  @if (cargando) {
+    <p>Cargando producto...</p>
+  }
+
+  @if (mensaje) {
+    <p role="alert">{{ mensaje }}</p>
+  }
+
+  @if (productoOriginal) {
+    <p>
+      Producto #{{ idProduct }} ·
+      Propietario #{{ productoOriginal.idUser }}
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="actualizar()">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del producto</mat-label>
+        <input matInput formControlName="nameProduct" maxlength="100" />
+        <mat-error>
+          Ingresa un nombre válido de hasta 100 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea
+          matInput
+          formControlName="descriptionProduct"
+          maxlength="500"
+          rows="3"
+        ></textarea>
+        <mat-error>
+          Ingresa una descripción válida de hasta 500 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Categoría</mat-label>
+        <mat-select formControlName="idCategory">
+          @for (category of categorias; track category.idCategory) {
+            <mat-option [value]="category.idCategory">
+              {{ category.nameCategory }}
+            </mat-option>
+          }
+        </mat-select>
+        <mat-error>Selecciona una categoría.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Material</mat-label>
+        <input matInput formControlName="material" maxlength="80" />
+        <mat-error>
+          Ingresa un material válido de hasta 80 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Color</mat-label>
+        <input matInput formControlName="colour" maxlength="40" />
+        <mat-error>
+          Ingresa un color válido de hasta 40 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Estado del material</mat-label>
+        <mat-select formControlName="statusMaterial">
+          @for (condicion of condiciones; track condicion) {
+            <mat-option [value]="condicion">
+              {{ condicion }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cantidad disponible</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          step="0.001"
+          formControlName="quantityProduct"
+        />
+        <mat-error>
+          Ingresa una cantidad no negativa, con hasta 9 enteros y 3 decimales.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Unidad de medida</mat-label>
+        <input
+          matInput
+          formControlName="unidadMedidaProduct"
+          maxlength="30"
+        />
+        <mat-error>
+          Ingresa una unidad válida de hasta 30 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Precio unitario</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          step="0.01"
+          formControlName="priceProduct"
+        />
+        <mat-error>
+          Ingresa un precio no negativo, con hasta 10 enteros y 2 decimales.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Estado del producto</mat-label>
+        <mat-select formControlName="statusProduct">
+          <mat-option value="Activo">Activo</mat-option>
+          <mat-option value="Inactivo">Inactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="acciones">
+        <button
+          mat-flat-button
+          type="submit"
+          [disabled]="guardando || categorias.length === 0"
+        >
+          {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+
+        <a mat-stroked-button routerLink="/productos/listar">
+          Cancelar
+        </a>
+      </div>
+    </form>
+  } @else if (!cargando) {
+    <a mat-stroked-button routerLink="/productos/listar">
+      Volver al listado
+    </a>
+  }
+</div>
