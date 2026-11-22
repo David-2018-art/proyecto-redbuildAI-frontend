@@ -1,0 +1,38 @@
+.container {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 25px;
+}
+
+.acciones-superiores {
+  margin-bottom: 20px;
+}
+
+.tabla {
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  font-weight: bold;
+}
+
+.acciones-fila {
+  display: flex;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+p {
+  text-align: center;
+}
