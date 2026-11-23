@@ -20,14 +20,7 @@
       <input matInput formControlName="descriptionPhoto" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Fecha de subida</mat-label>
-      <input matInput type="datetime-local" formControlName="uploadDate" />
-
-      @if (formPhoto.get('uploadDate')?.hasError('required')) {
-        <mat-error>La fecha de subida es obligatoria</mat-error>
-      }
-    </mat-form-field>
+    <p>La fecha de subida se registra automáticamente.</p>
 
     <mat-form-field appearance="outline">
       <mat-label>ID de publicación</mat-label>

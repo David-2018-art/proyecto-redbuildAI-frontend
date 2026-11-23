@@ -10,13 +10,24 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="urlPhoto">
-      <th mat-header-cell *matHeaderCellDef>URL de Foto</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.urlPhoto }}
-      </td>
-    </ng-container>
+   <ng-container matColumnDef="urlPhoto">
+  <th mat-header-cell *matHeaderCellDef>Foto</th>
 
+  <td mat-cell *matCellDef="let foto">
+    <img
+      class="foto-miniatura"
+      [src]="foto.urlPhoto"
+      [alt]="foto.descriptionPhoto || 'Foto del material'"
+      loading="lazy"
+      (error)="imagen.hidden = true; aviso.hidden = false"
+      #imagen
+    />
+
+    <span #aviso hidden>
+      No se pudo cargar la imagen.
+    </span>
+  </td>
+</ng-container>
     <ng-container matColumnDef="descriptionPhoto">
       <th mat-header-cell *matHeaderCellDef>Descripción</th>
       <td mat-cell *matCellDef="let element">

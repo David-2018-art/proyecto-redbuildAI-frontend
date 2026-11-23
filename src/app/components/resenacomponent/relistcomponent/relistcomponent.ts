@@ -1,5 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -15,6 +14,7 @@ import { Authservice } from '../../../services/authservice';
 export class Relistcomponent implements OnInit {
   private readonly service = inject(Resenaservice);
   private readonly auth = inject(Authservice);
+  private readonly cdr = inject(ChangeDetectorRef);
   displayedColumns = ['id', 'titulo', 'calificacion', 'comentario', 'fecha', 'estado', 'transaccion', 'acciones'];
   dataSource: Resena[] = [];
   cargando = true;
@@ -25,18 +25,23 @@ export class Relistcomponent implements OnInit {
   }
 
   cargar(): void {
-    this.cargando = true;
-    this.service.getAll().subscribe({
-      next: (data) => {
-        this.dataSource = data;
-        this.cargando = false;
-      },
-      error: () => {
-        this.cargando = false;
-        this.mensaje = 'No se pudieron cargar las reseñas.';
-      },
-    });
-  }
+  this.cargando = true;
+  this.mensaje = '';
+
+  this.service.getAll().subscribe({
+    next: (data) => {
+      this.dataSource = data;
+      this.cargando = false;
+      this.cdr.markForCheck();
+    },
+    error: (error) => {
+      console.error('Error al cargar las reseñas:', error);
+      this.mensaje = 'No se pudieron cargar las reseñas.';
+      this.cargando = false;
+      this.cdr.markForCheck();
+    },
+  });
+}
 
   eliminar(resena: Resena): void {
     if (!resena.idResena || !confirm('¿Deseas eliminar esta reseña?')) return;

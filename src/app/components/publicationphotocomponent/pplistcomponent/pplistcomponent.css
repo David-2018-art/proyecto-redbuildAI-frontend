@@ -22,3 +22,12 @@ td, th {
 button {
   margin-right: 8px;
 }
+.foto-miniatura {
+  display: block;
+  width: 140px;
+  height: 100px;
+  margin: 10px 0;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(135, 184, 201, 0.3);
+}

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { LocationService } from '../../../services/locationservice';
@@ -24,25 +23,29 @@ export class Llistcomponent implements OnInit {
     'acciones',
   ];
 
-  constructor(
-    private lS: LocationService,
-    private router: Router,
-  ) {}
+ constructor(
+  private lS: LocationService,
+  private router: Router,
+  private cdr: ChangeDetectorRef,
+) {}
 
   ngOnInit(): void {
     this.listar();
   }
 
   listar(): void {
-    this.lS.getLocation().subscribe({
-      next: (data: LocationDTO[]) => {
-        this.ubicaciones = data;
-      },
-      error: (error) => {
-        console.error('Error al listar las ubicaciones:', error);
-      },
-    });
-  }
+  this.lS.getLocation().subscribe({
+    next: (data: LocationDTO[]) => {
+      this.ubicaciones = data;
+      this.cdr.markForCheck();
+    },
+    error: (error) => {
+      console.error('Error al listar las ubicaciones:', error);
+      alert('No se pudieron cargar las ubicaciones.');
+      this.cdr.markForCheck();
+    },
+  });
+}
 
   editar(id: number | undefined): void {
     if (id == undefined) {

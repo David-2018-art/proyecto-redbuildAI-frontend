@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,11 +18,12 @@ export class Ppupdatecomponent implements OnInit {
   cargando: boolean = true;
   fotoCargada: boolean = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private ppS: PublicationPhotoService,
-  ) {}
+ constructor(
+  private fb: FormBuilder,
+  private route: ActivatedRoute,
+  private ppS: PublicationPhotoService,
+  private cdr: ChangeDetectorRef,
+) {}
 
   ngOnInit(): void {
     this.idPhoto = Number(this.route.snapshot.paramMap.get('id'));
@@ -46,21 +46,25 @@ export class Ppupdatecomponent implements OnInit {
     }
 
     this.ppS.getPublicationPhotoById(this.idPhoto).subscribe({
-      next: (data: PublicationPhotoDTO) => {
-        this.formPhoto.patchValue({
-          ...data,
-          uploadDate: data.uploadDate ? data.uploadDate.substring(0, 16) : '',
-        });
+  next: (data: PublicationPhotoDTO) => {
+    this.formPhoto.patchValue(data);
 
-        this.fotoCargada = true;
-        this.cargando = false;
-      },
-      error: (error) => {
-        console.error('Error al cargar la foto:', error);
-        this.mensaje = 'No se pudo cargar la foto';
-        this.cargando = false;
-      },
-    });
+    // Estos datos se conservan al editar.
+    this.formPhoto.get('uploadDate')?.disable();
+    this.formPhoto.get('idPublication')?.disable();
+
+    this.fotoCargada = true;
+    this.cargando = false;
+    this.cdr.markForCheck();
+  },
+  error: (error) => {
+    console.error('Error al cargar la foto:', error);
+    this.mensaje = 'No se pudo cargar la foto';
+    this.fotoCargada = false;
+    this.cargando = false;
+    this.cdr.markForCheck();
+  },
+});
   }
 
   actualizar(): void {
@@ -75,18 +79,20 @@ export class Ppupdatecomponent implements OnInit {
     }
 
     const photo: PublicationPhotoDTO = {
-      ...this.formPhoto.value,
-      idPhoto: this.idPhoto,
-    };
+  ...this.formPhoto.getRawValue(),
+  idPhoto: this.idPhoto,
+};
 
     this.ppS.updatePublicationPhoto(photo).subscribe({
-      next: () => {
-        this.mensaje = 'Foto actualizada correctamente';
-      },
-      error: (error) => {
-        console.error('Error al actualizar la foto:', error);
-        this.mensaje = 'No se pudo actualizar la foto';
-      },
-    });
+  next: () => {
+    this.mensaje = 'Foto actualizada correctamente';
+    this.cdr.markForCheck();
+  },
+  error: (error) => {
+    console.error('Error al actualizar la foto:', error);
+    this.mensaje = 'No se pudo actualizar la foto';
+    this.cdr.markForCheck();
+  },
+});
   }
 }

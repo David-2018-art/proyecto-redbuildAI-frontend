@@ -1,0 +1,148 @@
+:host {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.acceso {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 100dvh;
+  padding: 32px 20px;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      ellipse at 20% 20%,
+      rgba(100, 230, 177, 0.09),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 85% 80%,
+      rgba(114, 216, 237, 0.08),
+      transparent 50%
+    );
+}
+
+.tarjeta-login {
+  width: 100%;
+  max-width: 460px;
+  padding: 38px;
+  box-sizing: border-box;
+
+  background: #101f2b;
+  border: 1px solid rgba(135, 184, 201, 0.25);
+  border-radius: 24px;
+
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.identidad {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 34px;
+}
+
+.emblema {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+
+  background: rgba(100, 230, 177, 0.1);
+  border: 1px solid rgba(100, 230, 177, 0.4);
+  border-radius: 15px;
+
+  color: #64e6b1;
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.nombre-app {
+  color: #e9f3f5;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.lema {
+  margin: 4px 0 0;
+  color: #b8cad1;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.etiqueta {
+  color: #64e6b1;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
+
+h1 {
+  margin: 12px 0;
+  color: #e9f3f5;
+  font-size: clamp(25px, 5vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+}
+
+.introduccion {
+  margin: 0 0 28px;
+  color: #b8cad1;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.boton-ingresar {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+.error-login {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  color: #ffb4ab;
+  background: rgba(255, 180, 171, 0.07);
+  border: 1px solid rgba(255, 180, 171, 0.25);
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.pie-login {
+  margin: 26px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(135, 184, 201, 0.16);
+  color: #b8cad1;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+  .acceso {
+    padding: 20px 14px;
+  }
+
+  .tarjeta-login {
+    padding: 28px 22px;
+    border-radius: 18px;
+  }
+}

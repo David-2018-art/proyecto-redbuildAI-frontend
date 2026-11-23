@@ -97,6 +97,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'listar', pathMatch: 'full' },
       { path: 'listar', component: Ulistcomponent },
       { path: 'registrar', component: Uinsertcomponent },
+      { path: 'editar/:id', component: Uupdatecomponent },
     ],
   },
   {
