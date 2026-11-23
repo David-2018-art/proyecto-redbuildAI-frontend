@@ -22,7 +22,6 @@ export class Ppinsertcomponent {
     this.formPhoto = this.fb.group({
       urlPhoto: ['', [Validators.required, Validators.pattern(/^https?:\/\/\S+$/i)]],
       descriptionPhoto: [''],
-      uploadDate: ['', Validators.required],
       idPublication: [
         null,
         [Validators.required, Validators.min(1), Validators.pattern(/^[1-9]\d*$/)],
@@ -36,10 +35,11 @@ export class Ppinsertcomponent {
       return;
     }
 
-    const photo: PublicationPhotoDTO = {
-      idPhoto: 0,
-      ...this.formPhoto.value,
-    };
+   const photo: PublicationPhotoDTO = {
+  idPhoto: 0,
+  ...this.formPhoto.value,
+  uploadDate: null,
+};
 
     this.ppS.insertPublicationPhoto(photo).subscribe({
       next: () => {

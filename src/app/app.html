@@ -1,5 +1,10 @@
-<app-menucomponent></app-menucomponent>
+@if (!esLogin()) {
+  <app-menucomponent></app-menucomponent>
+}
 
-<main class="contenido">
+<main
+  [class.contenido]="!esLogin()"
+  [class.pantalla-login]="esLogin()"
+>
   <router-outlet></router-outlet>
 </main>

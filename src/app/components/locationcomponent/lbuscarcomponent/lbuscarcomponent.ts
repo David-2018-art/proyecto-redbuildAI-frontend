@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component } from '@angular/core';import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { LocationService } from '../../../services/locationservice';
@@ -19,7 +18,10 @@ export class Lbuscarcomponent {
   ubicaciones: LocationDTO[] = [];
   mensajeDepartamento: string = '';
 
-  constructor(private lS: LocationService) {}
+  constructor(
+  private lS: LocationService,
+  private cdr: ChangeDetectorRef,
+) {}
 
   buscar(): void {
     this.ubicacion = null;
@@ -31,15 +33,21 @@ export class Lbuscarcomponent {
     }
 
     this.lS.getLocationById(this.idLocation).subscribe({
-      next: (data: LocationDTO) => {
-        this.ubicacion = data;
-        this.mensaje = 'Ubicación encontrada correctamente';
-      },
-      error: (error) => {
-        console.error('Error al buscar la ubicación:', error);
-        this.mensaje = 'No se pudo consultar la ubicación';
-      },
-    });
+  next: (data: LocationDTO) => {
+    this.ubicacion = data;
+    this.mensaje = 'Ubicación encontrada correctamente';
+    this.cdr.markForCheck();
+  },
+  error: (error) => {
+    console.error('Error al buscar la ubicación:', error);
+
+    this.mensaje = error.status === 404
+      ? 'No existe una ubicación con ese ID.'
+      : 'No se pudo consultar la ubicación.';
+
+    this.cdr.markForCheck();
+  },
+});
   }
 
   buscarPorDepartamento(): void {
@@ -59,19 +67,20 @@ export class Lbuscarcomponent {
     }
 
     this.lS.getLocationsByDepartment(departamento).subscribe({
-      next: (data: LocationDTO[]) => {
-        this.ubicaciones = data;
+  next: (data: LocationDTO[]) => {
+    this.ubicaciones = data;
 
-        if (data.length > 0) {
-          this.mensajeDepartamento = 'Ubicaciones encontradas correctamente';
-        } else {
-          this.mensajeDepartamento = 'No se encontraron ubicaciones en ese departamento';
-        }
-      },
-      error: (error) => {
-        console.error('Error al buscar por departamento:', error);
-        this.mensajeDepartamento = 'No se pudieron consultar las ubicaciones';
-      },
-    });
+    this.mensajeDepartamento = data.length > 0
+      ? 'Ubicaciones encontradas correctamente'
+      : 'No se encontraron ubicaciones en ese departamento';
+
+    this.cdr.markForCheck();
+  },
+  error: (error) => {
+    console.error('Error al buscar por departamento:', error);
+    this.mensajeDepartamento = 'No se pudieron consultar las ubicaciones';
+    this.cdr.markForCheck();
+  },
+});
   }
 }
