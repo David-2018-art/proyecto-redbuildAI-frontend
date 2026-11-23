@@ -3,11 +3,12 @@ import { MatTableModule } from '@angular/material/table';
 import { Role } from '../../../models/role';
 import { Roleservice } from '../../../services/roleservice';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-rlistcomponent',
-  imports: [MatTableModule, MatButtonModule],
-  templateUrl: './rlistcomponent.html',
+imports: [MatTableModule, MatButtonModule, RouterLink], 
+ templateUrl: './rlistcomponent.html',
   styleUrl: './rlistcomponent.css',
 })
 export class Rlistcomponent implements OnInit {

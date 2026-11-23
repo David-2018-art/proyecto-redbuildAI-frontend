@@ -1,53 +1,88 @@
-
 <div class="container">
-  <h2>Registrar publicación</h2>
+  <h2>{{ editando ? 'Editar publicación' : 'Registrar publicación' }}</h2>
 
-  <form [formGroup]="formPublication"
-        (ngSubmit)="registrar()">
+  @if (cargando()) {
+    <p>Cargando datos...</p>
+  }
 
-    <mat-form-field appearance="outline">
-      <mat-label>Título</mat-label>
-      <input matInput formControlName="title">
-    </mat-form-field>
+  @if (mensaje()) {
+    <p role="alert">{{ mensaje() }}</p>
+  }
 
-    <mat-form-field appearance="outline">
-      <mat-label>Observaciones</mat-label>
-      <textarea matInput formControlName="observations"></textarea>
-    </mat-form-field>
+  @if (listo()) {
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <mat-form-field appearance="outline">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="title" maxlength="120" />
+        <mat-error>Ingresa un título válido.</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Tipo de operación</mat-label>
-      <mat-select formControlName="operationType">
-        @for (tipo of tiposOperacion; track tipo.value) {
-          <mat-option [value]="tipo.value">
-            {{ tipo.viewValue }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Observaciones</mat-label>
+        <textarea
+          matInput formControlName="observations"
+          maxlength="500" rows="4"
+        ></textarea>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>ID del producto</mat-label>
-      <input matInput type="number" formControlName="productId">
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de operación</mat-label>
+        <mat-select formControlName="operationType">
+          <mat-option value="Venta">Venta</mat-option>
+          <mat-option value="Donacion">Donación</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>ID de ubicación</mat-label>
-      <input matInput type="number" formControlName="locationId">
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="Disponible">Disponible</mat-option>
+          <mat-option value="Pausada">Pausada</mat-option>
+          <mat-option value="Finalizada">Finalizada</mat-option>
+          <mat-option value="Cancelada">Cancelada</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>ID del usuario</mat-label>
-      <input matInput type="number" formControlName="publisherUserId">
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Producto</mat-label>
+        <mat-select formControlName="productId">
+          @for (product of productos; track product.idProduct) {
+            <mat-option [value]="product.idProduct">
+              {{ product.nameProduct }}
+            </mat-option>
+          }
+        </mat-select>
+        <mat-error>Selecciona un producto.</mat-error>
+      </mat-form-field>
 
-    <button matButton="filled" type="submit">
-      Registrar
-    </button>
+      <mat-form-field appearance="outline">
+        <mat-label>Ubicación</mat-label>
+        <mat-select formControlName="locationId">
+          @for (location of ubicaciones; track location.idLocation) {
+            <mat-option [value]="location.idLocation">
+              {{ location.department }} / {{ location.district }}
+              — {{ location.referenceAddress }}
+            </mat-option>
+          }
+        </mat-select>
+        <mat-error>Selecciona una ubicación.</mat-error>
+      </mat-form-field>
 
-  </form>
+      <p>
+        El publicador será el propietario del producto.
+        Al editar, el producto y el publicador se conservan.
+      </p>
 
-  @if (mensaje) {
-    <p>{{ mensaje }}</p>
+      <div class="acciones">
+        <button
+          mat-flat-button type="submit"
+          [disabled]="guardando() || !productos.length || !ubicaciones.length"
+        >
+          {{ guardando() ? 'Guardando...' : 'Guardar' }}
+        </button>
+
+        <a mat-stroked-button routerLink="/publicaciones/listar">Cancelar</a>
+      </div>
+    </form>
   }
 </div>

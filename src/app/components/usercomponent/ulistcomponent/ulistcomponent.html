@@ -38,6 +38,12 @@
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell *matCellDef="let user">
+          <a
+  mat-stroked-button
+  [routerLink]="['/usuarios/editar', user.idUser]"
+>
+  Editar
+</a>
           <button
             mat-stroked-button
             type="button"
