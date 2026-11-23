@@ -1,19 +1,42 @@
-
 .container {
+  max-width: 750px;
+  margin: 24px auto;
   padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 6%);
+}
+
+h2 {
+  margin: 0 0 24px;
+  color: #205c35;
+  text-align: center;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  max-width: 500px;
-  gap: 12px;
+  gap: 16px;
 }
 
 mat-form-field {
   width: 100%;
 }
 
-button {
-  align-self: flex-start;
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+p[role="alert"] {
+  color: #b3261e;
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 12px 0;
+    padding: 16px;
+  }
 }

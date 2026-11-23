@@ -1,38 +1,62 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
 html {
-  height: 100%;
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+  min-height: 100%;
+
+  @include mat.theme((
+    color: (
+      primary: mat.$cyan-palette,
+      tertiary: mat.$green-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
+  color-scheme: dark;
   margin: 0;
-  height: 100%;
+  min-height: 100vh;
+
+  font: var(--mat-sys-body-medium);
+  background-color: #08131c;
+  color: #e9f3f5;
+
+  /* Paleta general de Angular Material */
+  --mat-sys-primary: #64e6b1;
+  --mat-sys-on-primary: #05291d;
+  --mat-sys-primary-container: #123d31;
+  --mat-sys-on-primary-container: #b6f8dc;
+
+  --mat-sys-secondary: #72d8ed;
+  --mat-sys-on-secondary: #003640;
+  --mat-sys-secondary-container: #153e49;
+  --mat-sys-on-secondary-container: #c1f3ff;
+
+  --mat-sys-tertiary: #72d8ed;
+  --mat-sys-on-tertiary: #003640;
+
+  --mat-sys-background: #08131c;
+  --mat-sys-on-background: #e9f3f5;
+
+  --mat-sys-surface: #101f2b;
+  --mat-sys-on-surface: #e9f3f5;
+  --mat-sys-on-surface-variant: #b8cad1;
+
+  --mat-sys-surface-dim: #08131c;
+  --mat-sys-surface-bright: #293e4b;
+  --mat-sys-surface-container-lowest: #070f17;
+  --mat-sys-surface-container-low: #0e1c27;
+  --mat-sys-surface-container: #142532;
+  --mat-sys-surface-container-high: #1b303e;
+  --mat-sys-surface-container-highest: #243b49;
+  --mat-sys-surface-variant: #243b49;
+
+  --mat-sys-outline: #8198a5;
+  --mat-sys-outline-variant: #344d5c;
+
+  --mat-sys-error: #ffb4ab;
+  --mat-sys-on-error: #690005;
+  --mat-sys-error-container: #6c2425;
+  --mat-sys-on-error-container: #ffdad6;
 }

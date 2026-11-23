@@ -1,0 +1,57 @@
+<div class="container">
+  <h2>Editar reseña</h2>
+
+  @if (cargando()) {
+    <p>Cargando reseña...</p>
+  }
+
+  @if (mensaje()) {
+    <p role="alert">{{ mensaje() }}</p>
+  }
+
+  @if (listo()) {
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <mat-form-field appearance="outline">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="titleResena" maxlength="100" />
+        <mat-error>Ingresa un título válido.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Comentario</mat-label>
+        <textarea
+          matInput
+          formControlName="descriptionResena"
+          maxlength="500"
+          rows="4"
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Calificación</mat-label>
+        <mat-select formControlName="scoreResena">
+          @for (score of [1, 2, 3, 4, 5]; track score) {
+            <mat-option [value]="score">{{ score }} / 5</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="statusResena">
+          <mat-option [value]="true">Activa</mat-option>
+          <mat-option [value]="false">Inactiva</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <p>El autor, el usuario calificado y la transacción se conservan.</p>
+
+      <div class="acciones">
+        <button mat-flat-button type="submit" [disabled]="guardando()">
+          {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+        <a mat-stroked-button routerLink="/resenas/listar">Cancelar</a>
+      </div>
+    </form>
+  }
+</div>

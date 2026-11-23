@@ -2,6 +2,22 @@
 <div class="container">
   <h2>Listado de publicaciones</h2>
 
+  <a mat-flat-button routerLink="/publicaciones/registrar">
+  Nueva publicación
+</a>
+
+@if (cargando) {
+  <p>Cargando publicaciones...</p>
+}
+
+@if (mensaje) {
+  <p role="alert">{{ mensaje }}</p>
+}
+
+@if (!cargando && !mensaje && publicaciones.length === 0) {
+  <p>No hay publicaciones registradas.</p>
+}
+
   <table mat-table [dataSource]="publicaciones">
 
     <!-- Columna ID -->
@@ -41,19 +57,25 @@
     </ng-container>
 
     <!-- Columna Acciones -->
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+   <ng-container matColumnDef="acciones">
+  <th mat-header-cell *matHeaderCellDef>Acciones</th>
 
-      <td mat-cell *matCellDef="let p">
-        <button matButton (click)="editar(p.id)">
-          Editar
-        </button>
+  <td mat-cell *matCellDef="let p">
+    @if (puedeGestionar(p)) {
+      <button mat-stroked-button type="button" (click)="editar(p.id)">
+        Editar
+      </button>
 
-        <button matButton (click)="eliminar(p.id)">
-          Eliminar
-        </button>
-      </td>
-    </ng-container>
+      <button
+        mat-stroked-button type="button"
+        [disabled]="eliminando"
+        (click)="eliminar(p.id)"
+      >
+        Eliminar
+      </button>
+    }
+  </td>
+</ng-container>
 
     <!-- Filas de la tabla -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

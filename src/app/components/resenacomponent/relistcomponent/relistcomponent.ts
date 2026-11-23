@@ -45,4 +45,13 @@ export class Relistcomponent implements OnInit {
       error: () => alert('No se pudo eliminar la reseña.'),
     });
   }
+
+  puedeEditar(resena: Resena): boolean {
+  return resena.idUser === this.auth.session()?.idUser;
+}
+
+puedeEliminar(resena: Resena): boolean {
+  return this.puedeEditar(resena) ||
+    this.auth.session()?.role === 'Administrador';
+}
 }

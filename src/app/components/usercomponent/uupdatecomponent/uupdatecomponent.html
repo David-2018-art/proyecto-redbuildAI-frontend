@@ -1,0 +1,76 @@
+<div class="container">
+  <h2>Editar usuario</h2>
+
+  @if (cargando()) {
+    <p>Cargando usuario...</p>
+  }
+
+  @if (mensaje()) {
+    <p role="alert">{{ mensaje() }}</p>
+  }
+
+  @if (listo()) {
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombres</mat-label>
+        <input matInput formControlName="nameUser" maxlength="80" />
+        <mat-error>Ingresa un nombre válido.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellidos</mat-label>
+        <input matInput formControlName="lastNameUser" maxlength="80" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput type="email" formControlName="emailUser" maxlength="254" />
+        <mat-error>Ingresa un correo válido.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="phoneUser" maxlength="20" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Empresa</mat-label>
+        <input matInput formControlName="companyNameUser" maxlength="100" />
+      </mat-form-field>
+
+      @if (admin) {
+        <mat-form-field appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select formControlName="idRole">
+            @for (role of roles; track role.idRole) {
+              <mat-option [value]="role.idRole">
+                {{ role.nameRole }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>Selecciona un rol.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="statusUser">
+            <mat-option value="Activo">Activo</mat-option>
+            <mat-option value="Inactivo">Inactivo</mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+
+      <p>
+        La contraseña se conserva. Al actualizar tu propia cuenta,
+        deberás iniciar sesión nuevamente.
+      </p>
+
+      <div class="acciones">
+        <button mat-flat-button type="submit" [disabled]="guardando()">
+          {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+        <a mat-stroked-button routerLink="/usuarios/listar">Cancelar</a>
+      </div>
+    </form>
+  }
+</div>

@@ -1,0 +1,75 @@
+<div class="container">
+  <h2>Gestionar transacción</h2>
+
+  @if (cargando()) {
+    <p>Cargando transacción...</p>
+  }
+
+  @if (mensaje()) {
+    <p role="status">{{ mensaje() }}</p>
+  }
+
+  @if (listo() && original) {
+    <p>
+      Estado: <strong>{{ original.statusTransaction }}</strong>
+      · Operación: {{ original.typeTransaction }}
+    </p>
+
+    <p>
+      Publicación: {{ original.idPublication }}
+      · Adquirente: {{ original.idUser }}
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <mat-form-field appearance="outline">
+        <mat-label>Cantidad</mat-label>
+        <input
+          matInput type="number" step="0.001"
+          formControlName="quantityTransaction"
+        />
+        <mat-error>Ingresa una cantidad positiva con hasta 3 decimales.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Precio unitario acordado</mat-label>
+        <input
+          matInput type="number" step="0.01"
+          formControlName="agreedUnitPrice"
+        />
+        <mat-error>Ingresa un precio válido con hasta 2 decimales.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Mensaje</mat-label>
+        <textarea
+          matInput formControlName="descriptionTransaction"
+          maxlength="500" rows="3"
+        ></textarea>
+      </mat-form-field>
+
+      @if (puedeEditarContenido) {
+        <button mat-flat-button type="submit" [disabled]="guardando()">
+          Guardar contenido
+        </button>
+      }
+    </form>
+
+    <div class="acciones">
+      @for (estado of estados; track estado) {
+        <button
+          mat-stroked-button type="button"
+          [disabled]="guardando()"
+          (click)="cambiarEstado(estado)"
+        >
+          {{ estado }}
+        </button>
+      }
+    </div>
+
+    @if (estados.length === 0) {
+      <p>Esta transacción no admite más cambios de estado.</p>
+    }
+  }
+
+  <a mat-stroked-button routerLink="/transacciones/listar">Volver</a>
+</div>

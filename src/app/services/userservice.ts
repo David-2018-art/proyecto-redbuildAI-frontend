@@ -26,4 +26,12 @@ export class Userservice {
       responseType: 'text',
     });
   }
+
+  getUserById(id: number): Observable<User> {
+  return this.http.get<User>(`${this.apiURL}/${id}`);
+}
+
+updateUser(user: User): Observable<User> {
+  return this.http.put<User>(this.apiURL, user);
+}
 }

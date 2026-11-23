@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-
+import { RouterLink } from '@angular/router';
 import { User } from '../../../models/user.model';
 import { Userservice } from '../../../services/userservice';
 
 @Component({
   selector: 'app-ulistcomponent',
-  imports: [MatTableModule, MatButtonModule],
+  imports: [MatTableModule, MatButtonModule, RouterLink],
   templateUrl: './ulistcomponent.html',
   styleUrl: './ulistcomponent.css',
 })

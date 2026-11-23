@@ -24,4 +24,12 @@ export class Roleservice {
       responseType: 'text',
     });
   }
+
+  getRoleById(id: number): Observable<Role> {
+  return this.http.get<Role>(`${this.apiURL}/${id}`);
+}
+
+updateRole(role: Role): Observable<Role> {
+  return this.http.put<Role>(this.apiURL, role);
+}
 }

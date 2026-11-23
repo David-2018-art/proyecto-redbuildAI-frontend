@@ -31,4 +31,8 @@ export class Transaccionservice {
   delete(id: number): Observable<string> {
     return this.http.delete(`${this.apiURL}/${id}`, { responseType: 'text' });
   }
+
+  getReceived(): Observable<Transaccion[]> {
+  return this.http.get<Transaccion[]>(`${this.apiURL}/recibidas`);
+}
 }

@@ -1,7 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { forkJoin, map } from 'rxjs';
+
 import { Transaccion } from '../../../models/transaccion.model';
 import { Transaccionservice } from '../../../services/transaccionservice';
 import { Authservice } from '../../../services/authservice';
@@ -14,7 +16,12 @@ import { Authservice } from '../../../services/authservice';
 export class Tlistcomponent implements OnInit {
   private readonly service = inject(Transaccionservice);
   private readonly auth = inject(Authservice);
-  displayedColumns = ['id', 'tipo', 'cantidad', 'precio', 'total', 'estado', 'publicacion', 'acciones'];
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  displayedColumns = [
+    'id', 'tipo', 'cantidad', 'precio', 'total',
+    'estado', 'publicacion', 'acciones',
+  ];
   dataSource: Transaccion[] = [];
   cargando = true;
   mensaje = '';
@@ -25,28 +32,66 @@ export class Tlistcomponent implements OnInit {
 
   cargar(): void {
     const session = this.auth.session();
-    if (!session) return;
+
+    if (!session) {
+      this.cargando = false;
+      this.mensaje = 'Debes iniciar sesión.';
+      return;
+    }
+
     this.cargando = true;
+    this.mensaje = '';
+
     const request = session.role === 'Administrador'
       ? this.service.getAll()
-      : this.service.getByUser(session.idUser);
+      : forkJoin([
+          this.service.getByUser(session.idUser),
+          this.service.getReceived(),
+        ]).pipe(
+          map(([propias, recibidas]) => Array.from(
+            new Map(
+              [...propias, ...recibidas].map(t => [t.idTransaccion, t])
+            ).values()
+          ))
+        );
+
     request.subscribe({
-      next: (data) => {
+      next: data => {
         this.dataSource = data;
         this.cargando = false;
+        this.cdr.markForCheck();
       },
-      error: () => {
+      error: error => {
         this.cargando = false;
-        this.mensaje = 'No se pudieron cargar las transacciones.';
+        this.mensaje = error.status === 401
+          ? 'Inicia sesión nuevamente.'
+          : 'No se pudieron cargar las transacciones.';
+        this.cdr.markForCheck();
       },
     });
   }
 
-  eliminar(transaccion: Transaccion): void {
-    if (!transaccion.idTransaccion || !confirm('¿Deseas eliminar esta transacción?')) return;
-    this.service.delete(transaccion.idTransaccion).subscribe({
+  puedeGestionar(transaction: Transaccion): boolean {
+    return ['Solicitada', 'Reservada'].includes(transaction.statusTransaction);
+  }
+
+  puedeEliminar(transaction: Transaccion): boolean {
+    const session = this.auth.session();
+    return session?.role === 'Administrador' ||
+      transaction.idUser === session?.idUser;
+  }
+
+  eliminar(transaction: Transaccion): void {
+    if (!transaction.idTransaccion || !this.puedeEliminar(transaction)) return;
+    if (!confirm('¿Eliminar esta transacción?')) return;
+
+    this.service.delete(transaction.idTransaccion).subscribe({
       next: () => this.cargar(),
-      error: () => alert('No se pudo eliminar la transacción.'),
+      error: error => alert(
+        error.status === 409
+          ? 'No se puede eliminar porque tiene reseñas asociadas.'
+          : 'No se pudo eliminar la transacción.'
+      ),
     });
   }
 }

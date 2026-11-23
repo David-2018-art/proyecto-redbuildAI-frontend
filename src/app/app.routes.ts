@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { Rolecomponent } from './components/rolecomponent/rolecomponent';
 import { Rlistcomponent } from './components/rolecomponent/rlistcomponent/rlistcomponent';
 import { Rinsertcomponent } from './components/rolecomponent/rinsertcomponent/rinsertcomponent';
+import { Rupdatecomponent } from './components/rolecomponent/rupdatecomponent/rupdatecomponent';
 
 import { Usercomponent } from './components/usercomponent/usercomponent';
 import { Ulistcomponent } from './components/usercomponent/ulistcomponent/ulistcomponent';
@@ -45,6 +46,9 @@ import { Prlistcomponent } from './components/productcomponent/prlistcomponent/p
 import { Prinsertcomponent } from './components/productcomponent/prinsertcomponent/prinsertcomponent';
 import { Prupdatecomponent } from './components/productcomponent/prupdatecomponent/prupdatecomponent';
 
+import { Uupdatecomponent } from './components/usercomponent/uupdatecomponent/uupdatecomponent';
+import { Reupdatecomponent } from './components/resenacomponent/reupdatecomponent/reupdatecomponent';
+import { Tupdatecomponent } from './components/transaccioncomponent/tupdatecomponent/tupdatecomponent';
 
 export const routes: Routes = [
   { path: 'login', component: Logincomponent },
@@ -56,6 +60,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'listar', pathMatch: 'full' },
       { path: 'listar', component: Tlistcomponent },
       { path: 'registrar', component: Tinsertcomponent },
+      { path: 'editar/:id', component: Tupdatecomponent },
     ],
   },
   {
@@ -66,6 +71,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'listar', pathMatch: 'full' },
       { path: 'listar', component: Relistcomponent },
       { path: 'registrar', component: Reinsertcomponent },
+      { path: 'editar/:id', component: Reupdatecomponent },
     ],
   },
   {
@@ -80,6 +86,8 @@ export const routes: Routes = [
       { path: '', redirectTo: 'listar', pathMatch: 'full' },
       { path: 'listar', component: Rlistcomponent },
       { path: 'registrar', component: Rinsertcomponent },
+      { path: 'editar/:id', component: Rupdatecomponent },
+      { path: 'editar/:id', component: Uupdatecomponent },
     ],
   },
   {
@@ -99,8 +107,7 @@ export const routes: Routes = [
       { path: 'listar', component: Plistcomponent },
       { path: 'registrar', component: Pinsertcomponent },
       { path: 'buscar', component: Pbuscarcomponent },
-      { path: 'editar/:id', component: Pupdatecomponent },
-    ],
+      { path: 'editar/:id', component: Pinsertcomponent },    ],
   },
   {
     path: 'ubicaciones',

@@ -1,0 +1,67 @@
+<div class="container">
+  <h2>Editar rol</h2>
+
+  @if (cargando()) {
+    <p role="status">Cargando rol...</p>
+  }
+
+  @if (mensaje()) {
+    <p class="error" role="alert">{{ mensaje() }}</p>
+  }
+
+  @if (listo()) {
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del rol</mat-label>
+        <input
+          matInput
+          formControlName="nameRole"
+          maxlength="100"
+        />
+        <mat-error>
+          Ingresa un nombre de hasta 100 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea
+          matInput
+          formControlName="descriptionRole"
+          maxlength="150"
+          rows="3"
+        ></textarea>
+        <mat-error>
+          Ingresa una descripción de hasta 150 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="statusRole">
+          <mat-option value="Activo">Activo</mat-option>
+          <mat-option value="Inactivo">Inactivo</mat-option>
+        </mat-select>
+        <mat-error>Selecciona un estado.</mat-error>
+      </mat-form-field>
+
+      <div class="acciones">
+        <button
+          mat-flat-button
+          type="submit"
+          [disabled]="guardando()"
+        >
+          {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+
+        <a mat-stroked-button routerLink="/roles/listar">
+          Cancelar
+        </a>
+      </div>
+    </form>
+  } @else if (!cargando()) {
+    <a mat-stroked-button routerLink="/roles/listar">
+      Volver al listado
+    </a>
+  }
+</div>
