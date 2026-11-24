@@ -6,7 +6,7 @@ import { Resena } from '../models/resena.model';
 @Injectable({ providedIn: 'root' })
 export class Resenaservice {
   private readonly http = inject(HttpClient);
-  private readonly apiURL = 'http://localhost:8080/api/Resenas';
+  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Resenas';
 
   getAll(): Observable<Resena[]> {
     return this.http.get<Resena[]>(this.apiURL);

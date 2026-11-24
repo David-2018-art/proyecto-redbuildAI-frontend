@@ -9,7 +9,7 @@ import { UserRegister } from '../models/user-register.model';
   providedIn: 'root',
 })
 export class Userservice {
-  private apiURL = 'http://localhost:8080/api/Users';
+  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Users';
 
   constructor(private http: HttpClient) {}
 
