@@ -57,6 +57,13 @@
       </button>
     }
 
+    @if (auth.session()?.role === 'Administrador') {
+  <a mat-button routerLink="/reportes">
+    <mat-icon>bar_chart</mat-icon>
+    Reportes
+  </a>
+}
+
     <button mat-button [matMenuTriggerFor]="administracion">
       <mat-icon>settings</mat-icon>
       Administración

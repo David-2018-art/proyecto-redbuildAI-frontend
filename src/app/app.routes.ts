@@ -50,6 +50,8 @@ import { Uupdatecomponent } from './components/usercomponent/uupdatecomponent/uu
 import { Reupdatecomponent } from './components/resenacomponent/reupdatecomponent/reupdatecomponent';
 import { Tupdatecomponent } from './components/transaccioncomponent/tupdatecomponent/tupdatecomponent';
 
+import { Reportcomponent } from './components/reportcomponent/reportcomponent';
+
 export const routes: Routes = [
   { path: 'login', component: Logincomponent },
   {
@@ -153,6 +155,12 @@ export const routes: Routes = [
     { path: 'registrar', component: Prinsertcomponent },
     { path: 'editar/:id', component: Prupdatecomponent },
   ],
+},
+
+{
+  path: 'reportes',
+  component: Reportcomponent,
+  canActivate: [authGuard],
 },
 
   {

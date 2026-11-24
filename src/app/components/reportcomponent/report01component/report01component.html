@@ -1,0 +1,70 @@
+<section class="reporte" [attr.aria-busy]="cargando()">
+  <header class="cabecera-reporte">
+    <div>
+      <span class="etiqueta">CATÁLOGO</span>
+      <h2>Productos por categoría</h2>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="obtener()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+  </header>
+
+  @if (cargando()) {
+    <p role="status">Cargando productos por categoría...</p>
+  } @else if (mensaje()) {
+    <p class="error" role="alert">{{ mensaje() }}</p>
+  } @else {
+    <div class="indicador">
+      <strong>{{ total() }}</strong>
+      <span>productos registrados</span>
+    </div>
+
+    <p class="detalle">
+      Cuenta registros de productos, no las unidades disponibles en stock.
+      Incluye productos activos e inactivos.
+    </p>
+
+    @if (total() > 0) {
+      <div class="grafico">
+        <canvas
+          baseChart
+          [data]="chartData()"
+          [options]="chartOptions"
+          [type]="'bar'"
+          role="img"
+          aria-label="Cantidad de productos por categoría. Datos detallados en la tabla inferior."
+        ></canvas>
+      </div>
+    } @else {
+      <p>No hay productos registrados para graficar.</p>
+    }
+
+    @if (lista().length > 0) {
+      <div class="tabla-contenedor">
+        <table>
+          <caption>Detalle de productos por categoría</caption>
+          <thead>
+            <tr>
+              <th scope="col">Categoría</th>
+              <th scope="col">Productos</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of lista(); track item.idCategory) {
+              <tr>
+                <td>{{ item.nameCategory }}</td>
+                <td>{{ item.quantityProducts }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</section>
