@@ -7,7 +7,7 @@ import { Role } from '../models/role';
   providedIn: 'root',
 })
 export class Roleservice {
-  private apiURL = 'http://localhost:8080/api/Roles';
+  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Roles';
 
   constructor(private http: HttpClient) {}
 

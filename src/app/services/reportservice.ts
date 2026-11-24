@@ -12,7 +12,7 @@ import {
 })
 export class Reportservice {
   private readonly http = inject(HttpClient);
-  private readonly apiURL = 'http://localhost:8080/api';
+  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api';
 
   productosPorCategoria(): Observable<CategoryProductCountDTO[]> {
     return this.http.get<CategoryProductCountDTO[]>(

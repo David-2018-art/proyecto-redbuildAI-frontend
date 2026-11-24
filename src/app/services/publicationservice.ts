@@ -10,7 +10,7 @@ import { PublicationDTO } from '../models/publicationDTO';
 })
 export class Publicationservice {
 
-  private apiURL = 'http://localhost:8080/publications';
+  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/publications';
 
   constructor(private http: HttpClient) { }
 

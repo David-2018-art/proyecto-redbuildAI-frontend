@@ -6,7 +6,7 @@ import { Transaccion } from '../models/transaccion.model';
 @Injectable({ providedIn: 'root' })
 export class Transaccionservice {
   private readonly http = inject(HttpClient);
-  private readonly apiURL = 'http://localhost:8080/api/Transacciones';
+  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Transacciones';
 
   getAll(): Observable<Transaccion[]> {
     return this.http.get<Transaccion[]>(this.apiURL);
