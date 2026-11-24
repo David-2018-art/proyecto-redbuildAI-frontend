@@ -8,7 +8,7 @@ import { Product } from '../models/product.model';
   providedIn: 'root',
 })
 export class Productservice {
-  private readonly apiURL = 'http://localhost:8080/api/Products';
+  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Products';
 
   constructor(private http: HttpClient) {}
 

@@ -7,7 +7,7 @@ import { PublicationPhotoDTO } from '../models/publicationPhotoDTO';
   providedIn: 'root',
 })
 export class PublicationPhotoService {
-  private apiURL = 'http://localhost:8080/publication-photos';
+  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/publication-photos';
 
   constructor(private http: HttpClient) {}
 

@@ -11,7 +11,7 @@ import {
   providedIn: 'root',
 })
 export class Categoryservice {
-  private readonly apiURL = 'http://localhost:8080/api/Categories';
+  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Categories';
 
   constructor(private http: HttpClient) {}
 

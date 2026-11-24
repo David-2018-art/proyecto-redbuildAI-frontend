@@ -7,7 +7,7 @@ import { LocationDTO } from '../models/locationDTO';
   providedIn: 'root',
 })
 export class LocationService {
-  private apiURL = 'http://localhost:8080/api/Locations';
+  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Locations';
   constructor(private http: HttpClient) {}
   getLocation(): Observable<LocationDTO[]> {
     return this.http.get<LocationDTO[]>(this.apiURL);

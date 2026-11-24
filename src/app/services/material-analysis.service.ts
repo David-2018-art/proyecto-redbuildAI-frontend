@@ -17,7 +17,7 @@ export class MaterialAnalysisService {
   private readonly http = inject(HttpClient);
 
   private readonly apiURL =
-    'http://localhost:8080/api/material-analysis';
+    'https://proyecto-redbuildai-backend.onrender.com/api/material-analysis';
 
   analizar(foto: File): Observable<MaterialAnalysis> {
     const datos = new FormData();
