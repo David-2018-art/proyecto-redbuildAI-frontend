@@ -1,0 +1,69 @@
+<section class="reporte" [attr.aria-busy]="cargando()">
+  <header class="cabecera-reporte">
+    <div>
+      <span class="etiqueta">COMUNIDAD</span>
+      <h2>Usuarios por rol</h2>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="obtener()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+  </header>
+
+  @if (cargando()) {
+    <p role="status">Cargando usuarios por rol...</p>
+  } @else if (mensaje()) {
+    <p class="error" role="alert">{{ mensaje() }}</p>
+  } @else {
+    <div class="indicador">
+      <strong>{{ total() }}</strong>
+      <span>usuarios contabilizados</span>
+    </div>
+
+    <p class="detalle">
+      Distribución de las cuentas según su rol en la plataforma.
+    </p>
+
+    @if (total() > 0) {
+      <div class="grafico">
+        <canvas
+          baseChart
+          [data]="chartData()"
+          [options]="chartOptions"
+          [type]="'doughnut'"
+          role="img"
+          aria-label="Distribución de usuarios por rol. Datos detallados en la tabla inferior."
+        ></canvas>
+      </div>
+    } @else {
+      <p>No hay usuarios registrados para graficar.</p>
+    }
+
+    @if (lista().length > 0) {
+      <div class="tabla-contenedor">
+        <table>
+          <caption>Detalle de usuarios por rol</caption>
+          <thead>
+            <tr>
+              <th scope="col">Rol</th>
+              <th scope="col">Usuarios</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of lista(); track item.idRole) {
+              <tr>
+                <td>{{ item.nameRole }}</td>
+                <td>{{ item.quantityUsers }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</section>

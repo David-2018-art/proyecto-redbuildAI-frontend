@@ -1,0 +1,53 @@
+:host {
+  display: block;
+}
+
+.dashboard {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.encabezado-dashboard {
+  margin: 12px 0 30px;
+}
+
+.etiqueta {
+  color: #64e6b1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
+
+h1 {
+  margin: 12px 0;
+  color: #e9f3f5;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+p {
+  color: #b8cad1;
+  line-height: 1.6;
+}
+
+.cuadricula {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.sin-acceso {
+  padding: 28px;
+  background: #101f2b;
+  border: 1px solid rgba(135, 184, 201, 0.22);
+  border-radius: 18px;
+}
+
+@media (max-width: 900px) {
+  .cuadricula {
+    grid-template-columns: 1fr;
+  }
+}
