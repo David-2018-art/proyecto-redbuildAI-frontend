@@ -9,18 +9,37 @@
     <input
       matInput
       type="number"
+      min="1"
+      step="1"
       [(ngModel)]="idPublication"
-      placeholder="Ingrese el ID">
+      placeholder="Ingrese el ID"
+    />
   </mat-form-field>
 
-  <br>
-
-  <button matButton="filled" (click)="buscar()">
-    Buscar
+  <button
+    mat-flat-button
+    type="button"
+    [disabled]="cargando"
+    (click)="buscar()"
+  >
+    {{ cargando ? 'Buscando...' : 'Buscar' }}
   </button>
 
   @if (mensaje) {
-    <p>{{ mensaje }}</p>
+    <p role="alert">{{ mensaje }}</p>
+  }
+
+  @if (publicacion) {
+    <h3>Publicación encontrada</h3>
+
+    <p><strong>ID:</strong> {{ publicacion.id }}</p>
+    <p><strong>Título:</strong> {{ publicacion.title }}</p>
+    <p><strong>Observaciones:</strong> {{ publicacion.observations }}</p>
+    <p><strong>Tipo de operación:</strong> {{ publicacion.operationType }}</p>
+    <p><strong>Estado:</strong> {{ publicacion.status }}</p>
+    <p><strong>ID del producto:</strong> {{ publicacion.productId }}</p>
+    <p><strong>ID de ubicación:</strong> {{ publicacion.locationId }}</p>
+    <p><strong>ID del publicador:</strong> {{ publicacion.publisherUserId }}</p>
   }
 
 </div>
