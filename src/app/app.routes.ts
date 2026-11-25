@@ -51,13 +51,14 @@ import { Reupdatecomponent } from './components/resenacomponent/reupdatecomponen
 import { Tupdatecomponent } from './components/transaccioncomponent/tupdatecomponent/tupdatecomponent';
 
 import { Reportcomponent } from './components/reportcomponent/reportcomponent';
-
+import { Registrocomponent } from './components/registrocomponent/registrocomponent';
 
 import { Empresacomponent } from './components/empresacomponent/empresacomponent';
 import { empresaGuard } from './empresa.guard';
 
 export const routes: Routes = [
   { path: 'login', component: Logincomponent },
+  { path: 'registro', component: Registrocomponent },
   {
     path: 'transacciones',
     component: Transaccioncomponent,
@@ -81,10 +82,10 @@ export const routes: Routes = [
     ],
   },
   {
-    path: '',
-    redirectTo: 'roles/listar',
-    pathMatch: 'full',
-  },
+  path: '',
+  redirectTo: 'login',
+  pathMatch: 'full',
+},
   {
     path: 'roles',
     component: Rolecomponent,
@@ -174,6 +175,6 @@ export const routes: Routes = [
 },
   {
     path: '**',
-    redirectTo: 'roles/listar',
+    redirectTo: 'login',
   },
 ];

@@ -1,0 +1,348 @@
+<section class="acceso">
+
+  <div class="tarjeta-registro">
+
+    <div class="identidad">
+
+      <span class="emblema">R</span>
+
+      <div>
+
+        <span class="nombre-app">ReBuild AI</span>
+
+        <p class="lema">
+          Materiales con una nueva oportunidad
+        </p>
+
+      </div>
+
+    </div>
+
+    @if (registroExitoso()) {
+
+      <div class="registro-exitoso">
+
+        <div class="icono-exito">✓</div>
+
+        <h1>¡Cuenta creada!</h1>
+
+        <p>
+          Tu cuenta de {{ tipoCuenta() }} ha sido
+          registrada correctamente.
+        </p>
+
+        <p>
+          Ya puedes iniciar sesión y comenzar a utilizar ReBuild AI.
+        </p>
+
+        <button
+          mat-flat-button
+          class="boton-registro"
+          (click)="irAlLogin()"
+        >
+          Iniciar sesión
+        </button>
+
+      </div>
+
+    } @else {
+
+      <span class="etiqueta">
+        REUTILIZA · CONECTA · TRANSFORMA
+      </span>
+
+      <h1>Crea tu cuenta</h1>
+
+      <p class="introduccion">
+        Únete a nuestra comunidad y dale una nueva
+        oportunidad a los materiales.
+      </p>
+
+      <form
+        [formGroup]="form"
+        (ngSubmit)="registrar()"
+      >
+
+        <span class="titulo-seccion">
+          Selecciona tu tipo de cuenta
+        </span>
+
+        <div class="tipos-cuenta">
+
+          <button
+            type="button"
+            class="tipo-cuenta"
+            [class.seleccionado]="tipoCuenta() === 'Cliente'"
+            [attr.aria-pressed]="tipoCuenta() === 'Cliente'"
+            [disabled]="guardando()"
+            (click)="seleccionarTipo('Cliente')"
+          >
+
+            <span class="icono-tipo">
+
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <circle cx="12" cy="7" r="4"/>
+                <path d="M4 22v-3a8 8 0 0 1 16 0v3"/>
+              </svg>
+
+            </span>
+
+            <strong>Cliente</strong>
+
+            <span class="descripcion-tipo">
+              Encuentra y reutiliza materiales.
+            </span>
+
+            <span class="indicador">
+
+              {{ tipoCuenta() === 'Cliente' ? '✓' : '○' }}
+
+            </span>
+
+          </button>
+
+          <button
+            type="button"
+            class="tipo-cuenta"
+            [class.seleccionado]="tipoCuenta() === 'Empresa'"
+            [attr.aria-pressed]="tipoCuenta() === 'Empresa'"
+            [disabled]="guardando()"
+            (click)="seleccionarTipo('Empresa')"
+          >
+
+            <span class="icono-tipo">
+
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <rect x="5" y="2" width="14" height="20" rx="2"/>
+                <path d="M9 6h1m4 0h1M9 10h1m4 0h1M9 14h1m4 0h1"/>
+                <path d="M10 22v-4h4v4"/>
+              </svg>
+
+            </span>
+
+            <strong>Empresa</strong>
+
+            <span class="descripcion-tipo">
+              Ofrece materiales reutilizables.
+            </span>
+
+            <span class="indicador">
+
+              {{ tipoCuenta() === 'Empresa' ? '✓' : '○' }}
+
+            </span>
+
+          </button>
+
+        </div>
+
+        <span class="titulo-seccion">
+          Información personal
+        </span>
+
+        <div class="fila">
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Nombres</mat-label>
+
+            <input
+              matInput
+              formControlName="nameUser"
+              maxlength="80"
+              autocomplete="given-name"
+            />
+
+            <mat-error>
+              Ingresa tus nombres.
+            </mat-error>
+
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Apellidos</mat-label>
+
+            <input
+              matInput
+              formControlName="lastNameUser"
+              maxlength="80"
+              autocomplete="family-name"
+            />
+
+          </mat-form-field>
+
+        </div>
+
+        @if (tipoCuenta() === 'Empresa') {
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Nombre de la empresa</mat-label>
+
+            <input
+              matInput
+              formControlName="companyNameUser"
+              maxlength="100"
+              autocomplete="organization"
+            />
+
+            <mat-error>
+              El nombre de la empresa es obligatorio.
+            </mat-error>
+
+          </mat-form-field>
+
+        }
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Correo electrónico</mat-label>
+
+          <input
+            matInput
+            type="email"
+            formControlName="emailUser"
+            maxlength="254"
+            autocomplete="email"
+            placeholder="nombre@correo.com"
+          />
+
+          <mat-error>
+            Ingresa un correo electrónico válido.
+          </mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Teléfono</mat-label>
+
+          <input
+            matInput
+            type="tel"
+            formControlName="phoneUser"
+            maxlength="20"
+            autocomplete="tel"
+          />
+
+        </mat-form-field>
+
+        <span class="titulo-seccion">
+          Seguridad de tu cuenta
+        </span>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Contraseña</mat-label>
+
+          <input
+            matInput
+            [type]="mostrarPassword() ? 'text' : 'password'"
+            formControlName="passwordUser"
+            maxlength="72"
+            autocomplete="new-password"
+          />
+
+          @if (form.controls.passwordUser.hasError('required')) {
+
+            <mat-error>
+              La contraseña es obligatoria.
+            </mat-error>
+
+          } @else {
+
+            <mat-error>
+              Debe tener al menos 6 caracteres.
+            </mat-error>
+
+          }
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Confirmar contraseña</mat-label>
+
+          <input
+            matInput
+            [type]="mostrarPassword() ? 'text' : 'password'"
+            formControlName="confirmarPassword"
+            maxlength="72"
+            autocomplete="new-password"
+          />
+
+          <mat-error>
+            Confirma tu contraseña.
+          </mat-error>
+
+        </mat-form-field>
+
+        <label class="mostrar-password">
+
+          <input
+            type="checkbox"
+            [checked]="mostrarPassword()"
+            (change)="mostrarPassword.set(!mostrarPassword())"
+          />
+
+          Mostrar contraseñas
+
+        </label>
+
+        @if (mensaje()) {
+
+          <p class="error-registro" role="alert">
+            {{ mensaje() }}
+          </p>
+
+        }
+
+        <button
+          mat-flat-button
+          type="submit"
+          class="boton-registro"
+          [disabled]="guardando()"
+        >
+
+          {{ guardando() ? 'Creando cuenta...' : 'Crear mi cuenta' }}
+
+        </button>
+
+      </form>
+
+      <p class="enlace-login">
+
+        ¿Ya tienes una cuenta?
+
+        <a routerLink="/login">
+          Iniciar sesión
+        </a>
+
+      </p>
+
+    }
+
+    <p class="pie-registro">
+
+      Construyamos nuevas oportunidades con lo que ya existe.
+
+    </p>
+
+  </div>
+
+</section>
