@@ -69,9 +69,11 @@ export class Prlistcomponent implements OnInit {
         }),
       ),
     }).subscribe({
-      next: ({ productos, categorias }) => {
-        this.dataSource = productos;
-        this.categorias.clear();
+     next: ({ productos, categorias }) => {
+  this.dataSource = [...productos].sort(
+    (a, b) => (a.idProduct ?? 0) - (b.idProduct ?? 0)
+  );
+  this.categorias.clear();
 
         for (const categoria of categorias) {
           if (categoria.idCategory !== undefined) {

@@ -1,7 +1,8 @@
 import {
   Component,
-  Input,
-  OnChanges,
+  input,
+  computed,
+  signal,
 } from '@angular/core';
 
 import {
@@ -49,16 +50,16 @@ function etiquetasPaginador(): MatPaginatorIntl {
     },
   ],
   template: `
-    <mat-paginator
-      [length]="datos.length"
-      [pageSize]="tamanio"
-      [pageIndex]="paginaActual"
-      [pageSizeOptions]="[5, 10, 20]"
-      [showFirstLastButtons]="true"
-      (page)="cambiarPagina($event)"
-      aria-label="Paginación del listado"
-    ></mat-paginator>
-  `,
+  <mat-paginator
+    [length]="datos().length"
+    [pageSize]="tamanio()"
+    [pageIndex]="paginaActual()"
+    [pageSizeOptions]="[5, 10, 20]"
+    [showFirstLastButtons]="true"
+    (page)="cambiarPagina($event)"
+    aria-label="Paginación del listado"
+  ></mat-paginator>
+`,
   styles: [`
     :host {
       display: block;
@@ -73,37 +74,36 @@ function etiquetasPaginador(): MatPaginatorIntl {
     }
   `],
 })
-export class PaginadorComponent<T> implements OnChanges {
-  @Input() datos: readonly T[] = [];
+export class PaginadorComponent<T> {
+  readonly datos = input<readonly T[]>([]);
 
-  tamanio = 5;
-  private indice = 0;
+  readonly tamanio = signal(5);
+  private readonly indice = signal(0);
 
-  ngOnChanges(): void {
-    // Cuando llega un nuevo listado, comienza en la primera página.
-    this.indice = 0;
-  }
-
-  get paginaActual(): number {
+  readonly paginaActual = computed(() => {
     const ultima = Math.max(
       0,
-      Math.ceil(this.datos.length / this.tamanio) - 1,
+      Math.ceil(this.datos().length / this.tamanio()) - 1
     );
 
-    return Math.min(this.indice, ultima);
-  }
+    return Math.min(this.indice(), ultima);
+  });
+
+  readonly filasCalculadas = computed(() => {
+    const inicio = this.paginaActual() * this.tamanio();
+
+    return this.datos().slice(
+      inicio,
+      inicio + this.tamanio()
+    );
+  });
 
   get filas(): T[] {
-    const inicio = this.paginaActual * this.tamanio;
-
-    return this.datos.slice(
-      inicio,
-      inicio + this.tamanio,
-    );
+    return this.filasCalculadas();
   }
 
   cambiarPagina(evento: PageEvent): void {
-    this.indice = evento.pageIndex;
-    this.tamanio = evento.pageSize;
+    this.indice.set(evento.pageIndex);
+    this.tamanio.set(evento.pageSize);
   }
 }

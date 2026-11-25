@@ -1,3 +1,4 @@
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
@@ -6,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { Category } from '../../../models/category.model';
 import { Categoryservice } from '../../../services/categoryservice';
 import { PaginadorComponent } from '../../../shared/paginador.component';
+import { Authservice } from '../../../services/authservice';
+
 @Component({
   selector: 'app-clistcomponent',
   imports: [RouterLink, MatTableModule, MatButtonModule, PaginadorComponent],
@@ -13,13 +16,16 @@ import { PaginadorComponent } from '../../../shared/paginador.component';
   styleUrl: './clistcomponent.css',
 })
 export class Clistcomponent implements OnInit {
-  displayedColumns: string[] = [
-    'id',
-    'nombre',
-    'descripcion',
-    'estado',
-    'acciones',
-  ];
+
+  get esAdministrador(): boolean {
+    return this.auth.session()?.role === 'Administrador';
+  }
+
+  get displayedColumns(): string[] {
+    return this.esAdministrador
+      ? ['id', 'nombre', 'descripcion', 'estado', 'acciones']
+      : ['id', 'nombre', 'descripcion', 'estado'];
+  }
 
   dataSource: Category[] = [];
   cargando = true;
@@ -29,6 +35,7 @@ export class Clistcomponent implements OnInit {
   constructor(
     private cS: Categoryservice,
     private cdr: ChangeDetectorRef,
+    public auth: Authservice,
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +70,12 @@ export class Clistcomponent implements OnInit {
   }
 
   eliminar(category: Category): void {
+
+    if (!this.esAdministrador) {
+      alert('Solo un administrador puede eliminar categorías.');
+      return;
+    }
+
     const id = category.idCategory;
 
     if (id === undefined || id <= 0) {

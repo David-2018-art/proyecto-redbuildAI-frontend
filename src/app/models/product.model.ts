@@ -12,4 +12,5 @@ export interface Product {
   statusProduct: 'Activo' | 'Inactivo';
   idCategory: number;
   idUser: number;
+  nombrePropietario?: string;
 }

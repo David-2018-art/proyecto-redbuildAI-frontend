@@ -38,9 +38,21 @@ import {
   styleUrl: './prinsertcomponent.css',
 })
 export class Prinsertcomponent implements OnInit {
+  unidadesMedida = [
+  { value: 'Unidad', viewValue: 'Unidad (und)' },
+  { value: 'kg', viewValue: 'Kilogramo (kg)' },
+  { value: 'g', viewValue: 'Gramo (g)' },
+  { value: 't', viewValue: 'Tonelada (t)' },
+  { value: 'm', viewValue: 'Metro (m)' },
+  { value: 'm²', viewValue: 'Metro cuadrado (m²)' },
+  { value: 'm³', viewValue: 'Metro cúbico (m³)' },
+  { value: 'L', viewValue: 'Litro (L)' },
+  { value: 'Caja', viewValue: 'Caja' }
+];
   form;
   categorias: Category[] = [];
   usuarios: User[] = [];
+  usuariosSelect: { value: number; viewValue: string }[] = [];
 
   condiciones: Product['statusMaterial'][] = [
     'Nuevo',
@@ -164,6 +176,10 @@ export class Prinsertcomponent implements OnInit {
       next: ({ categorias, usuarios }) => {
         this.categorias = categorias;
         this.usuarios = usuarios;
+        this.usuariosSelect = usuarios.map(usuario => ({
+  value: usuario.idUser!,
+  viewValue: `${usuario.nameUser} ${usuario.lastNameUser}`
+}));
         this.cargando = false;
         this.datosCargados = true;
 

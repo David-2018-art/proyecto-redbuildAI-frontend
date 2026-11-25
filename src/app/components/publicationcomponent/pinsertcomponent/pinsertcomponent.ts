@@ -145,10 +145,20 @@ export class Pinsertcomponent implements OnInit {
       ? this.service.updatePublication(this.id, dto)
       : this.service.createPublication(dto);
 
-    request.subscribe({
-      next: () => this.router.navigate(['/publicaciones/listar']),
-      error: (error) => this.error(error),
-    });
+   request.subscribe({
+  next: () => {
+    this.guardando.set(false);
+
+    alert(
+      this.editando
+        ? 'Publicación actualizada correctamente.'
+        : 'Publicación registrada correctamente.'
+    );
+
+    this.router.navigate(['/publicaciones/listar']);
+  },
+  error: (error) => this.error(error),
+});
   }
 
   private error(error: any): void {

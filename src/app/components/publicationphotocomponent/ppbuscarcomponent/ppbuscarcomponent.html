@@ -1,58 +1,253 @@
 <div class="container">
-  <h2>Buscar Fotos de Publicaciones</h2>
 
-  <div class="busqueda">
-    <mat-form-field appearance="outline">
-      <mat-label>ID de Foto</mat-label>
-      <input matInput type="number" [(ngModel)]="idPhoto" />
-    </mat-form-field>
+  <h2>Buscar fotografías</h2>
 
-    <button matButton="filled" (click)="buscarPorId()">
-      Buscar por ID
-    </button>
-  </div>
+  <p class="subtitulo">
+    Consulta las imágenes de los materiales publicados.
+  </p>
 
-  <div class="busqueda">
-    <mat-form-field appearance="outline">
-      <mat-label>ID de Publicación</mat-label>
-      <input matInput type="number" [(ngModel)]="idPublication" />
-    </mat-form-field>
+  <div class="panel-busqueda">
 
-    <button matButton="filled" (click)="buscarPorPublicacion()">
-      Buscar por Publicación
-    </button>
-  </div>
+    <h3>Buscar por publicación</h3>
 
-  @if (mensaje) {
-    <p>{{ mensaje }}</p>
-  }
+    <p class="ayuda">
+      Selecciona una publicación para visualizar sus fotografías.
+    </p>
 
-  @if (foto) {
-    <div class="resultado">
-      <h3>Foto encontrada</h3>
+    <div class="busqueda">
 
-      <p><strong>ID Foto:</strong> {{ foto.idPhoto }}</p>
-      <p><strong>URL:</strong> {{ foto.urlPhoto }}</p>
-      <p><strong>Descripción:</strong> {{ foto.descriptionPhoto }}</p>
-      <p><strong>Fecha de subida:</strong> {{ foto.uploadDate }}</p>
-      <p><strong>ID Publicación:</strong> {{ foto.idPublication }}</p>
+      <mat-form-field appearance="outline">
+
+        <mat-label>Selecciona una publicación</mat-label>
+
+        <mat-select
+          [(ngModel)]="idPublication"
+          [disabled]="cargandoPublicaciones() || buscando()"
+        >
+
+          @for (publicacion of publicaciones(); track publicacion.id) {
+
+            <mat-option [value]="publicacion.id">
+
+              {{ publicacion.title }}
+
+            </mat-option>
+
+          }
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        class="boton-principal"
+        (click)="buscarPorPublicacion()"
+        [disabled]="
+          buscando() ||
+          cargandoPublicaciones() ||
+          idPublication === null
+        "
+      >
+        Buscar fotografías
+      </button>
+
     </div>
+
+    @if (cargandoPublicaciones()) {
+
+      <p class="ayuda">
+        Cargando publicaciones...
+      </p>
+
+    } @else if (publicaciones().length === 0) {
+
+      <p class="ayuda">
+        No hay publicaciones disponibles.
+      </p>
+
+    }
+
+  </div>
+
+  <div class="panel-busqueda">
+
+    <h3>Buscar fotografía específica</h3>
+
+    <p class="ayuda">
+      Si conoces el ID de la fotografía, puedes consultarla directamente.
+    </p>
+
+    <div class="busqueda">
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>ID de fotografía</mat-label>
+
+        <input
+          matInput
+          type="number"
+          min="1"
+          step="1"
+          [(ngModel)]="idPhoto"
+          [disabled]="buscando()"
+        />
+
+      </mat-form-field>
+
+      <button
+        mat-stroked-button
+        (click)="buscarPorId()"
+        [disabled]="buscando() || idPhoto === null"
+      >
+        Buscar por ID
+      </button>
+
+    </div>
+
+  </div>
+
+  @if (buscando()) {
+
+    <div class="estado-vacio">
+      Buscando fotografías...
+    </div>
+
   }
 
-  @if (fotos.length > 0) {
-    <div class="resultado">
-      <h3>Fotos de la publicación</h3>
+  @if (mensaje()) {
 
-      @for (element of fotos; track element.idPhoto) {
-        <div class="foto">
-          <p><strong>ID Foto:</strong> {{ element.idPhoto }}</p>
-          <p><strong>URL:</strong> {{ element.urlPhoto }}</p>
-          <p><strong>Descripción:</strong> {{ element.descriptionPhoto }}</p>
-          <p><strong>Fecha de subida:</strong> {{ element.uploadDate }}</p>
-          <p><strong>ID Publicación:</strong> {{ element.idPublication }}</p>
-        </div>
+    <div
+      class="notificacion"
+      [class.exitosa]="exito()"
+      role="status"
+    >
+
+      {{ mensaje() }}
+
+    </div>
+
+  }
+
+  @if (fotos().length > 0) {
+
+    <div class="encabezado-resultados">
+
+      <h3>Resultados de búsqueda</h3>
+
+      <span class="contador">
+        {{ fotos().length }}
+        {{ fotos().length === 1 ? 'fotografía' : 'fotografías' }}
+      </span>
+
+    </div>
+
+    <div class="galeria">
+
+      @for (foto of fotos(); track foto.idPhoto) {
+
+        <article class="tarjeta">
+
+          <div class="contenedor-imagen">
+
+            @if (!imagenesFallidas().includes(foto.idPhoto)) {
+
+              <img
+                [src]="foto.urlPhoto"
+                [alt]="foto.descriptionPhoto || 'Fotografía del material'"
+                loading="lazy"
+                (error)="errorImagen(foto.idPhoto)"
+              />
+
+            } @else {
+
+              <div class="imagen-no-disponible">
+
+                <span>▧</span>
+
+                <p>Imagen no disponible</p>
+
+              </div>
+
+            }
+
+          </div>
+
+          <div class="contenido-tarjeta">
+
+            <span class="identificador">
+              Foto #{{ foto.idPhoto }}
+            </span>
+
+            <h3>
+
+              {{ nombrePublicacion(foto.idPublication) }}
+
+            </h3>
+
+            <p class="descripcion">
+
+              {{ foto.descriptionPhoto || 'Sin descripción.' }}
+
+            </p>
+
+            <div class="fecha">
+
+              Fecha de subida:
+
+              @if (foto.uploadDate) {
+
+                {{ foto.uploadDate | date:'dd/MM/yyyy - HH:mm' }}
+
+              } @else {
+
+                No disponible
+
+              }
+
+            </div>
+
+          </div>
+
+        </article>
+
       }
-    </div>
-  }
-</div>
 
+    </div>
+
+  } @else if (!mensaje() && !buscando()) {
+
+    <div class="estado-vacio">
+
+      <span class="icono-galeria">▧</span>
+
+      <h3>Explora las fotografías</h3>
+
+      <p>
+        Selecciona una publicación para consultar sus imágenes.
+      </p>
+
+    </div>
+
+  }
+
+  <div class="navegacion">
+
+    <button
+      mat-stroked-button
+      (click)="limpiar()"
+      [disabled]="buscando()"
+    >
+      Limpiar búsqueda
+    </button>
+
+    <a
+      mat-stroked-button
+      routerLink="/fotos-publicaciones/listar"
+    >
+      Volver al listado
+    </a>
+
+  </div>
+
+</div>

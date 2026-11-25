@@ -1,74 +1,281 @@
 <div class="container">
-  <h2>Listado de Fotos de Publicaciones</h2>
 
-  <table mat-table [dataSource]="pagina.filas" class="mat-elevation-z8">
+  <h2>Listado de fotografías</h2>
 
-    <ng-container matColumnDef="idPhoto">
-      <th mat-header-cell *matHeaderCellDef>ID Foto</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.idPhoto }}
-      </td>
-    </ng-container>
+  <p class="subtitulo">
+    Consulta y administra las fotografías de los materiales publicados.
+  </p>
 
-   <ng-container matColumnDef="urlPhoto">
-  <th mat-header-cell *matHeaderCellDef>Foto</th>
+  <div class="barra-superior">
 
-  <td mat-cell *matCellDef="let foto">
-    <img
-      class="foto-miniatura"
-      [src]="foto.urlPhoto"
-      [alt]="foto.descriptionPhoto || 'Foto del material'"
-      loading="lazy"
-      (error)="imagen.hidden = true; aviso.hidden = false"
-      #imagen
-    />
+    <div class="contador">
 
-    <span #aviso hidden>
-      No se pudo cargar la imagen.
-    </span>
-  </td>
-</ng-container>
-    <ng-container matColumnDef="descriptionPhoto">
-      <th mat-header-cell *matHeaderCellDef>Descripción</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.descriptionPhoto }}
-      </td>
-    </ng-container>
+      <span class="numero">
+        {{ fotos().length }}
+      </span>
 
-    <ng-container matColumnDef="uploadDate">
-      <th mat-header-cell *matHeaderCellDef>Fecha de Subida</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.uploadDate }}
-      </td>
-    </ng-container>
+      <span class="texto-contador">
+        Fotografías registradas
+      </span>
 
-    <ng-container matColumnDef="idPublication">
-      <th mat-header-cell *matHeaderCellDef>ID Publicación</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.idPublication }}
-      </td>
-    </ng-container>
+    </div>
 
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef>Acciones</th>
-      <td mat-cell *matCellDef="let element">
-        <button matButton="filled" (click)="editar(element.idPhoto)">
-          Editar
-        </button>
+    <div class="botones-superiores">
 
-        <button matButton="outlined" (click)="eliminar(element.idPhoto)">
-          Eliminar
-        </button>
-      </td>
-    </ng-container>
+      <a
+        mat-stroked-button
+        routerLink="/fotos-publicaciones/buscar"
+      >
+        Buscar fotografías
+      </a>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <a
+        mat-flat-button
+        class="boton-principal"
+        routerLink="/fotos-publicaciones/registrar"
+      >
+        + Registrar fotografía
+      </a>
 
-  </table>
-  <app-paginador
-  #pagina="paginador"
-  [datos]="dataSource.data"
-></app-paginador>
+    </div>
+
+  </div>
+
+  @if (mensaje()) {
+
+    <div
+      class="notificacion"
+      [class.exitosa]="exito()"
+      role="status"
+    >
+
+      {{ mensaje() }}
+
+    </div>
+
+  }
+
+  @if (cargando()) {
+
+    <div class="estado-vacio">
+      Cargando fotografías...
+    </div>
+
+  } @else if (fotos().length === 0) {
+
+    <div class="estado-vacio">
+
+      <span class="icono-galeria">▧</span>
+
+      <h3>No hay fotografías para mostrar</h3>
+
+      <p>
+        Las fotografías registradas aparecerán aquí.
+      </p>
+
+      <a
+        mat-flat-button
+        class="boton-principal"
+        routerLink="/fotos-publicaciones/registrar"
+      >
+        Registrar fotografía
+      </a>
+
+    </div>
+
+  } @else {
+
+    <div class="tabla-contenedor">
+
+      <table mat-table [dataSource]="pagina.filas">
+
+        <ng-container matColumnDef="idPhoto">
+
+          <th mat-header-cell *matHeaderCellDef>
+            ID Foto
+          </th>
+
+          <td mat-cell *matCellDef="let element">
+
+            <span class="identificador">
+              #{{ element.idPhoto }}
+            </span>
+
+          </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="urlPhoto">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Fotografía
+          </th>
+
+          <td mat-cell *matCellDef="let foto">
+
+            @if (!imagenesFallidas().includes(foto.idPhoto)) {
+
+              <img
+                class="foto-miniatura"
+                [src]="foto.urlPhoto"
+                [alt]="foto.descriptionPhoto || 'Foto del material'"
+                loading="lazy"
+                (error)="errorImagen(foto.idPhoto)"
+              />
+
+            } @else {
+
+              <div class="imagen-no-disponible">
+
+                <span>▧</span>
+
+                Imagen no disponible
+
+              </div>
+
+            }
+
+          </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="descriptionPhoto">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Descripción
+          </th>
+
+          <td mat-cell *matCellDef="let element">
+
+            <span class="descripcion">
+
+              {{ element.descriptionPhoto || 'Sin descripción' }}
+
+            </span>
+
+          </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="uploadDate">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Fecha de subida
+          </th>
+
+          <td mat-cell *matCellDef="let element">
+
+            @if (element.uploadDate) {
+
+              <div class="fecha">
+
+                {{ element.uploadDate | date:'dd/MM/yyyy' }}
+
+                <span class="hora">
+
+                  {{ element.uploadDate | date:'HH:mm' }}
+
+                </span>
+
+              </div>
+
+            } @else {
+
+              No disponible
+
+            }
+
+          </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="idPublication">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Publicación
+          </th>
+
+          <td mat-cell *matCellDef="let element">
+
+            <span class="nombre-publicacion">
+
+              {{ nombrePublicacion(element.idPublication) }}
+
+            </span>
+
+          </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Acciones
+          </th>
+
+          <td mat-cell *matCellDef="let element">
+
+            @if (puedeGestionar(element)) {
+
+              <div class="acciones">
+
+                <button
+                  mat-flat-button
+                  class="boton-editar"
+                  (click)="editar(element.idPhoto)"
+                  [disabled]="eliminando() !== null"
+                >
+                  Editar
+                </button>
+
+                <button
+                  mat-stroked-button
+                  class="boton-eliminar"
+                  (click)="eliminar(element.idPhoto)"
+                  [disabled]="eliminando() !== null"
+                >
+
+                  {{ eliminando() === element.idPhoto
+                    ? 'Eliminando...'
+                    : 'Eliminar' }}
+
+                </button>
+
+              </div>
+
+            } @else {
+
+              <span class="solo-consulta">
+
+                Solo consulta
+
+              </span>
+
+            }
+
+          </td>
+
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns"
+        ></tr>
+
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+        ></tr>
+
+      </table>
+
+    </div>
+
+    <app-paginador
+      #pagina="paginador"
+      [datos]="fotos()"
+    ></app-paginador>
+
+  }
+
 </div>
-

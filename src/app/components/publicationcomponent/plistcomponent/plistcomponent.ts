@@ -33,24 +33,29 @@ export class Plistcomponent implements OnInit {
   }
 
   listar(): void {
-    this.cargando = true;
-    this.mensaje = '';
+  this.cargando = true;
+  this.mensaje = '';
 
-    this.service.getPublications().subscribe({
-      next: data => {
-        this.publicaciones = data;
-        this.cargando = false;
-        this.cdr.markForCheck();
-      },
-      error: error => {
-        this.cargando = false;
-        this.mensaje = error.status === 401
-          ? 'Debes iniciar sesión.'
-          : 'No se pudieron cargar las publicaciones.';
-        this.cdr.markForCheck();
-      },
-    });
-  }
+  this.service.getPublications().subscribe({
+    next: data => {
+      this.publicaciones = [...data].sort(
+        (a, b) => (a.id ?? 0) - (b.id ?? 0)
+      );
+
+      this.cargando = false;
+      this.cdr.detectChanges();
+    },
+    error: error => {
+      this.cargando = false;
+
+      this.mensaje = error.status === 401
+        ? 'Debes iniciar sesión.'
+        : 'No se pudieron cargar las publicaciones.';
+
+      this.cdr.detectChanges();
+    },
+  });
+}
 
   puedeGestionar(publicacion: PublicationDTO): boolean {
     const session = this.auth.session();
@@ -65,26 +70,45 @@ export class Plistcomponent implements OnInit {
   }
 
   eliminar(id: number | undefined): void {
-    if (!id || this.eliminando) return;
-    if (!confirm('¿Eliminar esta publicación?')) return;
+  if (!id || this.eliminando) return;
 
-    this.eliminando = true;
+  const publicacion = this.publicaciones.find(p => p.id === id);
 
-    this.service.deletePublication(id).subscribe({
-      next: () => {
-        this.eliminando = false;
-        this.listar();
-      },
-      error: error => {
-        this.eliminando = false;
-        this.mensaje =
-          error.status === 409
-            ? 'No se puede eliminar: tiene fotos o transacciones asociadas.'
-            : error.status === 403
-              ? 'No tienes permiso para eliminar esta publicación.'
-              : 'No se pudo eliminar la publicación.';
-        this.cdr.markForCheck();
-      },
-    });
+  if (!publicacion || !this.puedeGestionar(publicacion)) {
+    alert('No tienes permiso para eliminar esta publicación.');
+    return;
   }
+
+  if (!confirm('¿Deseas eliminar esta publicación?')) return;
+
+  this.eliminando = true;
+  this.mensaje = '';
+
+  this.service.deletePublication(id).subscribe({
+    next: () => {
+      this.publicaciones = this.publicaciones.filter(
+        p => p.id !== id
+      );
+
+      this.eliminando = false;
+      this.cdr.detectChanges();
+
+      alert('Publicación eliminada correctamente.');
+
+      this.listar();
+    },
+    error: error => {
+      this.eliminando = false;
+
+      this.mensaje =
+        error.status === 409
+          ? 'No se puede eliminar: tiene fotos o transacciones asociadas.'
+          : error.status === 403
+            ? 'No tienes permiso para eliminar esta publicación.'
+            : 'No se pudo eliminar la publicación.';
+
+      this.cdr.detectChanges();
+    },
+  });
+}
 }

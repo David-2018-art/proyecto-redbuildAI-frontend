@@ -11,7 +11,7 @@
       <ng-container matColumnDef="precio"><th mat-header-cell *matHeaderCellDef>Precio</th><td mat-cell *matCellDef="let row">{{ row.agreedUnitPrice }}</td></ng-container>
       <ng-container matColumnDef="total"><th mat-header-cell *matHeaderCellDef>Total</th><td mat-cell *matCellDef="let row">{{ row.amountTransaction }}</td></ng-container>
       <ng-container matColumnDef="estado"><th mat-header-cell *matHeaderCellDef>Estado</th><td mat-cell *matCellDef="let row">{{ row.statusTransaction }}</td></ng-container>
-      <ng-container matColumnDef="publicacion"><th mat-header-cell *matHeaderCellDef>Publicación</th><td mat-cell *matCellDef="let row">{{ row.idPublication }}</td></ng-container>
+      <ng-container matColumnDef="publicacion"><th mat-header-cell *matHeaderCellDef>Publicación</th><td mat-cell *matCellDef="let row">{{ nombrePublicacion(row.idPublication) }}</td></ng-container>
 <ng-container matColumnDef="acciones">
   <th mat-header-cell *matHeaderCellDef>Acciones</th>
 
@@ -24,6 +24,20 @@
         Gestionar
       </a>
     }
+
+    @if (puedeCalificar(row)) {
+
+  <a
+    mat-stroked-button
+    routerLink="/resenas/registrar"
+    [queryParams]="{
+      idTransaccion: row.idTransaccion
+    }"
+  >
+    ★ Calificar
+  </a>
+
+}
 
     @if (puedeEliminar(row)) {
       <button mat-stroked-button type="button" (click)="eliminar(row)">

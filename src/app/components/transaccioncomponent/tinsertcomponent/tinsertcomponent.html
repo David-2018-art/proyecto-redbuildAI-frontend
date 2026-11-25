@@ -1,34 +1,179 @@
 <div class="container">
   <h2>Registrar transacción</h2>
+
+  <p class="informacion">
+  Selecciona una publicación disponible de otro usuario
+  para solicitar una compra o donación.
+</p>
+
+@if (publications.length === 0) {
+  <p role="status">
+    No hay publicaciones disponibles de otros usuarios.
+  </p>
+}
+
   <form [formGroup]="form" (ngSubmit)="publicar()">
+
+    <!-- Publicación -->
     <mat-form-field appearance="outline">
       <mat-label>Publicación</mat-label>
-      <mat-select formControlName="idPublication">
+
+      <mat-select
+        formControlName="idPublication"
+        (selectionChange)="seleccionarPublicacion($event.value)"
+      >
         @for (publication of publications; track publication.id) {
-          <mat-option [value]="publication.id">{{ publication.title }}</mat-option>
+          <mat-option [value]="publication.id">
+            {{ publication.title }}
+          </mat-option>
         }
       </mat-select>
+
+      <mat-error>Selecciona una publicación.</mat-error>
     </mat-form-field>
+
+    @if (productoSeleccionado; as producto) {
+
+  <div class="detalle-producto">
+
+    <h3>Información del producto</h3>
+
+    <p>
+      <strong>Producto:</strong>
+      {{ producto.nameProduct }}
+    </p>
+
+    <p>
+      <strong>Propietario:</strong>
+      {{ producto.nombrePropietario || 'Usuario #' + producto.idUser }}
+    </p>
+
+    <p>
+      <strong>Material:</strong>
+      {{ producto.material }}
+    </p>
+
+    <p>
+      <strong>Estado:</strong>
+      {{ producto.statusMaterial }}
+    </p>
+
+    <p>
+      <strong>Cantidad disponible:</strong>
+      {{ producto.quantityProduct }}
+      {{ producto.unidadMedidaProduct }}
+    </p>
+
+    <p>
+      <strong>Precio de referencia:</strong>
+      S/ {{ producto.priceProduct | number:'1.2-2' }}
+    </p>
+
+  </div>
+}
+
+    <!-- Tipo de operación automático -->
     <mat-form-field appearance="outline">
       <mat-label>Tipo de operación</mat-label>
+
       <mat-select formControlName="typeTransaction">
         <mat-option value="Venta">Venta</mat-option>
         <mat-option value="Donacion">Donación</mat-option>
       </mat-select>
+
+      <mat-hint>
+        Se asigna automáticamente según la publicación.
+      </mat-hint>
     </mat-form-field>
+
+    <!-- Cantidad -->
     <mat-form-field appearance="outline">
       <mat-label>Cantidad</mat-label>
-      <input matInput type="number" step="0.001" formControlName="quantityTransaction" />
+
+      <input
+        matInput
+        type="number"
+        min="0.001"
+        step="0.001"
+        formControlName="quantityTransaction"
+      />
+
+<mat-error>
+
+  @if (form.controls.quantityTransaction.hasError('max')) {
+
+    La cantidad supera el stock disponible.
+
+  } @else {
+
+    Ingresa una cantidad válida.
+
+  }
+
+</mat-error>
     </mat-form-field>
+
+    <!-- Precio -->
     <mat-form-field appearance="outline">
-      <mat-label>Precio unitario acordado</mat-label>
-      <input matInput type="number" step="0.01" formControlName="agreedUnitPrice" />
+      <mat-label>Precio unitario acordado (S/)</mat-label>
+
+      <input
+        matInput
+        type="number"
+        min="0"
+        step="0.01"
+        formControlName="agreedUnitPrice"
+      />
+
+      @if (form.controls.typeTransaction.value === 'Donacion') {
+        <mat-hint>Las donaciones no tienen costo.</mat-hint>
+      }
+
+      <mat-error>Ingresa un precio válido.</mat-error>
     </mat-form-field>
+
+    <!-- Descripción -->
     <mat-form-field appearance="outline">
       <mat-label>Descripción</mat-label>
-      <textarea matInput rows="3" maxlength="500" formControlName="descriptionTransaction"></textarea>
+
+      <textarea
+        matInput
+        rows="3"
+        maxlength="500"
+        formControlName="descriptionTransaction"
+      ></textarea>
     </mat-form-field>
-    <button mat-flat-button type="submit" [disabled]="guardando">Registrar</button>
-    <a mat-stroked-button routerLink="/transacciones/listar">Cancelar</a>
+
+    @if (productoSeleccionado) {
+
+  <div class="total-transaccion">
+
+    <span>Total estimado</span>
+
+    <strong>
+      S/ {{ totalEstimado | number:'1.2-2' }}
+    </strong>
+
+  </div>
+}
+
+    <!-- Botones -->
+    <button
+  mat-flat-button
+  type="submit"
+  [disabled]="
+    guardando ||
+    cargando ||
+    form.invalid ||
+    !productoSeleccionado
+  "
+>
+  {{ guardando ? 'Registrando...' : 'Registrar solicitud' }}
+</button>
+
+    <a mat-stroked-button routerLink="/transacciones/listar">
+      Cancelar
+    </a>
+
   </form>
 </div>
