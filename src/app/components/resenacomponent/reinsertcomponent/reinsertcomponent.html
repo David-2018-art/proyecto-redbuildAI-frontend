@@ -1,37 +1,165 @@
 <div class="container">
+
   <h2>Registrar reseña</h2>
+
+  <p>
+    Selecciona una transacción completada para calificar
+    al otro participante.
+  </p>
+
+  @if (cargando) {
+    <p>Cargando transacciones...</p>
+  }
+
+  @if (mensaje) {
+    <p role="alert">{{ mensaje }}</p>
+  }
+
+ @if (!cargando && !mensaje && transacciones.length === 0) {
+  <div class="calificacion">
+
+    <h3>Estás al día con tus reseñas</h3>
+
+    <p>No tienes transacciones pendientes de calificar.</p>
+
+    <p>
+      Cuando completes una nueva transacción,
+      podrás registrar una reseña.
+    </p>
+
+    <a mat-flat-button routerLink="/transacciones/listar">
+      Volver a mis transacciones
+    </a>
+
+  </div>
+}
+
+@if (!cargando && !mensaje && transacciones.length > 0) {
+
   <form [formGroup]="form" (ngSubmit)="registrar()">
+
     <mat-form-field appearance="outline">
-      <mat-label>Transacción</mat-label>
-      <mat-select formControlName="idTransaccion">
-        @for (transaccion of transacciones; track transaccion.idTransaccion) {
+
+      <mat-label>Transacción completada</mat-label>
+
+      <mat-select
+        formControlName="idTransaccion"
+        (selectionChange)="seleccionarTransaccion($event.value)"
+      >
+
+        @for (
+          transaccion of transacciones;
+          track transaccion.idTransaccion
+        ) {
+
           <mat-option [value]="transaccion.idTransaccion">
-            #{{ transaccion.idTransaccion }} - {{ transaccion.typeTransaction }} - {{ transaccion.statusTransaction }}
+
+            #{{ transaccion.idTransaccion }} -
+            {{ nombrePublicacion(transaccion.idPublication) }}
+
           </mat-option>
+
         }
+
       </mat-select>
+
+      <mat-error>Selecciona una transacción.</mat-error>
+
     </mat-form-field>
+
     <mat-form-field appearance="outline">
-      <mat-label>ID del usuario calificado</mat-label>
-      <input matInput type="number" formControlName="idRatedUser" />
+
+      <mat-label>Usuario calificado</mat-label>
+
+      <input
+        matInput
+        [value]="usuarioCalificado"
+        readonly
+      />
+
+      <mat-hint>
+        Se selecciona automáticamente.
+      </mat-hint>
+
     </mat-form-field>
+
     <mat-form-field appearance="outline">
+
       <mat-label>Título</mat-label>
-      <input matInput maxlength="100" formControlName="titleResena" />
+
+      <input
+        matInput
+        maxlength="100"
+        formControlName="titleResena"
+      />
+
+      <mat-error>Ingresa un título.</mat-error>
+
     </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Calificación</mat-label>
-      <mat-select formControlName="scoreResena">
+
+    <div class="calificacion">
+
+      <p>Calificación</p>
+
+      <div class="estrellas">
+
         @for (score of [1, 2, 3, 4, 5]; track score) {
-          <mat-option [value]="score">{{ score }}/5</mat-option>
+
+          <button
+            type="button"
+            class="estrella"
+            [class.seleccionada]="
+              score <= form.controls.scoreResena.value
+            "
+            [attr.aria-label]="score + ' estrellas'"
+            [attr.aria-pressed]="
+              score === form.controls.scoreResena.value
+            "
+            (click)="form.controls.scoreResena.setValue(score)"
+          >
+            ★
+          </button>
+
         }
-      </mat-select>
-    </mat-form-field>
+
+      </div>
+
+      <p>{{ form.controls.scoreResena.value }} de 5 estrellas</p>
+
+    </div>
+
     <mat-form-field appearance="outline">
+
       <mat-label>Comentario</mat-label>
-      <textarea matInput rows="4" maxlength="500" formControlName="descriptionResena"></textarea>
+
+      <textarea
+        matInput
+        rows="4"
+        maxlength="500"
+        formControlName="descriptionResena"
+      ></textarea>
+
     </mat-form-field>
-    <button mat-flat-button type="submit" [disabled]="guardando">Registrar</button>
-    <a mat-stroked-button routerLink="/resenas/listar">Cancelar</a>
-  </form>
+
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="
+        guardando ||
+        cargando ||
+        form.invalid ||
+        form.controls.idRatedUser.value <= 0
+      "
+    >
+
+      {{ guardando ? 'Registrando...' : 'Registrar reseña' }}
+
+    </button>
+
+    <a mat-stroked-button routerLink="/resenas/listar">
+      Cancelar
+    </a>
+
+   </form>
+  }
 </div>

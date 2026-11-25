@@ -1,42 +1,217 @@
 .container {
-  max-width: 750px;
+  max-width: 800px;
   margin: 24px auto;
-  padding: 24px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgb(0 0 0 / 6%);
+  padding: 28px;
+  background: #101f2b;
+  color: #dce9ef;
+  border: 1px solid #2c4350;
+  border-radius: 16px;
 }
 
 h2 {
-  margin: 0 0 24px;
-  color: #205c35;
   text-align: center;
+  margin-bottom: 28px;
+  color: #eef7fa;
+}
+
+h3 {
+  color: #e3eff4;
+  font-size: 17px;
+  margin: 10px 0;
+}
+
+.encabezado-transaccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.estado {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 7px 15px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #304451;
+  color: #dce9ef;
+}
+
+.estado[data-estado="Solicitada"] {
+  color: #ffcc69;
+  background: #443823;
+}
+
+.estado[data-estado="Reservada"] {
+  color: #8ecbff;
+  background: #203f58;
+}
+
+.estado[data-estado="Completada"] {
+  color: #64e4b0;
+  background: #194637;
+}
+
+.estado[data-estado="Cancelada"],
+.estado[data-estado="Rechazada"] {
+  color: #ffaaaa;
+  background: #482b32;
+}
+
+.resumen {
+  background: #162e35;
+  border: 1px solid #2b6259;
+  padding: 22px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.etiqueta {
+  display: block;
+  font-size: 13px;
+  color: #a7c3ce;
+  margin-bottom: 7px;
+}
+
+.publicacion {
+  padding-bottom: 18px;
+  border-bottom: 1px solid #34505a;
+}
+
+.publicacion h3 {
+  font-size: 20px;
+}
+
+.tipo {
+  font-size: 13px;
+  color: #64e4b0;
+}
+
+.participantes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #34505a;
+}
+
+.resumen-precios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  padding-top: 20px;
+}
+
+.resumen-precios strong {
+  font-size: 19px;
+}
+
+.total {
+  color: #64e4b0;
+}
+
+.informacion {
+  background: #142d35;
+  border-left: 4px solid #64e4b0;
+  padding: 15px;
+  margin: 18px 0;
+  border-radius: 8px;
+  line-height: 1.6;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 mat-form-field {
   width: 100%;
 }
 
+.mensaje-comprador {
+  padding: 18px;
+  border: 1px solid #34505a;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+
+.mensaje-comprador p {
+  margin: 8px 0;
+}
+
+.total-estimado {
+  background: #162e35;
+  padding: 14px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  color: #64e4b0;
+}
+
+.titulo-acciones {
+  margin-top: 25px;
+}
+
 .acciones {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin: 20px 0;
+  margin: 18px 0;
 }
 
-p[role="alert"] {
-  color: #b3261e;
+.acciones button {
+  flex: 1 1 190px;
+  min-height: 42px;
+}
+
+button.accion-positiva:not(:disabled) {
+  background: #64e4b0 !important;
+  color: #10251d !important;
+  border-color: #64e4b0 !important;
+}
+
+button.accion-negativa:not(:disabled) {
+  color: #ffaaaa !important;
+  border-color: #a65d65 !important;
+}
+
+.mensaje {
+  padding: 14px;
+  background: #203b46;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.navegacion {
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid #34505a;
 }
 
 @media (max-width: 600px) {
+
   .container {
     margin: 12px 0;
     padding: 16px;
   }
+
+  .participantes {
+    grid-template-columns: 1fr;
+  }
+
+  .resumen-precios {
+    grid-template-columns: 1fr;
+  }
+
+  .acciones {
+    flex-direction: column;
+  }
+
+  .acciones button {
+    flex: auto;
+    width: 100%;
+  }
+
 }

@@ -1,0 +1,35 @@
+.detalle-producto {
+  background: rgba(100, 228, 176, 0.05);
+  border: 1px solid #2b6259;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.detalle-producto h3 {
+  color: #64e4b0;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.detalle-producto p {
+  margin: 8px 0;
+  text-align: left;
+  color: #dce9ef;
+}
+
+.total-transaccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px;
+  margin: 16px 0;
+  border-radius: 12px;
+  background: #162e35;
+  border: 1px solid #2b6259;
+}
+
+.total-transaccion strong {
+  font-size: 24px;
+  color: #64e4b0;
+}

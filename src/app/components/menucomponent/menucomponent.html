@@ -100,15 +100,20 @@
   </a>
 </mat-menu>
 
-<mat-menu #categorias="matMenu">
+ <mat-menu #categorias="matMenu">
+
   <a mat-menu-item routerLink="/categorias/listar">
     <mat-icon>category</mat-icon>
     Ver categorías
   </a>
-  <a mat-menu-item routerLink="/categorias/registrar">
-    <mat-icon>add</mat-icon>
-    Registrar categoría
-  </a>
+
+  @if (auth.session()?.role === 'Administrador') {
+    <a mat-menu-item routerLink="/categorias/registrar">
+      <mat-icon>add</mat-icon>
+      Registrar categoría
+    </a>
+  }
+
 </mat-menu>
 
 <!-- Publicaciones -->

@@ -1,3 +1,4 @@
+
 <div class="container">
   <h2>Registrar producto</h2>
 
@@ -11,80 +12,81 @@
 
   @if (datosCargados) {
     <form [formGroup]="form" (ngSubmit)="registrar()">
-        <section class="asistente-ia" aria-labelledby="titulo-ia">
-  <h3 id="titulo-ia">Completa tu producto con una foto</h3>
 
-  <p>
-    Selecciona una foto del material. Al pulsar Analizar, la imagen
-    se enviará a Google para generar una sugerencia.
-  </p>
+      <!-- ASISTENTE DE INTELIGENCIA ARTIFICIAL -->
+      <section class="asistente-ia" aria-labelledby="titulo-ia">
 
-  <label for="foto-material">Foto del material — JPG o PNG, hasta 4 MB</label>
+        <h3 id="titulo-ia">Completa tu producto con una foto</h3>
 
-  <input
-    id="foto-material"
-    type="file"
-    accept="image/jpeg,image/png"
-    [disabled]="analizando || guardando"
-    (change)="seleccionarFoto($event)"
-  />
+        <p>
+          Selecciona una foto del material. Al pulsar Analizar,
+          la imagen se enviará a Google para generar una sugerencia.
+        </p>
 
-  <button
-    mat-stroked-button
-    type="button"
-    [disabled]="!fotoSeleccionada || analizando || guardando"
-    (click)="analizarFoto()"
-  >
-    {{ analizando ? 'Analizando...' : 'Analizar material' }}
-  </button>
+        <label for="foto-material">
+          Foto del material — JPG o PNG, hasta 4 MB
+        </label>
 
-  <p role="status" aria-live="polite">{{ mensajeIA }}</p>
+        <div class="controles-ia">
+          <input
+            id="foto-material"
+            type="file"
+            accept="image/jpeg,image/png"
+            [disabled]="analizando || guardando"
+            (change)="seleccionarFoto($event)"
+          />
 
-  @if (sugerencia; as resultado) {
-    <div class="resultado-ia">
-      <h4>Sugerencia para revisar</h4>
+          <button
+            mat-stroked-button
+            type="button"
+            [disabled]="!fotoSeleccionada || analizando || guardando"
+            (click)="analizarFoto()"
+          >
+            {{ analizando ? 'Analizando...' : 'Analizar material' }}
+          </button>
+        </div>
 
-      <p><strong>Nombre:</strong> {{ resultado.nameProduct }}</p>
-      <p><strong>Material probable:</strong> {{ resultado.material }}</p>
-      <p><strong>Color:</strong> {{ resultado.colour }}</p>
-      <p><strong>Descripción:</strong> {{ resultado.descriptionProduct }}</p>
+        <p role="status" aria-live="polite">{{ mensajeIA }}</p>
 
-      <p>
-        El análisis visual puede equivocarse. No determina
-        la resistencia ni la seguridad del material.
-      </p>
+        @if (sugerencia; as resultado) {
+          <div class="resultado-ia">
+            <h4>Sugerencia para revisar</h4>
 
-      <button
-        mat-flat-button
-        type="button"
-        [disabled]="guardando"
-        (click)="aplicarSugerencia()"
-      >
-        Aplicar sugerencia
-      </button>
+            <p><strong>Nombre:</strong> {{ resultado.nameProduct }}</p>
+            <p><strong>Material probable:</strong> {{ resultado.material }}</p>
+            <p><strong>Color:</strong> {{ resultado.colour }}</p>
+            <p><strong>Descripción:</strong> {{ resultado.descriptionProduct }}</p>
 
-      <small>
-        Reemplaza nombre, descripción, material y color del formulario.
-      </small>
-    </div>
-  }
-</section>
+            <p>
+              El análisis visual puede equivocarse. No determina
+              la resistencia ni la seguridad del material.
+            </p>
+
+            <button
+              mat-flat-button
+              type="button"
+              [disabled]="guardando"
+              (click)="aplicarSugerencia()"
+            >
+              Aplicar sugerencia
+            </button>
+
+            <small>
+              Reemplaza nombre, descripción, material y color del formulario.
+            </small>
+          </div>
+        }
+      </section>
+
+      <!-- INFORMACIÓN DEL PRODUCTO -->
+      <h3 class="titulo-seccion">Información del producto</h3>
+
+      <!-- FILA 1: NOMBRE Y CATEGORÍA -->
       <mat-form-field appearance="outline">
         <mat-label>Nombre del producto</mat-label>
         <input matInput formControlName="nameProduct" maxlength="100" />
-        <mat-error>Ingresa un nombre válido de hasta 100 caracteres.</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Descripción</mat-label>
-        <textarea
-          matInput
-          formControlName="descriptionProduct"
-          maxlength="500"
-          rows="3"
-        ></textarea>
         <mat-error>
-          Ingresa una descripción válida de hasta 500 caracteres.
+          Ingresa un nombre válido de hasta 100 caracteres.
         </mat-error>
       </mat-form-field>
 
@@ -100,27 +102,61 @@
         <mat-error>Selecciona una categoría.</mat-error>
       </mat-form-field>
 
+      <!-- FILA 2: MATERIAL Y COLOR -->
       <mat-form-field appearance="outline">
         <mat-label>Material</mat-label>
         <input matInput formControlName="material" maxlength="80" />
-        <mat-error>Ingresa un material válido de hasta 80 caracteres.</mat-error>
+        <mat-error>
+          Ingresa un material válido de hasta 80 caracteres.
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Color</mat-label>
         <input matInput formControlName="colour" maxlength="40" />
-        <mat-error>Ingresa un color válido de hasta 40 caracteres.</mat-error>
+        <mat-error>
+          Ingresa un color válido de hasta 40 caracteres.
+        </mat-error>
       </mat-form-field>
 
+      <!-- FILA 3: ESTADOS -->
       <mat-form-field appearance="outline">
         <mat-label>Estado del material</mat-label>
         <mat-select formControlName="statusMaterial">
           @for (condicion of condiciones; track condicion) {
-            <mat-option [value]="condicion">{{ condicion }}</mat-option>
+            <mat-option [value]="condicion">
+              {{ condicion }}
+            </mat-option>
           }
         </mat-select>
       </mat-form-field>
 
+      <mat-form-field appearance="outline">
+        <mat-label>Estado del producto</mat-label>
+        <mat-select formControlName="statusProduct">
+          <mat-option value="Activo">Activo</mat-option>
+          <mat-option value="Inactivo">Inactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- FILA 4: DESCRIPCIÓN -->
+      <mat-form-field appearance="outline" class="ancho-completo">
+        <mat-label>Descripción</mat-label>
+        <textarea
+          matInput
+          formControlName="descriptionProduct"
+          maxlength="500"
+          rows="2"
+        ></textarea>
+        <mat-error>
+          Ingresa una descripción válida de hasta 500 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- DISPONIBILIDAD Y PRECIO -->
+      <h3 class="titulo-seccion">Disponibilidad y precio</h3>
+
+      <!-- FILA 5: CANTIDAD Y UNIDAD -->
       <mat-form-field appearance="outline">
         <mat-label>Cantidad disponible</mat-label>
         <input
@@ -137,15 +173,17 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Unidad de medida</mat-label>
-        <input
-          matInput
-          formControlName="unidadMedidaProduct"
-          maxlength="30"
-          placeholder="Unidad, kg, m²..."
-        />
-        <mat-error>Ingresa una unidad válida de hasta 30 caracteres.</mat-error>
+        <mat-select formControlName="unidadMedidaProduct">
+          @for (unidad of unidadesMedida; track unidad.value) {
+            <mat-option [value]="unidad.value">
+              {{ unidad.viewValue }}
+            </mat-option>
+          }
+        </mat-select>
+        <mat-error>Selecciona una unidad de medida.</mat-error>
       </mat-form-field>
 
+      <!-- FILA 6: PRECIO Y PROPIETARIO -->
       <mat-form-field appearance="outline">
         <mat-label>Precio unitario</mat-label>
         <input
@@ -160,36 +198,32 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Estado del producto</mat-label>
-        <mat-select formControlName="statusProduct">
-          <mat-option value="Activo">Activo</mat-option>
-          <mat-option value="Inactivo">Inactivo</mat-option>
-        </mat-select>
-      </mat-form-field>
-
       @if (esAdministrador) {
         <mat-form-field appearance="outline">
           <mat-label>Propietario</mat-label>
           <mat-select formControlName="idUser">
-            @for (user of usuarios; track user.idUser) {
-              <mat-option [value]="user.idUser">
-                {{ user.nameUser }} {{ user.lastNameUser }}
-                — {{ user.emailUser }}
+            @for (usuario of usuariosSelect; track usuario.value) {
+              <mat-option [value]="usuario.value">
+                {{ usuario.viewValue }}
               </mat-option>
             }
           </mat-select>
           <mat-error>Selecciona un propietario.</mat-error>
         </mat-form-field>
       } @else {
-        <p>Propietario: {{ nombrePropietario }}</p>
+        <mat-form-field appearance="outline">
+          <mat-label>Propietario</mat-label>
+          <input matInput [value]="nombrePropietario" readonly />
+        </mat-form-field>
       }
 
+      <!-- BOTONES -->
       <div class="acciones">
         <button
           mat-flat-button
           type="submit"
-          [disabled]="guardando || analizando || categorias.length === 0"        >
+          [disabled]="guardando || analizando || categorias.length === 0"
+        >
           {{ guardando ? 'Guardando...' : 'Registrar' }}
         </button>
 
@@ -197,6 +231,7 @@
           Cancelar
         </a>
       </div>
+
     </form>
   } @else if (!cargando) {
     <a mat-stroked-button routerLink="/login">

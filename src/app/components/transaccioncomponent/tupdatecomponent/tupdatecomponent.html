@@ -1,75 +1,240 @@
 <div class="container">
+
   <h2>Gestionar transacción</h2>
 
   @if (cargando()) {
-    <p>Cargando transacción...</p>
+
+    <p class="mensaje">Cargando transacción...</p>
+
   }
 
   @if (mensaje()) {
-    <p role="status">{{ mensaje() }}</p>
+
+    <p class="mensaje" role="status">
+      {{ mensaje() }}
+    </p>
+
   }
 
   @if (listo() && original) {
-    <p>
-      Estado: <strong>{{ original.statusTransaction }}</strong>
-      · Operación: {{ original.typeTransaction }}
-    </p>
 
-    <p>
-      Publicación: {{ original.idPublication }}
-      · Adquirente: {{ original.idUser }}
-    </p>
+    <div class="encabezado-transaccion">
 
-    <form [formGroup]="form" (ngSubmit)="guardar()">
-      <mat-form-field appearance="outline">
-        <mat-label>Cantidad</mat-label>
-        <input
-          matInput type="number" step="0.001"
-          formControlName="quantityTransaction"
-        />
-        <mat-error>Ingresa una cantidad positiva con hasta 3 decimales.</mat-error>
-      </mat-form-field>
+      <span>Transacción #{{ original.idTransaccion }}</span>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Precio unitario acordado</mat-label>
-        <input
-          matInput type="number" step="0.01"
-          formControlName="agreedUnitPrice"
-        />
-        <mat-error>Ingresa un precio válido con hasta 2 decimales.</mat-error>
-      </mat-form-field>
+      <span
+        class="estado"
+        [attr.data-estado]="original.statusTransaction"
+      >
+        {{ original.statusTransaction }}
+      </span>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Mensaje</mat-label>
-        <textarea
-          matInput formControlName="descriptionTransaction"
-          maxlength="500" rows="3"
-        ></textarea>
-      </mat-form-field>
-
-      @if (puedeEditarContenido) {
-        <button mat-flat-button type="submit" [disabled]="guardando()">
-          Guardar contenido
-        </button>
-      }
-    </form>
-
-    <div class="acciones">
-      @for (estado of estados; track estado) {
-        <button
-          mat-stroked-button type="button"
-          [disabled]="guardando()"
-          (click)="cambiarEstado(estado)"
-        >
-          {{ estado }}
-        </button>
-      }
     </div>
 
-    @if (estados.length === 0) {
-      <p>Esta transacción no admite más cambios de estado.</p>
+    <div class="resumen">
+
+      <div class="publicacion">
+
+        <span class="etiqueta">Publicación</span>
+
+        <h3>{{ nombrePublicacion() }}</h3>
+
+        <span class="tipo">
+          {{ original.typeTransaction }}
+        </span>
+
+      </div>
+
+      <div class="participantes">
+
+        <div>
+          <span class="etiqueta">Comprador</span>
+          <strong>{{ nombreComprador() }}</strong>
+        </div>
+
+        <div>
+          <span class="etiqueta">Vendedor / Publicador</span>
+          <strong>{{ nombreVendedor() }}</strong>
+        </div>
+
+      </div>
+
+      <div class="resumen-precios">
+
+        <div>
+          <span class="etiqueta">Cantidad</span>
+
+          <strong>
+            {{ original.quantityTransaction }}
+          </strong>
+        </div>
+
+        <div>
+          <span class="etiqueta">Precio unitario</span>
+
+          <strong>
+            S/ {{ original.agreedUnitPrice | number:'1.2-2' }}
+          </strong>
+        </div>
+
+        <div>
+          <span class="etiqueta">Total acordado</span>
+
+          <strong class="total">
+            S/ {{ original.amountTransaction | number:'1.2-2' }}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    @if (informacion()) {
+
+      <div class="informacion">
+        {{ informacion() }}
+      </div>
+
     }
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="guardar()"
+    >
+
+      @if (puedeEditarContenido) {
+
+        <h3>Contenido de la solicitud</h3>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Cantidad</mat-label>
+
+          <input
+            matInput
+            type="number"
+            step="0.001"
+            formControlName="quantityTransaction"
+          />
+
+          <mat-error>Ingresa una cantidad válida.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Precio unitario acordado</mat-label>
+
+          <input
+            matInput
+            type="number"
+            step="0.01"
+            formControlName="agreedUnitPrice"
+          />
+
+          <mat-error>Ingresa un precio válido.</mat-error>
+
+        </mat-form-field>
+
+        <div class="total-estimado">
+
+          Total estimado:
+
+          <strong>
+            S/ {{ totalEstimado | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Mensaje</mat-label>
+
+          <textarea
+            matInput
+            formControlName="descriptionTransaction"
+            maxlength="500"
+            rows="3"
+          ></textarea>
+
+        </mat-form-field>
+
+        <button
+          mat-flat-button
+          type="submit"
+          [disabled]="guardando() || form.invalid || !form.dirty"
+        >
+          Guardar cambios
+        </button>
+
+      } @else {
+
+        <div class="mensaje-comprador">
+
+          <span class="etiqueta">
+            Mensaje del comprador
+          </span>
+
+          <p>
+            {{ original.descriptionTransaction || 'Sin mensaje adicional.' }}
+          </p>
+
+        </div>
+
+      }
+
+    </form>
+
+    @if (estados.length > 0) {
+
+      <h3 class="titulo-acciones">Acciones disponibles</h3>
+
+      <div class="acciones">
+
+        @for (estado of estados; track estado) {
+
+          <button
+            mat-stroked-button
+            type="button"
+            [disabled]="guardando()"
+            [class.accion-positiva]="
+              estado === 'Reservada' ||
+              estado === 'Completada'
+            "
+            [class.accion-negativa]="
+              estado === 'Rechazada' ||
+              estado === 'Cancelada'
+            "
+            (click)="cambiarEstado(estado)"
+          >
+
+            {{ textoAccion(estado) }}
+
+          </button>
+
+        }
+
+      </div>
+
+    } @else {
+
+      <p class="informacion">
+        Esta transacción no admite más cambios de estado.
+      </p>
+
+    }
+
   }
 
-  <a mat-stroked-button routerLink="/transacciones/listar">Volver</a>
+  <div class="navegacion">
+
+    <a
+      mat-stroked-button
+      routerLink="/transacciones/listar"
+    >
+      Volver al listado
+    </a>
+
+  </div>
+
 </div>

@@ -1,47 +1,191 @@
 <div class="container">
-  <h2>Registrar Foto de Publicación</h2>
 
-  <form [formGroup]="formPhoto" (ngSubmit)="registrar()">
-    <mat-form-field appearance="outline">
-      <mat-label>URL de la foto</mat-label>
-      <input matInput formControlName="urlPhoto" />
+  <h2>Registrar fotografía</h2>
 
-      @if (formPhoto.get('urlPhoto')?.hasError('required')) {
-        <mat-error>La URL de la foto es obligatoria</mat-error>
-      }
+  <p class="subtitulo">
+    Agrega imágenes a tus publicaciones de materiales.
+  </p>
 
-      @if (formPhoto.get('urlPhoto')?.hasError('pattern')) {
-        <mat-error>Ingrese una URL válida</mat-error>
-      }
-    </mat-form-field>
+  @if (mensaje()) {
 
-    <mat-form-field appearance="outline">
-      <mat-label>Descripción de la foto</mat-label>
-      <input matInput formControlName="descriptionPhoto" />
-    </mat-form-field>
+    <div
+      class="notificacion"
+      [class.exitosa]="exito()"
+      role="status"
+    >
+      {{ mensaje() }}
+    </div>
 
-    <p>La fecha de subida se registra automáticamente.</p>
-
-    <mat-form-field appearance="outline">
-      <mat-label>ID de publicación</mat-label>
-      <input matInput type="number" step="1" formControlName="idPublication" />
-
-      @if (formPhoto.get('idPublication')?.hasError('required')) {
-        <mat-error>El ID de publicación es obligatorio</mat-error>
-      }
-
-      @if (
-        formPhoto.get('idPublication')?.hasError('min') ||
-        formPhoto.get('idPublication')?.hasError('pattern')
-      ) {
-        <mat-error>Ingrese un ID entero mayor que 0</mat-error>
-      }
-    </mat-form-field>
-
-    <button matButton="filled" type="submit">Registrar</button>
-  </form>
-
-  @if (mensaje) {
-    <p>{{ mensaje }}</p>
   }
+
+  @if (cargando()) {
+
+    <p class="informacion">
+      Cargando tus publicaciones...
+    </p>
+
+  } @else if (publicaciones().length === 0) {
+
+    <div class="informacion">
+
+      <h3>No tienes publicaciones disponibles</h3>
+
+      <p>
+        Primero registra una publicación para poder
+        agregarle fotografías.
+      </p>
+
+    </div>
+
+  } @else {
+
+    <form
+      [formGroup]="formPhoto"
+      (ngSubmit)="registrar()"
+    >
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Selecciona tu publicación</mat-label>
+
+        <mat-select formControlName="idPublication">
+
+          @for (publicacion of publicaciones(); track publicacion.id) {
+
+            <mat-option [value]="publicacion.id">
+
+              {{ publicacion.title }}
+
+            </mat-option>
+
+          }
+
+        </mat-select>
+
+        <mat-error>
+          Selecciona una publicación.
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>URL de la imagen</mat-label>
+
+        <input
+          matInput
+          type="url"
+          formControlName="urlPhoto"
+          placeholder="https://ejemplo.com/imagen.jpg"
+          (input)="actualizarVistaPrevia()"
+        />
+
+        <mat-error>
+          Ingresa una URL válida.
+        </mat-error>
+
+      </mat-form-field>
+
+      <div class="vista-previa">
+
+        <h3>Vista previa de la fotografía</h3>
+
+        @if (urlVistaPrevia()) {
+
+          <img
+            [src]="urlVistaPrevia()"
+            alt="Vista previa de la fotografía"
+            [hidden]="errorImagen()"
+            (load)="imagenCorrecta()"
+            (error)="imagenIncorrecta()"
+          />
+
+          @if (imagenCargada()) {
+
+            <p class="imagen-correcta">
+              ✓ Imagen cargada correctamente
+            </p>
+
+          }
+
+          @if (errorImagen()) {
+
+            <p class="imagen-error">
+              No se pudo cargar la imagen.
+              Verifica la URL.
+            </p>
+
+          }
+
+          @if (!imagenCargada() && !errorImagen()) {
+
+            <p>Cargando imagen...</p>
+
+          }
+
+        } @else {
+
+          <div class="vista-vacia">
+
+            <span class="icono-imagen">▧</span>
+
+            <p>
+              La fotografía aparecerá aquí.
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Descripción de la fotografía</mat-label>
+
+        <textarea
+          matInput
+          formControlName="descriptionPhoto"
+          rows="3"
+          placeholder="Describe el material de la fotografía"
+        ></textarea>
+
+      </mat-form-field>
+
+      <p class="fecha-info">
+        La fecha de subida se registra automáticamente.
+      </p>
+
+      <button
+        mat-flat-button
+        class="boton-registrar"
+        type="submit"
+        [disabled]="
+          guardando() ||
+          formPhoto.invalid ||
+          !imagenCargada()
+        "
+      >
+
+        {{ guardando()
+          ? 'Registrando fotografía...'
+          : 'Registrar fotografía' }}
+
+      </button>
+
+    </form>
+
+  }
+
+  <div class="navegacion">
+
+    <a
+      mat-stroked-button
+      routerLink="/fotos-publicaciones/listar"
+    >
+      Volver al listado
+    </a>
+
+  </div>
+
 </div>

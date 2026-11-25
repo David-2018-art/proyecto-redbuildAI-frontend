@@ -1,70 +1,262 @@
 <div class="container">
-  <h2>Actualizar Foto de Publicación</h2>
 
-  @if (cargando) {
-    <p>Cargando datos de la foto...</p>
+  <h2>Editar fotografía</h2>
+
+  <p class="subtitulo">
+    Actualiza la imagen y descripción de tu publicación.
+  </p>
+
+  @if (mensaje()) {
+
+    <div
+      class="notificacion"
+      [class.exitosa]="exito()"
+      role="status"
+    >
+      {{ mensaje() }}
+    </div>
+
   }
 
-  @if (!cargando && fotoCargada && formPhoto) {
-    <form [formGroup]="formPhoto" (ngSubmit)="actualizar()">
+  @if (cargando()) {
+
+    <div class="estado-vacio">
+
+      Cargando datos de la fotografía...
+
+    </div>
+
+  } @else if (fotoOriginal(); as foto) {
+
+    <div class="informacion-publicacion">
+
+      <span class="etiqueta">
+
+        Información de la publicación
+
+      </span>
+
+      <h3>
+
+        {{ nombrePublicacion() || 'Cargando publicación...' }}
+
+      </h3>
+
+      <div class="datos-foto">
+
+        <div class="dato">
+
+          <span class="etiqueta">
+            Identificador
+          </span>
+
+          <strong>
+            Fotografía #{{ foto.idPhoto }}
+          </strong>
+
+        </div>
+
+        <div class="dato">
+
+          <span class="etiqueta">
+            Fecha de registro
+          </span>
+
+          <strong>
+
+            @if (foto.uploadDate) {
+
+              {{ foto.uploadDate | date:'dd/MM/yyyy - HH:mm' }}
+
+            } @else {
+
+              No disponible
+
+            }
+
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <form
+      [formGroup]="formPhoto"
+      (ngSubmit)="actualizar()"
+    >
 
       <mat-form-field appearance="outline">
-        <mat-label>ID de Foto</mat-label>
-        <input matInput formControlName="idPhoto" readonly />
+
+        <mat-label>URL de la fotografía</mat-label>
+
+        <input
+          matInput
+          type="url"
+          formControlName="urlPhoto"
+          placeholder="https://ejemplo.com/imagen.jpg"
+          (input)="actualizarVistaPrevia()"
+          [readonly]="guardando()"
+        />
+
+        @if (formPhoto.controls.urlPhoto.hasError('required')) {
+
+          <mat-error>
+            La URL es obligatoria.
+          </mat-error>
+
+        }
+
+        @if (formPhoto.controls.urlPhoto.hasError('pattern')) {
+
+          <mat-error>
+            Ingresa una URL válida.
+          </mat-error>
+
+        }
+
       </mat-form-field>
+
+      <div class="vista-previa">
+
+        <h3>Vista previa de la fotografía</h3>
+
+        @if (urlVistaPrevia()) {
+
+          <img
+            [src]="urlVistaPrevia()"
+            alt="Vista previa de la fotografía"
+            [hidden]="errorImagen()"
+            (load)="imagenCorrecta()"
+            (error)="imagenIncorrecta()"
+          />
+
+          @if (imagenCargada()) {
+
+            <p class="imagen-correcta">
+
+              ✓ Imagen cargada correctamente
+
+            </p>
+
+          }
+
+          @if (errorImagen()) {
+
+            <p class="imagen-error">
+
+              No se pudo cargar la imagen.
+              Verifica la URL.
+
+            </p>
+
+          }
+
+          @if (!imagenCargada() && !errorImagen()) {
+
+            <p>Cargando imagen...</p>
+
+          }
+
+        } @else {
+
+          <div class="vista-vacia">
+
+            <span class="icono-imagen">▧</span>
+
+            <p>
+              Ingresa una URL para visualizar la fotografía.
+            </p>
+
+          </div>
+
+        }
+
+      </div>
 
       <mat-form-field appearance="outline">
-        <mat-label>URL de la foto</mat-label>
-        <input matInput formControlName="urlPhoto" />
 
-        @if (formPhoto.get('urlPhoto')?.hasError('required')) {
-          <mat-error>La URL de la foto es obligatoria</mat-error>
-        }
+        <mat-label>Descripción de la fotografía</mat-label>
 
-        @if (formPhoto.get('urlPhoto')?.hasError('pattern')) {
-          <mat-error>Ingrese una URL válida</mat-error>
-        }
+        <textarea
+          matInput
+          formControlName="descriptionPhoto"
+          rows="3"
+          placeholder="Describe el material de la fotografía"
+          [readonly]="guardando()"
+        ></textarea>
+
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Descripción de la foto</mat-label>
-        <input matInput formControlName="descriptionPhoto" />
-      </mat-form-field>
+      <div class="aviso">
 
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha de subida</mat-label>
-        <input matInput type="datetime-local" formControlName="uploadDate" />
+        <span class="icono-info">ⓘ</span>
 
-        @if (formPhoto.get('uploadDate')?.hasError('required')) {
-          <mat-error>La fecha de subida es obligatoria</mat-error>
-        }
-      </mat-form-field>
+        <p>
+          La publicación asociada y la fecha de registro
+          se conservarán sin modificaciones.
+        </p>
 
-      <mat-form-field appearance="outline">
-        <mat-label>ID de publicación</mat-label>
-        <input matInput type="number" step="1" formControlName="idPublication" />
+      </div>
 
-        @if (formPhoto.get('idPublication')?.hasError('required')) {
-          <mat-error>El ID de publicación es obligatorio</mat-error>
-        }
+      <button
+        mat-flat-button
+        class="boton-principal"
+        type="submit"
+        [disabled]="
+          guardando() ||
+          formPhoto.invalid ||
+          !imagenCargada() ||
+          formPhoto.pristine
+        "
+      >
 
-        @if (
-          formPhoto.get('idPublication')?.hasError('min') ||
-          formPhoto.get('idPublication')?.hasError('pattern')
-        ) {
-          <mat-error>Ingrese un ID entero mayor que 0</mat-error>
-        }
-      </mat-form-field>
+        {{ guardando()
+          ? 'Guardando cambios...'
+          : 'Guardar cambios' }}
 
-      <button matButton="filled" type="submit" [disabled]="formPhoto.invalid">
-        Actualizar
       </button>
 
+      @if (formPhoto.dirty && !guardando()) {
+
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="restaurar()"
+        >
+          Deshacer cambios
+        </button>
+
+      }
+
     </form>
+
+  } @else {
+
+    <div class="estado-vacio">
+
+      <h3>Fotografía no disponible</h3>
+
+      <p>
+        Regresa al listado e intenta nuevamente.
+      </p>
+
+    </div>
+
   }
 
-  @if (mensaje) {
-    <p>{{ mensaje }}</p>
-  }
+  <div class="navegacion">
+
+    <a
+      mat-stroked-button
+      routerLink="/fotos-publicaciones/listar"
+    >
+
+      Volver al listado
+
+    </a>
+
+  </div>
+
 </div>
-

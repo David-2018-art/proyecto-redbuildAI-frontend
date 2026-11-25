@@ -1,89 +1,221 @@
-import { ChangeDetectorRef, Component } from '@angular/core';import { FormsModule } from '@angular/forms';
+import { Component, OnInit, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { RouterLink } from '@angular/router';
+
 import { PublicationPhotoService } from '../../../services/publicationphotoservice';
+import { Publicationservice } from '../../../services/publicationservice';
+
 import { PublicationPhotoDTO } from '../../../models/publicationPhotoDTO';
+import { PublicationDTO } from '../../../models/publicationDTO';
 
 @Component({
-  imports: [FormsModule, MatInputModule, MatButtonModule],
+  imports: [
+    FormsModule,
+    DatePipe,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    RouterLink
+  ],
   selector: 'app-ppbuscarcomponent',
   styleUrl: './ppbuscarcomponent.css',
   templateUrl: './ppbuscarcomponent.html',
 })
-export class Ppbuscarcomponent {
+export class Ppbuscarcomponent implements OnInit {
+
   idPhoto: number | null = null;
   idPublication: number | null = null;
 
-  foto: PublicationPhotoDTO | null = null;
-  fotos: PublicationPhotoDTO[] = [];
-  mensaje: string = '';
+  readonly publicaciones = signal<PublicationDTO[]>([]);
+  readonly fotos = signal<PublicationPhotoDTO[]>([]);
 
- constructor(
-  private ppS: PublicationPhotoService,
-  private cdr: ChangeDetectorRef,
-) {}
+  readonly mensaje = signal('');
+  readonly exito = signal(false);
+  readonly buscando = signal(false);
+  readonly cargandoPublicaciones = signal(true);
+
+  readonly imagenesFallidas = signal<number[]>([]);
+
+  constructor(
+    private ppS: PublicationPhotoService,
+    private publicationService: Publicationservice
+  ) {}
+
+  ngOnInit(): void {
+
+    this.publicationService.getPublications().subscribe({
+
+      next: data => {
+
+        this.publicaciones.set(data);
+        this.cargandoPublicaciones.set(false);
+
+      },
+
+      error: error => {
+
+        console.error(error);
+
+        this.cargandoPublicaciones.set(false);
+        this.mensaje.set('No se pudieron cargar las publicaciones.');
+
+      }
+
+    });
+
+  }
+
+  nombrePublicacion(id: number): string {
+
+    return this.publicaciones().find(
+      p => p.id === id
+    )?.title ?? `Publicación #${id}`;
+
+  }
+
+  limpiarResultados(): void {
+
+    this.fotos.set([]);
+    this.mensaje.set('');
+    this.exito.set(false);
+    this.imagenesFallidas.set([]);
+
+  }
 
   buscarPorId(): void {
-    this.foto = null;
-    this.fotos = [];
-    this.mensaje = '';
 
-    if (this.idPhoto === null || !Number.isInteger(this.idPhoto) || this.idPhoto <= 0) {
-      this.mensaje = 'Ingrese un ID de foto válido';
+    if (this.buscando()) return;
+
+    this.limpiarResultados();
+
+    if (
+      this.idPhoto === null ||
+      !Number.isInteger(this.idPhoto) ||
+      this.idPhoto <= 0
+    ) {
+
+      this.mensaje.set('Ingresa un ID de fotografía válido.');
       return;
+
     }
 
+    this.buscando.set(true);
+
     this.ppS.getPublicationPhotoById(this.idPhoto).subscribe({
-  next: (data: PublicationPhotoDTO) => {
-    this.foto = data;
-    this.mensaje = 'Foto encontrada correctamente';
-    this.cdr.markForCheck();
-  },
-  error: (error) => {
-    console.error('Error al buscar la foto:', error);
 
-    this.mensaje = error.status === 404
-      ? 'No existe una foto con ese ID.'
-      : 'No se pudo consultar la foto.';
+      next: data => {
 
-    this.cdr.markForCheck();
-  },
-});
+        this.fotos.set([data]);
+        this.exito.set(true);
+        this.buscando.set(false);
+
+        this.mensaje.set(
+          'Fotografía encontrada correctamente.'
+        );
+
+      },
+
+      error: error => {
+
+        this.buscando.set(false);
+
+        this.mensaje.set(
+          error.status === 404
+            ? 'No existe una fotografía con ese ID.'
+            : 'No se pudo consultar la fotografía.'
+        );
+
+      }
+
+    });
+
   }
 
   buscarPorPublicacion(): void {
-    this.foto = null;
-    this.fotos = [];
-    this.mensaje = '';
+
+    if (this.buscando()) return;
+
+    this.limpiarResultados();
 
     if (
       this.idPublication === null ||
-      !Number.isInteger(this.idPublication) ||
-      this.idPublication <= 0
+      !this.publicaciones().some(
+        p => p.id === this.idPublication
+      )
     ) {
-      this.mensaje = 'Ingrese un ID de publicación válido';
+
+      this.mensaje.set('Selecciona una publicación.');
       return;
+
     }
 
-   this.ppS.getPhotosByPublicationId(this.idPublication).subscribe({
-  next: (data: PublicationPhotoDTO[]) => {
-    this.fotos = data;
+    this.buscando.set(true);
 
-    this.mensaje = data.length > 0
-      ? 'Fotos encontradas correctamente'
-      : 'No hay fotos registradas para esta publicación';
+    this.ppS.getPhotosByPublicationId(
+      this.idPublication
+    ).subscribe({
 
-    this.cdr.markForCheck();
-  },
-  error: (error) => {
-    console.error('Error al buscar las fotos:', error);
+      next: data => {
 
-    this.mensaje = error.status === 404
-      ? 'No se encontró la publicación o el recurso solicitado.'
-      : 'No se pudieron consultar las fotos.';
+        this.fotos.set(data);
+        this.exito.set(data.length > 0);
+        this.buscando.set(false);
 
-    this.cdr.markForCheck();
-  },
-});
+        this.mensaje.set(
+
+          data.length === 0
+
+            ? 'Esta publicación todavía no tiene fotografías.'
+
+            : data.length === 1
+
+              ? '1 fotografía encontrada.'
+
+              : `${data.length} fotografías encontradas.`
+
+        );
+
+      },
+
+      error: error => {
+
+        this.buscando.set(false);
+
+        this.mensaje.set(
+          error.status === 404
+            ? 'No se encontró el recurso solicitado.'
+            : 'No se pudieron consultar las fotografías.'
+        );
+
+      }
+
+    });
+
   }
+
+  errorImagen(id: number): void {
+
+    this.imagenesFallidas.update(
+      ids => [...ids, id]
+    );
+
+  }
+
+  limpiar(): void {
+
+    if (this.buscando()) return;
+
+    this.idPhoto = null;
+    this.idPublication = null;
+
+    this.limpiarResultados();
+
+  }
+
 }

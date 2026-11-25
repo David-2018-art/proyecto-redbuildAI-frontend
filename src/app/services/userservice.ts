@@ -31,6 +31,12 @@ export class Userservice {
   return this.http.get<User>(`${this.apiURL}/${id}`);
 }
 
+getNombreUsuario(id: number): Observable<{ nombreCompleto: string }> {
+  return this.http.get<{ nombreCompleto: string }>(
+    `${this.apiURL}/${id}/nombre`
+  );
+}
+
 updateUser(user: User): Observable<User> {
   return this.http.put<User>(this.apiURL, user);
 }

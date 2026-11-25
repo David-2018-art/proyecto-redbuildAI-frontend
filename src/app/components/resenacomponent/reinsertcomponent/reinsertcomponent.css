@@ -1,0 +1,35 @@
+.calificacion {
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #2b6259;
+  background: #162e35;
+  border-radius: 12px;
+}
+
+.calificacion p {
+  color: #dce9ef;
+}
+
+.estrellas {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.estrella {
+  background: transparent;
+  border: none;
+  font-size: 38px;
+  color: #52616d;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.estrella.seleccionada {
+  color: #ffc107;
+}
+
+.estrella:hover {
+  transform: scale(1.2);
+}
