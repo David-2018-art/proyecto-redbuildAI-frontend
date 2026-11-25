@@ -5,10 +5,10 @@ import { RouterLink } from '@angular/router';
 import { Resena } from '../../../models/resena.model';
 import { Resenaservice } from '../../../services/resenaservice';
 import { Authservice } from '../../../services/authservice';
-
+import { PaginadorComponent } from '../../../shared/paginador.component';
 @Component({
   selector: 'app-relistcomponent',
-  imports: [MatTableModule, MatButtonModule, RouterLink, DatePipe],
+  imports: [MatTableModule, MatButtonModule, RouterLink, DatePipe, PaginadorComponent],
   templateUrl: './relistcomponent.html',
 })
 export class Relistcomponent implements OnInit {

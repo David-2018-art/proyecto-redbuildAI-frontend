@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 export interface MaterialAnalysis {
   identificado: boolean;
   nameProduct: string;
@@ -17,7 +17,7 @@ export class MaterialAnalysisService {
   private readonly http = inject(HttpClient);
 
   private readonly apiURL =
-    'https://proyecto-redbuildai-backend.onrender.com/api/material-analysis';
+    `${environment.apiUrl}/api/material-analysis`;
 
   analizar(foto: File): Observable<MaterialAnalysis> {
     const datos = new FormData();

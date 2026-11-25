@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 import { User } from '../models/user.model';
 import { UserRegister } from '../models/user-register.model';
 
@@ -9,7 +9,7 @@ import { UserRegister } from '../models/user-register.model';
   providedIn: 'root',
 })
 export class Userservice {
-  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Users';
+  private apiURL = `${environment.apiUrl}/api/Users`;
 
   constructor(private http: HttpClient) {}
 

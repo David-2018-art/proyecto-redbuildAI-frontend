@@ -4,13 +4,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PublicationDTO } from '../models/publicationDTO';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class Publicationservice {
 
-  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/publications';
+  private apiURL = `${environment.apiUrl}/publications`;
 
   constructor(private http: HttpClient) { }
 

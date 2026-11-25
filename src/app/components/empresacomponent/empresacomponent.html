@@ -1,0 +1,79 @@
+<section class="empresa-panel">
+  <header class="encabezado">
+    <div>
+      <span class="etiqueta">MI EMPRESA</span>
+      <h2>Resumen empresarial</h2>
+      <p>
+        Ventas y donaciones completadas de tus publicaciones.
+      </p>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="cargar()"
+      [disabled]="cargando()"
+    >
+      {{ cargando() ? 'Actualizando...' : 'Actualizar' }}
+    </button>
+  </header>
+
+  @if (cargando()) {
+    <p class="aviso" role="status">
+      Cargando el resumen de tu empresa...
+    </p>
+  }
+
+  @if (mensaje()) {
+    <p class="error" role="alert">{{ mensaje() }}</p>
+  }
+
+  @if (resumen(); as datos) {
+    <div class="tarjetas" aria-live="polite">
+      <article class="tarjeta">
+        <span class="titulo-tarjeta">Ventas completadas</span>
+
+        <strong>
+          {{ datos.ventasCompletadas | number:'1.0-0' }}
+        </strong>
+
+        <p>Operaciones de venta finalizadas.</p>
+      </article>
+
+      <article class="tarjeta ingresos">
+        <span class="titulo-tarjeta">Ingresos por ventas</span>
+
+        <strong>
+          S/ {{ datos.ingresosVentas | number:'1.2-2' }}
+        </strong>
+
+        <p>Monto acumulado de ventas completadas.</p>
+      </article>
+
+      <article class="tarjeta">
+        <span class="titulo-tarjeta">Donaciones completadas</span>
+
+        <strong>
+          {{ datos.donacionesCompletadas | number:'1.0-0' }}
+        </strong>
+
+        <p>Operaciones de donación finalizadas.</p>
+      </article>
+    </div>
+
+    @if (
+      datos.ventasCompletadas === 0 &&
+      datos.donacionesCompletadas === 0
+    ) {
+      <p class="sin-datos">
+        Todavía no tienes operaciones completadas.
+        Tu resumen se actualizará cuando finalices una venta o donación.
+      </p>
+    }
+
+    <p class="nota">
+      Solo se cuentan transacciones con estado Completada.
+      Las cantidades representan operaciones, no unidades de material.
+    </p>
+  }
+</section>

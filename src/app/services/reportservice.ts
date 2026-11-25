@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 import {
   CategoryProductCountDTO,
   UserCountByRoleDTO,
@@ -12,8 +12,7 @@ import {
 })
 export class Reportservice {
   private readonly http = inject(HttpClient);
-  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api';
-
+  private readonly apiURL = `${environment.apiUrl}/api`;
   productosPorCategoria(): Observable<CategoryProductCountDTO[]> {
     return this.http.get<CategoryProductCountDTO[]>(
       `${this.apiURL}/Categories/cantidad-productos`,

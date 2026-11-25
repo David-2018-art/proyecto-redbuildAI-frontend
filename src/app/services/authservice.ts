@@ -2,13 +2,13 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { LoginRequest, LoginResponse } from '../models/login.model';
-
+import { environment } from '../../environments/environment';
 const SESSION_KEY = 'rebuild-auth';
 
 @Injectable({ providedIn: 'root' })
 export class Authservice {
   private readonly http = inject(HttpClient);
-  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/login';
+private readonly apiURL = `${environment.apiUrl}/login`;
   readonly session = signal<LoginResponse | null>(this.readSession());
 
   login(credentials: LoginRequest): Observable<LoginResponse> {

@@ -6,10 +6,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { Publicationservice } from '../../../services/publicationservice';
 import { Authservice } from '../../../services/authservice';
 import { PublicationDTO } from '../../../models/publicationDTO';
-
+import { PaginadorComponent } from '../../../shared/paginador.component';
 @Component({
   selector: 'app-plistcomponent',
-  imports: [MatTableModule, MatButtonModule, RouterLink],
+  imports: [MatTableModule, MatButtonModule, RouterLink,PaginadorComponent],
   templateUrl: './plistcomponent.html',
   styleUrl: './plistcomponent.css',
 })

@@ -64,13 +64,20 @@
   </a>
 }
 
-    <button mat-button [matMenuTriggerFor]="administracion">
-      <mat-icon>settings</mat-icon>
-      Administración
-      <mat-icon iconPositionEnd>expand_more</mat-icon>
-    </button>
-  </nav>
-</header>
+    @if (auth.session()?.role === 'Administrador') {
+  <button mat-button [matMenuTriggerFor]="administracion">
+    <mat-icon>settings</mat-icon>
+    Administración
+    <mat-icon iconPositionEnd>expand_more</mat-icon>
+  </button>
+}
+
+@if (auth.session()?.role === 'Empresa') {
+  <a mat-button routerLink="/empresa/resumen">
+    <mat-icon>business</mat-icon>
+    Mi empresa
+  </a>
+}
 
 <!-- Catálogo -->
 <mat-menu #catalogo="matMenu">

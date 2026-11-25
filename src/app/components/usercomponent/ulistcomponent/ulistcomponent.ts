@@ -4,10 +4,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { User } from '../../../models/user.model';
 import { Userservice } from '../../../services/userservice';
-
+import { PaginadorComponent } from '../../../shared/paginador.component';
 @Component({
   selector: 'app-ulistcomponent',
-  imports: [MatTableModule, MatButtonModule, RouterLink],
+  imports: [MatTableModule, MatButtonModule, RouterLink, PaginadorComponent],
   templateUrl: './ulistcomponent.html',
   styleUrl: './ulistcomponent.css',
 })

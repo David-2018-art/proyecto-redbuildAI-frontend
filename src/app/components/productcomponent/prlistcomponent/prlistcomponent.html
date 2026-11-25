@@ -22,7 +22,7 @@
 
     @if (dataSource.length > 0) {
       <div class="tabla">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <table mat-table [dataSource]="pagina.filas" class="mat-elevation-z8">
 
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>ID</th>
@@ -122,6 +122,10 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
+        <app-paginador
+  #pagina="paginador"
+  [datos]="dataSource"
+></app-paginador>
       </div>
     } @else {
       <p>No hay productos registrados.</p>

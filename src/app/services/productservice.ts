@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 import { Product } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Productservice {
-  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Products';
+  private readonly apiURL = `${environment.apiUrl}/api/Products`;
 
   constructor(private http: HttpClient) {}
 

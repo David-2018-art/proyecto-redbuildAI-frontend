@@ -1,76 +1,90 @@
-<div class="container">
-  <h2>Buscar ubicación</h2>
+<section class="busqueda-panel">
+  <h2>Buscar ubicaciones en el mapa</h2>
 
-  <h3>Buscar por ID</h3>
+  <p class="introduccion">
+    Busca por ID o departamento. Pasa el mouse sobre los puntos
+    o tócalos para consultar su información.
+  </p>
 
-  <mat-form-field appearance="outline">
-    <mat-label>ID de ubicación</mat-label>
-    <input
-      matInput
-      type="number"
-      [(ngModel)]="idLocation"
-      placeholder="Ingrese el ID">
-  </mat-form-field>
+  <div class="buscadores">
+    <form class="buscador" (ngSubmit)="buscar()">
+      <h3>Por ID</h3>
 
-  <br>
+      <mat-form-field appearance="outline">
+        <mat-label>ID de ubicación</mat-label>
 
-  <button matButton="filled" (click)="buscar()">
-    Buscar
-  </button>
+        <input
+          matInput
+          type="number"
+          name="idLocation"
+          min="1"
+          step="1"
+          [(ngModel)]="idLocation"
+          placeholder="Ejemplo: 1"
+        >
+      </mat-form-field>
 
-  @if (mensaje) {
-    <p>{{ mensaje }}</p>
-  }
+      <button
+        mat-flat-button
+        type="submit"
+        [disabled]="cargando()"
+      >
+        Buscar por ID
+      </button>
+    </form>
 
-  @if (ubicacion) {
-    <h3>Datos de la ubicación</h3>
+    <form class="buscador" (ngSubmit)="buscarPorDepartamento()">
+      <h3>Por departamento</h3>
 
-    <p><strong>ID:</strong> {{ ubicacion.idLocation }}</p>
-    <p><strong>Departamento:</strong> {{ ubicacion.department }}</p>
-    <p><strong>Provincia:</strong> {{ ubicacion.province }}</p>
-    <p><strong>Distrito:</strong> {{ ubicacion.district }}</p>
-    <p><strong>Dirección de referencia:</strong> {{ ubicacion.referenceAddress }}</p>
-    <p><strong>Latitud:</strong> {{ ubicacion.latitude }}</p>
-    <p><strong>Longitud:</strong> {{ ubicacion.longitude }}</p>
-  }
+      <mat-form-field appearance="outline">
+        <mat-label>Departamento</mat-label>
 
-  <hr>
+        <input
+          matInput
+          type="text"
+          name="department"
+          maxlength="60"
+          [(ngModel)]="department"
+          placeholder="Ejemplo: Lima"
+        >
+      </mat-form-field>
 
-  <h3>Buscar por departamento</h3>
+      <button
+        mat-flat-button
+        type="submit"
+        [disabled]="cargando()"
+      >
+        Buscar por departamento
+      </button>
+    </form>
+  </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Departamento</mat-label>
-    <input
-      matInput
-      type="text"
-      [(ngModel)]="department"
-      placeholder="Ejemplo: Lima">
-  </mat-form-field>
-
-  <br>
-
-  <button matButton="filled" (click)="buscarPorDepartamento()">
-    Buscar por departamento
-  </button>
-
-  @if (mensajeDepartamento) {
-    <p>{{ mensajeDepartamento }}</p>
-  }
-
-  @if (ubicaciones.length > 0) {
-    <h3>Ubicaciones encontradas</h3>
-
-    @for (ubicacionItem of ubicaciones; track ubicacionItem.idLocation) {
-      <div>
-        <p><strong>ID:</strong> {{ ubicacionItem.idLocation }}</p>
-        <p><strong>Departamento:</strong> {{ ubicacionItem.department }}</p>
-        <p><strong>Provincia:</strong> {{ ubicacionItem.province }}</p>
-        <p><strong>Distrito:</strong> {{ ubicacionItem.district }}</p>
-        <p><strong>Dirección de referencia:</strong> {{ ubicacionItem.referenceAddress }}</p>
-        <p><strong>Latitud:</strong> {{ ubicacionItem.latitude }}</p>
-        <p><strong>Longitud:</strong> {{ ubicacionItem.longitude }}</p>
-        <hr>
-      </div>
+  <div class="estado" aria-live="polite">
+    @if (cargando()) {
+      <p>Buscando ubicaciones...</p>
+    } @else {
+      <p>{{ mensaje() }}</p>
     }
+
+    @if (cantidad() > 0) {
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="verResultados()"
+      >
+        Centrar resultados
+      </button>
+    }
+  </div>
+
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
   }
-</div>
+
+  <div
+    #mapa
+    class="mapa"
+    role="region"
+    aria-label="Mapa de resultados de búsqueda de ubicaciones"
+  ></div>
+</section>

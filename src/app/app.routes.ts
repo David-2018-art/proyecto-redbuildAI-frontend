@@ -52,6 +52,10 @@ import { Tupdatecomponent } from './components/transaccioncomponent/tupdatecompo
 
 import { Reportcomponent } from './components/reportcomponent/reportcomponent';
 
+
+import { Empresacomponent } from './components/empresacomponent/empresacomponent';
+import { empresaGuard } from './empresa.guard';
+
 export const routes: Routes = [
   { path: 'login', component: Logincomponent },
   {
@@ -162,6 +166,12 @@ export const routes: Routes = [
   canActivate: [authGuard],
 },
 
+
+{
+  path: 'empresa/resumen',
+  component: Empresacomponent,
+  canActivate: [empresaGuard],
+},
   {
     path: '**',
     redirectTo: 'roles/listar',

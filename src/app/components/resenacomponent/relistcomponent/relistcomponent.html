@@ -4,7 +4,7 @@
   @if (cargando) { <p>Cargando reseñas...</p> }
   @else if (mensaje) { <p role="alert">{{ mensaje }}</p> }
   @else if (dataSource.length) {
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="pagina.filas">
       <ng-container matColumnDef="id"><th mat-header-cell *matHeaderCellDef>ID</th><td mat-cell *matCellDef="let row">{{ row.idResena }}</td></ng-container>
       <ng-container matColumnDef="titulo"><th mat-header-cell *matHeaderCellDef>Título</th><td mat-cell *matCellDef="let row">{{ row.titleResena }}</td></ng-container>
       <ng-container matColumnDef="calificacion"><th mat-header-cell *matHeaderCellDef>Calificación</th><td mat-cell *matCellDef="let row">{{ row.scoreResena }}/5</td></ng-container>
@@ -34,5 +34,9 @@
 </ng-container>      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    <app-paginador
+  #pagina="paginador"
+  [datos]="dataSource"
+></app-paginador>
   } @else { <p>No hay reseñas registradas.</p> }
 </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 import {
   Category,
   CategoryProductCount,
@@ -11,7 +11,7 @@ import {
   providedIn: 'root',
 })
 export class Categoryservice {
-  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Categories';
+  private readonly apiURL = `${environment.apiUrl}/api/Categories`;
 
   constructor(private http: HttpClient) {}
 
