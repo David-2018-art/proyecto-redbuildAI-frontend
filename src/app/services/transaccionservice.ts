@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Transaccion } from '../models/transaccion.model';
-
+import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class Transaccionservice {
   private readonly http = inject(HttpClient);
-  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Transacciones';
+  private readonly apiURL =`${environment.apiUrl}/api/Transacciones`;
 
   getAll(): Observable<Transaccion[]> {
     return this.http.get<Transaccion[]>(this.apiURL);

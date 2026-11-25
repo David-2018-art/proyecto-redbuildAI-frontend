@@ -18,7 +18,7 @@
   <p>No hay publicaciones registradas.</p>
 }
 
-  <table mat-table [dataSource]="publicaciones">
+  <table mat-table [dataSource]="pagina.filas">
 
     <!-- Columna ID -->
     <ng-container matColumnDef="id">
@@ -82,5 +82,10 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
   </table>
+  <app-paginador
+  #pagina="paginador"
+  [datos]="publicaciones"
+></app-paginador>
+  
 </div>
 

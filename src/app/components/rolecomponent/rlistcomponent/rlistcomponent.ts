@@ -4,10 +4,10 @@ import { Role } from '../../../models/role';
 import { Roleservice } from '../../../services/roleservice';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-
+import { PaginadorComponent } from '../../../shared/paginador.component';
 @Component({
   selector: 'app-rlistcomponent',
-imports: [MatTableModule, MatButtonModule, RouterLink], 
+imports: [MatTableModule, MatButtonModule, RouterLink, PaginadorComponent, ], 
  templateUrl: './rlistcomponent.html',
   styleUrl: './rlistcomponent.css',
 })

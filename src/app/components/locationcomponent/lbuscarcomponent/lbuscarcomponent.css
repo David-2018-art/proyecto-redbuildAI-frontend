@@ -1,41 +1,87 @@
-.container {
-  max-width: 750px;
-  margin: 30px auto;
-  padding: 30px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+:host {
+  display: block;
+}
+
+.busqueda-panel {
+  padding: clamp(16px, 3vw, 28px);
+  border: 1px solid #2b4654;
+  border-radius: 20px;
+  background: #101f2b;
+  color: #e9f3f5;
 }
 
 h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #2e7d32;
+  margin-top: 0;
+  color: #e9f3f5;
+}
+
+.introduccion {
+  margin-bottom: 24px;
+  color: #b8cad1;
+  line-height: 1.6;
+}
+
+.buscadores {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.buscador {
+  padding: 20px;
+  border: 1px solid #2b4654;
+  border-radius: 14px;
+  background: rgba(100, 230, 177, 0.03);
+}
+
+.buscador h3 {
+  margin: 0 0 18px;
+  color: #64e6b1;
 }
 
 mat-form-field {
   width: 100%;
 }
 
-button {
-  min-width: 160px;
-  margin-top: 10px;
+.estado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  min-height: 65px;
+  padding: 12px 0;
+  color: #b8cad1;
 }
 
-h3 {
-  margin-top: 30px;
-  margin-bottom: 15px;
-  color: #2e7d32;
+.estado p {
+  margin: 0;
 }
 
-p {
-  margin: 10px 0;
-  line-height: 1.6;
+.mapa {
+  width: 100%;
+  height: clamp(380px, 58vh, 620px);
+  overflow: hidden;
+  border: 1px solid #375563;
+  border-radius: 16px;
+  background: #dce6e3;
+  z-index: 0;
 }
 
-@media (max-width: 600px) {
-  .container {
-    margin: 15px;
-    padding: 20px;
+.error {
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 180, 171, 0.3);
+  border-radius: 10px;
+  background: rgba(255, 100, 100, 0.08);
+  color: #ffb4ab;
+}
+
+@media (max-width: 650px) {
+  .buscadores {
+    grid-template-columns: 1fr;
+  }
+
+  .mapa {
+    height: 420px;
   }
 }

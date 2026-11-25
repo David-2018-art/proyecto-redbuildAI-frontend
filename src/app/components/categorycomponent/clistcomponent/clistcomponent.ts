@@ -5,10 +5,10 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { Category } from '../../../models/category.model';
 import { Categoryservice } from '../../../services/categoryservice';
-
+import { PaginadorComponent } from '../../../shared/paginador.component';
 @Component({
   selector: 'app-clistcomponent',
-  imports: [RouterLink, MatTableModule, MatButtonModule],
+  imports: [RouterLink, MatTableModule, MatButtonModule, PaginadorComponent],
   templateUrl: './clistcomponent.html',
   styleUrl: './clistcomponent.css',
 })

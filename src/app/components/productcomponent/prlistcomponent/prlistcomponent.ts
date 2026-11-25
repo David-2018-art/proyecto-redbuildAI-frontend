@@ -9,7 +9,7 @@ import { Product } from '../../../models/product.model';
 import { Productservice } from '../../../services/productservice';
 import { Categoryservice } from '../../../services/categoryservice';
 import { Authservice } from '../../../services/authservice';
-
+import { PaginadorComponent } from '../../../shared/paginador.component';
 @Component({
   selector: 'app-prlistcomponent',
   imports: [
@@ -17,6 +17,7 @@ import { Authservice } from '../../../services/authservice';
     DecimalPipe,
     MatTableModule,
     MatButtonModule,
+    PaginadorComponent
   ],
   templateUrl: './prlistcomponent.html',
   styleUrl: './prlistcomponent.css',

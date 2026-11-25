@@ -8,9 +8,10 @@ import { Transaccion } from '../../../models/transaccion.model';
 import { Transaccionservice } from '../../../services/transaccionservice';
 import { Authservice } from '../../../services/authservice';
 
+import { PaginadorComponent } from '../../../shared/paginador.component';
 @Component({
   selector: 'app-tlistcomponent',
-  imports: [MatTableModule, MatButtonModule, RouterLink],
+  imports: [MatTableModule, MatButtonModule, RouterLink, PaginadorComponent],
   templateUrl: './tlistcomponent.html',
 })
 export class Tlistcomponent implements OnInit {

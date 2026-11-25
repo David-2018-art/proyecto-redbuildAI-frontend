@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Resena } from '../models/resena.model';
-
+import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class Resenaservice {
   private readonly http = inject(HttpClient);
-  private readonly apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Resenas';
+  private readonly apiURL = `${environment.apiUrl}/api/Resenas`;
 
   getAll(): Observable<Resena[]> {
     return this.http.get<Resena[]>(this.apiURL);

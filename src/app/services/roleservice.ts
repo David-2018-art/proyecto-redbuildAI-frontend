@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Role } from '../models/role';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class Roleservice {
-  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Roles';
+  private apiURL = `${environment.apiUrl}/api/Roles`;
 
   constructor(private http: HttpClient) {}
 

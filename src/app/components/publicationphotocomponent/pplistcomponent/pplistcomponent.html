@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Listado de Fotos de Publicaciones</h2>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="pagina.filas" class="mat-elevation-z8">
 
     <ng-container matColumnDef="idPhoto">
       <th mat-header-cell *matHeaderCellDef>ID Foto</th>
@@ -66,5 +66,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
   </table>
+  <app-paginador
+  #pagina="paginador"
+  [datos]="dataSource.data"
+></app-paginador>
 </div>
 

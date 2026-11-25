@@ -4,9 +4,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { PublicationPhotoService } from '../../../services/publicationphotoservice';
 import { PublicationPhotoDTO } from '../../../models/publicationPhotoDTO';
+import { PaginadorComponent } from '../../../shared/paginador.component';
 
 @Component({
-  imports: [MatTableModule, MatButtonModule],
+  imports: [MatTableModule, MatButtonModule,PaginadorComponent],
   selector: 'app-pplistcomponent',
   styleUrl: './pplistcomponent.css',
   templateUrl: './pplistcomponent.html',

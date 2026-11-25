@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LocationDTO } from '../models/locationDTO';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class LocationService {
-  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/api/Locations';
+  private apiURL = `${environment.apiUrl}/api/Locations`;
   constructor(private http: HttpClient) {}
   getLocation(): Observable<LocationDTO[]> {
     return this.http.get<LocationDTO[]>(this.apiURL);

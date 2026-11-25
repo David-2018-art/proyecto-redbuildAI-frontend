@@ -1,0 +1,122 @@
+:host {
+  display: block;
+}
+
+.empresa-panel {
+  padding: clamp(18px, 3vw, 32px);
+  background: #101f2b;
+  border: 1px solid #2b4654;
+  border-radius: 20px;
+  color: #e9f3f5;
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.etiqueta {
+  color: #64e6b1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.encabezado h2 {
+  margin: 10px 0;
+  color: #e9f3f5;
+  text-align: left;
+}
+
+.encabezado h2::after {
+  display: none;
+}
+
+.encabezado p {
+  margin: 0;
+  color: #b8cad1;
+  line-height: 1.6;
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.tarjeta {
+  padding: 26px;
+  border: 1px solid #2b4654;
+  border-radius: 16px;
+  background: #0b1923;
+}
+
+.titulo-tarjeta {
+  display: block;
+  color: #b8cad1;
+  font-size: 15px;
+}
+
+.tarjeta strong {
+  display: block;
+  margin: 18px 0;
+  color: #64e6b1;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.tarjeta p {
+  margin: 0;
+  color: #b8cad1;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.ingresos {
+  background: linear-gradient(
+    135deg,
+    rgba(100, 230, 177, 0.12),
+    rgba(114, 216, 237, 0.04)
+  );
+  border-color: rgba(100, 230, 177, 0.4);
+}
+
+.aviso,
+.nota {
+  color: #b8cad1;
+  line-height: 1.6;
+}
+
+.nota {
+  margin-top: 22px;
+  font-size: 13px;
+}
+
+.sin-datos {
+  margin-top: 20px;
+  padding: 18px;
+  background: rgba(114, 216, 237, 0.06);
+  border: 1px solid #2b4654;
+  border-radius: 12px;
+  color: #b8cad1;
+  line-height: 1.6;
+}
+
+.error {
+  padding: 16px;
+  border: 1px solid rgba(255, 180, 171, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 100, 100, 0.08);
+  color: #ffb4ab;
+}
+
+@media (max-width: 850px) {
+  .tarjetas {
+    grid-template-columns: 1fr;
+  }
+}

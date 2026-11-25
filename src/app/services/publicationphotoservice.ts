@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PublicationPhotoDTO } from '../models/publicationPhotoDTO';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class PublicationPhotoService {
-  private apiURL = 'https://proyecto-redbuildai-backend.onrender.com/publication-photos';
+  private apiURL = `${environment.apiUrl}/publication-photos`;
 
   constructor(private http: HttpClient) {}
 
