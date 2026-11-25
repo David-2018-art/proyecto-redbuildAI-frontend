@@ -5,4 +5,5 @@ export class UserRegister {
   passwordUser: string = '';
   phoneUser: string = '';
   companyNameUser: string = '';
+  tipoCuenta?: 'Cliente' | 'Empresa';
 }

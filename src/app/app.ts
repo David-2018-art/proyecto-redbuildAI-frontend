@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
+
 import { Menucomponent } from './components/menucomponent/menucomponent';
 
 @Component({
@@ -11,13 +12,17 @@ import { Menucomponent } from './components/menucomponent/menucomponent';
   styleUrl: './app.css',
 })
 export class App {
+
   protected readonly title = signal('rebuild-ai-frontend');
 
   private readonly router = inject(Router);
 
-  readonly esLogin = signal(this.esRutaLogin(this.router.url));
+  readonly esLogin = signal(
+    this.esRutaLogin(this.router.url)
+  );
 
   constructor() {
+
     this.router.events
       .pipe(
         filter(
@@ -27,11 +32,23 @@ export class App {
         takeUntilDestroyed(),
       )
       .subscribe((evento) => {
-        this.esLogin.set(this.esRutaLogin(evento.urlAfterRedirects));
+
+        this.esLogin.set(
+          this.esRutaLogin(evento.urlAfterRedirects)
+        );
+
       });
+
   }
 
   private esRutaLogin(url: string): boolean {
-    return url.split(/[?#;]/)[0].replace(/\/+$/, '') === '/login';
+
+    const ruta = url
+      .split(/[?#;]/)[0]
+      .replace(/\/+$/, '');
+
+    return ruta === '/login' || ruta === '/registro';
+
   }
+
 }

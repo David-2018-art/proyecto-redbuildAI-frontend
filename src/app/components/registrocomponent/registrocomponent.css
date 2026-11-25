@@ -1,0 +1,294 @@
+:host {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.acceso {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 100dvh;
+  padding: 32px 20px;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      ellipse at 20% 20%,
+      rgba(100, 230, 177, 0.09),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 85% 80%,
+      rgba(114, 216, 237, 0.08),
+      transparent 50%
+    );
+}
+
+.tarjeta-registro {
+  width: 100%;
+  max-width: 580px;
+  padding: 38px;
+  box-sizing: border-box;
+
+  background: #101f2b;
+  border: 1px solid rgba(135, 184, 201, 0.25);
+  border-radius: 24px;
+
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+}
+
+.identidad {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.emblema {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+
+  background: rgba(100, 230, 177, 0.1);
+  border: 1px solid rgba(100, 230, 177, 0.4);
+  border-radius: 15px;
+
+  color: #64e6b1;
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.nombre-app {
+  color: #e9f3f5;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.lema {
+  margin: 4px 0 0;
+  color: #b8cad1;
+  font-size: 12px;
+}
+
+.etiqueta {
+  color: #64e6b1;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
+
+h1 {
+  color: #e9f3f5;
+  font-size: 30px;
+  margin: 12px 0;
+}
+
+.introduccion {
+  color: #b8cad1;
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.titulo-seccion {
+  color: #b8cad1;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 5px 0 8px;
+}
+
+.tipos-cuenta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.tipo-cuenta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 18px 12px;
+  min-height: 165px;
+
+  border: 1px solid #34505a;
+  border-radius: 14px;
+
+  background: #132530;
+  color: #e9f3f5;
+
+  font-family: inherit;
+  cursor: pointer;
+
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.tipo-cuenta:hover:not(:disabled) {
+  border-color: #64e6b1;
+  background: #162e35;
+}
+
+.tipo-cuenta.seleccionado {
+  border-color: #64e6b1;
+  background: #19382f;
+}
+
+.tipo-cuenta:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.icono-tipo {
+  color: #64e6b1;
+}
+
+.tipo-cuenta strong {
+  font-size: 16px;
+}
+
+.descripcion-tipo {
+  color: #b8cad1;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.indicador {
+  color: #64e6b1;
+  font-size: 19px;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+mat-form-field {
+  width: 100%;
+  min-width: 0;
+}
+
+.mostrar-password {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b8cad1;
+  font-size: 13px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.mostrar-password input {
+  accent-color: #64e6b1;
+}
+
+.boton-registro {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 5px;
+  font-weight: 700;
+}
+
+.boton-registro:not(:disabled) {
+  background: #64e6b1 !important;
+  color: #10251d !important;
+}
+
+.error-registro {
+  padding: 12px 14px;
+  color: #ffb4ab;
+  background: rgba(255, 180, 171, 0.07);
+  border: 1px solid rgba(255, 180, 171, 0.25);
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.enlace-login {
+  text-align: center;
+  color: #b8cad1;
+  font-size: 13px;
+  margin-top: 24px;
+}
+
+.enlace-login a {
+  color: #64e6b1;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.enlace-login a:hover {
+  text-decoration: underline;
+}
+
+.pie-registro {
+  margin: 26px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(135, 184, 201, 0.16);
+
+  color: #b8cad1;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.registro-exitoso {
+  text-align: center;
+  padding: 25px 0;
+}
+
+.registro-exitoso p {
+  color: #b8cad1;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.icono-exito {
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+
+  background: #19382f;
+  border: 1px solid #64e6b1;
+  border-radius: 50%;
+
+  color: #64e6b1;
+  font-size: 40px;
+}
+
+@media (max-width: 480px) {
+
+  .acceso {
+    padding: 20px 14px;
+  }
+
+  .tarjeta-registro {
+    padding: 25px 20px;
+    border-radius: 18px;
+  }
+
+  .fila {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .tipos-cuenta {
+    gap: 10px;
+  }
+
+}

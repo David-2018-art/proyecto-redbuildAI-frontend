@@ -146,3 +146,25 @@ mat-form-field {
     border-radius: 18px;
   }
 }
+
+.enlace-registro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  margin-top: 24px;
+  color: #b8cad1;
+  font-size: 13px;
+}
+
+.enlace-registro a {
+  color: #64e6b1;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.enlace-registro a:hover {
+  text-decoration: underline;
+}

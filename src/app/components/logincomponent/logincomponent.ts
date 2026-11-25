@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +13,7 @@ import { Authservice } from '../../services/authservice';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    RouterLink
   ],
   templateUrl: './logincomponent.html',
   styleUrl: './logincomponent.css',
