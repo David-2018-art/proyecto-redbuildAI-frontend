@@ -88,7 +88,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'listar', pathMatch: 'full' },
       { path: 'listar', component: Rlistcomponent },
       { path: 'registrar', component: Rinsertcomponent },
-      { path: 'editar/:id', component: Uupdatecomponent },
+      { path: 'editar/:id', component: Rupdatecomponent },
     ],
   },
   {
