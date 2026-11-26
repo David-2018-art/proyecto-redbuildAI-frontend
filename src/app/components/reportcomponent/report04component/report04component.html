@@ -1,0 +1,123 @@
+<section class="reporte" [attr.aria-busy]="cargando()">
+
+  <header class="cabecera-reporte">
+
+    <div>
+      <span class="etiqueta">PRODUCTOS</span>
+      <h2>Publicaciones por producto</h2>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="obtener()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+
+  </header>
+
+  @if (cargando()) {
+
+    <p role="status">
+      Cargando publicaciones por producto...
+    </p>
+
+  } @else if (mensaje()) {
+
+    <p class="error" role="alert">
+      {{ mensaje() }}
+    </p>
+
+  } @else {
+
+    <div class="indicador">
+      <strong>{{ total() }}</strong>
+      <span>publicaciones asociadas</span>
+    </div>
+
+    <div class="indicador">
+      <strong>{{ totalProductos() }}</strong>
+      <span>productos consultados</span>
+    </div>
+
+    <div class="indicador">
+      <strong>{{ productosSinPublicaciones() }}</strong>
+      <span>productos sin publicaciones</span>
+    </div>
+
+    <p class="detalle">
+      Muestra la cantidad de publicaciones asociadas a cada producto.
+      El gráfico presenta hasta los 10 productos con más publicaciones,
+      mientras que la tabla incluye todos los productos registrados.
+    </p>
+
+    @if (total() > 0) {
+
+      <div class="grafico" style="height: 420px">
+
+        <canvas
+          baseChart
+          [data]="chartData()"
+          [options]="chartOptions"
+          [type]="'bar'"
+          role="img"
+          aria-label="Cantidad de publicaciones por producto"
+        ></canvas>
+
+      </div>
+
+    } @else {
+
+      <p>
+        No hay publicaciones asociadas a los productos registrados.
+      </p>
+
+    }
+
+    @if (lista().length > 0) {
+
+      <div class="tabla-contenedor">
+
+        <table>
+
+          <caption>
+            Detalle de publicaciones por producto
+          </caption>
+
+          <thead>
+
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">Publicaciones</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            @for (item of lista(); track item.idProduct) {
+
+              <tr>
+                <td>{{ item.nameProduct }}</td>
+                <td>{{ item.quantityPublications }}</td>
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    } @else {
+
+      <p>No hay productos registrados.</p>
+
+    }
+
+  }
+
+</section>

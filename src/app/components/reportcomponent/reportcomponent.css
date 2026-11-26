@@ -51,3 +51,39 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+.selector-reportes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.selector-reportes button {
+  padding: 12px 20px;
+  border: 1px solid rgba(100, 230, 177, 0.3);
+  border-radius: 8px;
+  background: #172b38;
+  color: #b8cad1;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.selector-reportes button:hover {
+  background: #213e49;
+  color: #64e6b1;
+}
+
+.selector-reportes button.activo {
+  background: #64e6b1;
+  color: #101f2b;
+  border-color: #64e6b1;
+  font-weight: 600;
+}
+
+.reporte-individual {
+  width: 100%;
+  min-width: 0;
+}

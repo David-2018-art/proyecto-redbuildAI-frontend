@@ -5,3 +5,8 @@ export interface Role {
   descriptionRole: string;
   statusRole: string;
 }
+
+export interface RoleCountByStatusDTO {
+  status: string;
+  quantityRoles: number;
+}

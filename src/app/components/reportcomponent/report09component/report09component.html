@@ -1,0 +1,194 @@
+<section class="reporte" [attr.aria-busy]="cargando()">
+
+  <header class="cabecera-reporte">
+
+    <div>
+
+      <span class="etiqueta">
+        FOTOGRAFÍAS DE PUBLICACIONES
+      </span>
+
+      <h2>Fotografías por publicación</h2>
+
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="obtener()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+
+  </header>
+
+  @if (cargando()) {
+
+    <p role="status">
+      Cargando fotografías por publicación...
+    </p>
+
+  } @else if (mensaje()) {
+
+    <p class="error" role="alert">
+      {{ mensaje() }}
+    </p>
+
+  } @else {
+
+    <div class="indicador">
+
+      <strong>{{ total() }}</strong>
+
+      <span>fotografías registradas</span>
+
+    </div>
+
+    <div class="indicador">
+
+      <strong>{{ totalPublicaciones() }}</strong>
+
+      <span>publicaciones registradas</span>
+
+    </div>
+
+    <div class="indicador">
+
+      <strong>{{ publicacionesConFotos() }}</strong>
+
+      <span>publicaciones con fotografías</span>
+
+    </div>
+
+    <div class="indicador">
+
+      <strong>{{ publicacionesSinFotos() }}</strong>
+
+      <span>publicaciones sin fotografías</span>
+
+    </div>
+
+    <div class="indicador">
+
+      <strong>{{ coberturaFotografica() }}%</strong>
+
+      <span>cobertura fotográfica</span>
+
+    </div>
+
+    <p class="detalle">
+
+      Identifica las publicaciones con mayor cantidad
+      de fotografías y aquellas que todavía no cuentan
+      con imágenes registradas.
+
+      El gráfico muestra hasta las 10 publicaciones
+      con mayor cantidad de fotografías.
+
+    </p>
+
+    @if (total() > 0) {
+
+      <div class="grafico">
+
+        <canvas
+          baseChart
+          [data]="chartData()"
+          [options]="chartOptions"
+          [type]="'bar'"
+          role="img"
+          aria-label="Cantidad de fotografías por publicación"
+        ></canvas>
+
+      </div>
+
+    } @else {
+
+      <p>No hay fotografías registradas para graficar.</p>
+
+    }
+
+    @if (lista().length > 0) {
+
+      <div class="tabla-contenedor">
+
+        <table>
+
+          <caption>
+            Detalle de fotografías por publicación
+          </caption>
+
+          <thead>
+
+            <tr>
+              <th scope="col">Publicación</th>
+              <th scope="col">Fotografías</th>
+              <th scope="col">Estado fotográfico</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            @for (item of lista(); track item.idPublication) {
+
+              <tr>
+
+                <td>{{ item.titlePublication }}</td>
+
+                <td>{{ item.quantityPhotos }}</td>
+
+                <td>
+
+                  @if (item.quantityPhotos > 0) {
+
+                    <span style="color: #64e6b1;">
+                      Con fotografías
+                    </span>
+
+                  } @else {
+
+                    <span style="color: #ec7777;">
+                      Sin fotografías
+                    </span>
+
+                  }
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+          <tfoot>
+
+            <tr>
+
+              <th scope="row">Total</th>
+
+              <td>{{ total() }}</td>
+
+              <td>
+                {{ coberturaFotografica() }}% de cobertura
+              </td>
+
+            </tr>
+
+          </tfoot>
+
+        </table>
+
+      </div>
+
+    } @else {
+
+      <p>No hay publicaciones registradas.</p>
+
+    }
+
+  }
+
+</section>

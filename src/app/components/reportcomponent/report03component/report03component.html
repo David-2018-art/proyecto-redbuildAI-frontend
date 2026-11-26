@@ -1,0 +1,104 @@
+<section class="reporte" [attr.aria-busy]="cargando()">
+
+  <header class="cabecera-reporte">
+
+    <div>
+      <span class="etiqueta">PUBLICACIONES</span>
+      <h2>Publicaciones por estado</h2>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="obtener()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+
+  </header>
+
+  @if (cargando()) {
+
+    <p role="status">
+      Cargando publicaciones por estado...
+    </p>
+
+  } @else if (mensaje()) {
+
+    <p class="error" role="alert">
+      {{ mensaje() }}
+    </p>
+
+  } @else {
+
+    <div class="indicador">
+      <strong>{{ total() }}</strong>
+      <span>publicaciones registradas</span>
+    </div>
+
+    <p class="detalle">
+      Muestra la distribución de publicaciones disponibles,
+      pausadas, finalizadas y canceladas.
+    </p>
+
+    @if (total() > 0) {
+
+      <div class="grafico">
+
+        <canvas
+          baseChart
+          [data]="chartData()"
+          [options]="chartOptions"
+          [type]="'doughnut'"
+          role="img"
+          aria-label="Cantidad de publicaciones por estado"
+        ></canvas>
+
+      </div>
+
+    } @else {
+
+      <p>No hay publicaciones registradas para graficar.</p>
+
+    }
+
+    @if (lista().length > 0) {
+
+      <div class="tabla-contenedor">
+
+        <table>
+
+          <caption>
+            Detalle de publicaciones por estado
+          </caption>
+
+          <thead>
+            <tr>
+              <th scope="col">Estado</th>
+              <th scope="col">Publicaciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (item of lista(); track item.status) {
+
+              <tr>
+                <td>{{ item.status }}</td>
+                <td>{{ item.quantityPublications }}</td>
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    }
+
+  }
+
+</section>

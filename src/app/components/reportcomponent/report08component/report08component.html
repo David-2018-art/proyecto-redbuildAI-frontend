@@ -1,0 +1,144 @@
+<section class="reporte" [attr.aria-busy]="cargando()">
+
+  <header class="cabecera-reporte">
+
+    <div>
+      <span class="etiqueta">RESEÑAS</span>
+      <h2>Distribución de calificaciones</h2>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="obtener()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+
+  </header>
+
+  @if (cargando()) {
+
+    <p role="status">
+      Cargando distribución de calificaciones...
+    </p>
+
+  } @else if (mensaje()) {
+
+    <p class="error" role="alert">
+      {{ mensaje() }}
+    </p>
+
+  } @else {
+
+    <div class="indicador">
+      <strong>{{ total() }}</strong>
+      <span>reseñas contabilizadas</span>
+    </div>
+
+    <div class="indicador">
+      <strong>
+        {{ total() > 0 ? promedio() + ' / 5' : 'Sin calificaciones' }}
+      </strong>
+      <span>calificación promedio</span>
+    </div>
+
+    <div class="indicador">
+      <strong>{{ porcentajePositivas() }}%</strong>
+      <span>reseñas positivas</span>
+    </div>
+
+    <div class="indicador">
+      <strong>{{ negativas() }}</strong>
+      <span>reseñas negativas</span>
+    </div>
+
+    <p class="detalle">
+      Muestra la distribución de las calificaciones
+      registradas por los usuarios de la plataforma.
+      Se consideran positivas las reseñas de 4 y 5 estrellas,
+      neutrales las de 3 y negativas las de 1 y 2 estrellas.
+    </p>
+
+    @if (total() > 0) {
+
+      <div class="grafico">
+
+        <canvas
+          baseChart
+          [data]="chartData()"
+          [options]="chartOptions"
+          [type]="'bar'"
+          role="img"
+          aria-label="Distribución de calificaciones de reseñas"
+        ></canvas>
+
+      </div>
+
+    } @else {
+
+      <p>No hay calificaciones registradas para graficar.</p>
+
+    }
+
+    <div class="tabla-contenedor">
+
+      <table>
+
+        <caption>
+          Detalle de calificaciones
+        </caption>
+
+        <thead>
+
+          <tr>
+            <th scope="col">Calificación</th>
+            <th scope="col">Estrellas</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Porcentaje</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          @for (item of lista(); track item.score) {
+
+            <tr>
+
+              <td>{{ item.score }} / 5</td>
+
+              <td style="color: #eab54c;">
+                {{ estrellas(item.score) }}
+              </td>
+
+              <td>{{ item.quantityReviews }}</td>
+
+              <td>
+                {{ porcentaje(item.quantityReviews) }}%
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+        <tfoot>
+
+          <tr>
+            <th scope="row" colspan="2">Total</th>
+            <td>{{ total() }}</td>
+            <td>{{ porcentaje(total()) }}%</td>
+          </tr>
+
+        </tfoot>
+
+      </table>
+
+    </div>
+
+  }
+
+</section>

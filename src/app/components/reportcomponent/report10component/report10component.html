@@ -1,0 +1,174 @@
+<section class="reporte" [attr.aria-busy]="cargando()">
+
+  <header class="cabecera-reporte">
+
+    <div>
+
+      <span class="etiqueta">TRANSACCIONES</span>
+
+      <h2>Ventas y donaciones completadas</h2>
+
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="obtener()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+
+  </header>
+
+  @if (cargando()) {
+
+    <p role="status">
+      Cargando ventas y donaciones completadas...
+    </p>
+
+  } @else if (mensaje()) {
+
+    <p class="error" role="alert">
+      {{ mensaje() }}
+    </p>
+
+  } @else {
+
+    <div class="indicador">
+
+      <strong>{{ total() }}</strong>
+
+      <span>operaciones completadas</span>
+
+    </div>
+
+    <div class="indicador">
+
+      <strong>{{ totalVentas() }}</strong>
+
+      <span>ventas completadas</span>
+
+    </div>
+
+    <div class="indicador">
+
+      <strong>{{ totalDonaciones() }}</strong>
+
+      <span>donaciones completadas</span>
+
+    </div>
+
+    <div class="indicador">
+
+      <strong>
+        {{ formatoMoneda(montoTotalVentas()) }}
+      </strong>
+
+      <span>monto total de ventas</span>
+
+    </div>
+
+    <p class="detalle">
+
+      Compara las operaciones de venta y donación
+      completadas dentro de la plataforma.
+
+      El reporte considera únicamente las transacciones
+      que tienen el estado Completada.
+
+    </p>
+
+    @if (total() > 0) {
+
+      <div class="grafico">
+
+        <canvas
+          baseChart
+          [data]="chartData()"
+          [options]="chartOptions"
+          [type]="'bar'"
+          role="img"
+          aria-label="Comparación de ventas y donaciones completadas"
+        ></canvas>
+
+      </div>
+
+    } @else {
+
+      <p>No hay operaciones completadas para graficar.</p>
+
+    }
+
+    <div class="tabla-contenedor">
+
+      <table>
+
+        <caption>
+          Resumen de operaciones completadas
+        </caption>
+
+        <thead>
+
+          <tr>
+            <th scope="col">Tipo de operación</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Porcentaje</th>
+            <th scope="col">Monto acumulado</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          @for (item of lista(); track item.typeTransaction) {
+
+            <tr>
+
+              <td>
+                {{ nombreOperacion(item.typeTransaction) }}
+              </td>
+
+              <td>
+                {{ item.quantityTransactions }}
+              </td>
+
+              <td>
+                {{ porcentaje(item.quantityTransactions) }}%
+              </td>
+
+              <td>
+                {{ formatoMoneda(item.totalAmount) }}
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+        <tfoot>
+
+          <tr>
+
+            <th scope="row">Total</th>
+
+            <td>{{ total() }}</td>
+
+            <td>{{ porcentaje(total()) }}%</td>
+
+            <td>
+              {{ formatoMoneda(montoTotal()) }}
+            </td>
+
+          </tr>
+
+        </tfoot>
+
+      </table>
+
+    </div>
+
+  }
+
+</section>
