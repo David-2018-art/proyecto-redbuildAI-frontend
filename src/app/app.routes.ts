@@ -55,6 +55,7 @@ import { Registrocomponent } from './components/registrocomponent/registrocompon
 
 import { Empresacomponent } from './components/empresacomponent/empresacomponent';
 import { empresaGuard } from './empresa.guard';
+import { adminGuard } from './admin.guard';
 
 export const routes: Routes = [
   { path: 'login', component: Logincomponent },
@@ -164,7 +165,7 @@ export const routes: Routes = [
 {
   path: 'reportes',
   component: Reportcomponent,
-  canActivate: [authGuard],
+  canActivate: [authGuard, adminGuard],
 },
 
 
@@ -173,6 +174,7 @@ export const routes: Routes = [
   component: Empresacomponent,
   canActivate: [empresaGuard],
 },
+
   {
     path: '**',
     redirectTo: 'login',

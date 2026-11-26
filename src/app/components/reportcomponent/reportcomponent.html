@@ -1,21 +1,165 @@
 @if (auth.session()?.role === 'Administrador') {
+
   <section class="dashboard">
+
     <header class="encabezado-dashboard">
-      <span class="etiqueta">REBUILD AI · ADMINISTRACIÓN</span>
+
+      <span class="etiqueta">
+        REBUILD AI · ADMINISTRACIÓN
+      </span>
+
       <h1>Dashboard de reportes</h1>
+
       <p>
-        Consulta la distribución de productos y usuarios de la plataforma.
+        Selecciona el reporte que deseas consultar.
       </p>
+
     </header>
 
-    <div class="cuadricula">
-      <app-report01component></app-report01component>
-      <app-report02component></app-report02component>
+    <nav class="selector-reportes">
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 1"
+        (click)="reporteSeleccionado.set(1)"
+      >
+        Productos por categoría
+      </button>
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 2"
+        (click)="reporteSeleccionado.set(2)"
+      >
+        Usuarios por rol
+      </button>
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 3"
+        (click)="reporteSeleccionado.set(3)"
+      >
+        Publicaciones por estado
+      </button>
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 4"
+        (click)="reporteSeleccionado.set(4)"
+      >
+        Publicaciones por producto
+      </button>
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 5"
+        (click)="reporteSeleccionado.set(5)"
+      >
+        Roles por estado
+      </button>
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 6"
+        (click)="reporteSeleccionado.set(6)"
+      >
+        Ubicaciones por departamento
+      </button>
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 7"
+        (click)="reporteSeleccionado.set(7)"
+      >
+        Transacciones por estado
+      </button>
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 8"
+        (click)="reporteSeleccionado.set(8)"
+      >
+        Distribución de calificaciones
+      </button>
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 9"
+        (click)="reporteSeleccionado.set(9)"
+      >
+        Fotografías por publicación
+      </button>
+
+      <button
+        type="button"
+        [class.activo]="reporteSeleccionado() === 10"
+        (click)="reporteSeleccionado.set(10)"
+      >
+        Ventas y donaciones completadas
+      </button>
+
+    </nav>
+
+    <div class="reporte-individual">
+
+      @switch (reporteSeleccionado()) {
+
+        @case (1) {
+          <app-report01component></app-report01component>
+        }
+
+        @case (2) {
+          <app-report02component></app-report02component>
+        }
+
+        @case (3) {
+          <app-report03component></app-report03component>
+        }
+
+        @case (4) {
+          <app-report04component></app-report04component>
+        }
+
+        @case (5) {
+          <app-report05component></app-report05component>
+        }
+
+        @case (6) {
+          <app-report06component></app-report06component>
+        }
+
+        @case (7) {
+          <app-report07component></app-report07component>
+        }
+
+        @case (8) {
+          <app-report08component></app-report08component>
+        }
+
+        @case (9) {
+          <app-report09component></app-report09component>
+        }
+
+        @case (10) {
+          <app-report10component></app-report10component>
+        }
+
+      }
+
     </div>
+
   </section>
+
 } @else {
+
   <section class="sin-acceso">
+
     <h1>Acceso restringido</h1>
-    <p>Estos reportes están disponibles para administradores.</p>
+
+    <p>
+      Estos reportes están disponibles para administradores.
+    </p>
+
   </section>
+
 }

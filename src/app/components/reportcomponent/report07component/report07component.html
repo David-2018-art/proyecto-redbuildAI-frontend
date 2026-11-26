@@ -1,0 +1,135 @@
+<section class="reporte" [attr.aria-busy]="cargando()">
+
+  <header class="cabecera-reporte">
+
+    <div>
+      <span class="etiqueta">TRANSACCIONES</span>
+      <h2>Transacciones por estado</h2>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="obtener()"
+      [disabled]="cargando()"
+    >
+      Actualizar
+    </button>
+
+  </header>
+
+  @if (cargando()) {
+
+    <p role="status">
+      Cargando transacciones por estado...
+    </p>
+
+  } @else if (mensaje()) {
+
+    <p class="error" role="alert">
+      {{ mensaje() }}
+    </p>
+
+  } @else {
+
+    <div class="indicador">
+      <strong>{{ total() }}</strong>
+      <span>transacciones registradas</span>
+    </div>
+
+    <div class="indicador">
+      <strong>{{ completadas() }}</strong>
+      <span>transacciones completadas</span>
+    </div>
+
+    <div class="indicador">
+      <strong>{{ pendientes() }}</strong>
+      <span>transacciones pendientes</span>
+    </div>
+
+    <div class="indicador">
+      <strong>{{ tasaFinalizacion() }}%</strong>
+      <span>tasa de finalización</span>
+    </div>
+
+    <p class="detalle">
+      Muestra la distribución de las transacciones de venta
+      y donación según su estado actual.
+      Las transacciones pendientes incluyen las solicitadas
+      y reservadas.
+    </p>
+
+    @if (total() > 0) {
+
+      <div class="grafico">
+
+        <canvas
+          baseChart
+          [data]="chartData()"
+          [options]="chartOptions"
+          [type]="'doughnut'"
+          role="img"
+          aria-label="Distribución de transacciones por estado"
+        ></canvas>
+
+      </div>
+
+    } @else {
+
+      <p>No hay transacciones registradas para graficar.</p>
+
+    }
+
+    <div class="tabla-contenedor">
+
+      <table>
+
+        <caption>
+          Detalle de transacciones por estado
+        </caption>
+
+        <thead>
+          <tr>
+            <th scope="col">Estado</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Porcentaje</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (item of lista(); track item.status) {
+
+            <tr>
+
+              <td>{{ item.status }}</td>
+
+              <td>{{ item.quantityTransactions }}</td>
+
+              <td>
+                {{ porcentaje(item.quantityTransactions) }}%
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+        <tfoot>
+
+          <tr>
+            <th scope="row">Total</th>
+            <td>{{ total() }}</td>
+            <td>{{ porcentaje(total()) }}%</td>
+          </tr>
+
+        </tfoot>
+
+      </table>
+
+    </div>
+
+  }
+
+</section>
